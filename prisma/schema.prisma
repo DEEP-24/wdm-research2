@@ -1,0 +1,351 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String @id @default(uuid()) @map("id")
+  firstName String
+  lastName  String
+
+  email    String @unique
+  password String
+
+  imageURL String
+
+  researchInterests String?
+  expertise         String?
+
+  lastPasswordResetAt DateTime?
+
+  role UserRole
+
+  phone   String
+  street  String
+  aptNo   String
+  city    String
+  state   String
+  zipcode String
+  dob     DateTime
+
+  linkedInURL String?
+  twitterURL  String?
+  githubURL   String?
+  papers      String?
+
+  events Event[]
+
+  registrations EventRegistration[]
+
+  projectProposals ProjectProposal[]
+
+  proposalReviews ProposalReview[]
+
+  following  Followers[] @relation("follower")
+  followedBy Followers[] @relation("following")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  sharedFiles SharedFile[]
+
+  forums Forum[]
+  posts  Post[]
+
+  submittedApplications GrantApplication[] @relation("SubmittedApplications")
+  reviewedApplications  GrantApplication[] @relation("ReviewedApplications")
+
+  createdOpportunities           FundingOpportunity[]    @relation("CreatedOpportunities")
+  createdInvestmentOpportunities InvestmentOpportunity[] @relation("CreatedOpportunities")
+  investments                    Investment[]            @relation("UserInvestments")
+
+  sentMessages     Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+
+  @@map("users")
+}
+
+model Message {
+  id         String   @id @default(uuid())
+  senderId   String
+  receiverId String
+  content    String   @db.Text
+  sentAt     DateTime @default(now())
+  isRead     Boolean  @default(false)
+
+  sender   User @relation("SentMessages", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+
+  @@index([senderId])
+  @@index([receiverId])
+  @@map("messages")
+}
+
+model Followers {
+  follower    User   @relation("follower", fields: [followerId], references: [id])
+  followerId  String
+  following   User   @relation("following", fields: [followingId], references: [id])
+  followingId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+  @@map("followers")
+}
+
+model Event {
+  id                   String    @id @default(uuid()) @map("id")
+  title                String
+  description          String?
+  startDate            DateTime?
+  endDate              DateTime?
+  location             String?
+  isVirtual            Boolean   @default(false)
+  maxAttendees         Int?
+  registrationDeadline DateTime?
+  status               String?
+
+  sessions      EventSession[]
+  registrations EventRegistration[]
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("events")
+}
+
+model EventSession {
+  id           String    @id @default(uuid()) @map("id")
+  title        String
+  description  String?
+  startTime    DateTime?
+  endTime      DateTime?
+  location     String?
+  maxAttendees Int?
+
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId String
+
+  registrations EventRegistration[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("event_sessions")
+}
+
+model EventRegistration {
+  id          String   @id @default(uuid()) @map("id")
+  bookingDate DateTime @default(now())
+
+  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId String
+
+  session   EventSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("event_registrations")
+}
+
+model ProjectProposal {
+  id              String           @id @default(uuid()) @map("id")
+  title           String
+  description     String?
+  status          ProposalStatus   @default(SUBMITTED)
+  submittedAt     DateTime         @default(now()) @db.Timestamp(6)
+  attachments     String?
+  proposalReviews ProposalReview[]
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
+  GrantApplication GrantApplication[]
+
+  @@map("project_proposals")
+}
+
+model ProposalReview {
+  id String @id @default(uuid()) @map("id")
+
+  feedback   String?
+  reviewedAt DateTime @default(now()) @db.Timestamp(6)
+
+  projectProposal   ProjectProposal? @relation(fields: [projectProposalId], references: [id])
+  projectProposalId String?
+
+  reviewer   User   @relation(fields: [reviewerId], references: [id], onDelete: Cascade)
+  reviewerId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("proposal_reviews")
+}
+
+model SharedFile {
+  id String @id @default(uuid()) @map("id")
+
+  customName String
+
+  uploadDate DateTime @default(now())
+  fileUrl    String
+
+  uploadedBy User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("shared_files")
+}
+
+model Forum {
+  id          String @id @default(uuid()) @map("id")
+  name        String
+  description String
+  posts       Post[]
+
+  createdBy   User   @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  createdById String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("forums")
+}
+
+model Post {
+  id      String @id @default(uuid()) @map("id")
+  title   String
+  content String @db.Text
+
+  forum   Forum  @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  forumId String
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("posts")
+}
+
+model GrantApplication {
+  id                String          @id @default(uuid()) @map("id")
+  projectProposal   ProjectProposal @relation(fields: [projectProposalId], references: [id], onDelete: Cascade)
+  projectProposalId String
+  requestAmount     Float
+  keywords          String
+  status            GrantStatus     @default(SUBMITTED)
+  attachments       Json?
+
+  reviewedBy   User?   @relation("ReviewedApplications", fields: [reviewedById], references: [id])
+  reviewedById String?
+
+  submittedBy   User   @relation("SubmittedApplications", fields: [submittedById], references: [id])
+  submittedById String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("grant_applications")
+}
+
+model FundingOpportunity {
+  id               String   @id @default(uuid()) @map("id")
+  title            String
+  description      String
+  amount           Float
+  deadline         DateTime
+  topics           String
+  contactEmail     String
+  organizationName String
+  phoneNumber      String
+
+  createdBy   User   @relation("CreatedOpportunities", fields: [createdById], references: [id])
+  createdById String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("funding_opportunities")
+}
+
+model InvestmentOpportunity {
+  id            String   @id @default(uuid()) @map("id")
+  title         String
+  description   String
+  targetAmount  Float
+  currentAmount Float    @default(0)
+  deadline      DateTime
+  sector        String
+  companyName   String
+  riskLevel     String
+
+  createdBy   User   @relation("CreatedOpportunities", fields: [createdById], references: [id])
+  createdById String
+
+  investments Investment[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("investment_opportunities")
+}
+
+model Investment {
+  id     String   @id @default(uuid()) @map("id")
+  amount Float
+  date   DateTime @default(now())
+
+  investor   User   @relation("UserInvestments", fields: [investorId], references: [id])
+  investorId String
+
+  opportunity   InvestmentOpportunity @relation(fields: [opportunityId], references: [id])
+  opportunityId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("investments")
+}
+
+enum UserRole {
+  ADMIN
+  ORGANIZER
+  INVESTOR
+  USER
+}
+
+enum ProposalStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+enum GrantStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+}
