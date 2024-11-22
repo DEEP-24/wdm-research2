@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
     const role = validatedData.role.toUpperCase() as UserRole;
 
-    const user = await db.user.create({
+    await db.user.create({
       data: {
         email: validatedData.email,
         password: hashedPassword,
@@ -34,18 +34,16 @@ export async function POST(request: Request) {
         role,
         phone: validatedData.phone,
         street: validatedData.street,
-        aptNo: validatedData.aptNo || "",
+        apt: validatedData.aptNo || "",
         city: validatedData.city,
         state: validatedData.state,
         zipcode: validatedData.zipcode,
         dob: new Date(validatedData.dob),
         expertise: validatedData.expertise,
         researchInterests: validatedData.researchInterests,
-        imageURL: validatedData.imageURL || "/default-avatar.png",
+        imageUrl: validatedData.imageURL || "/default-avatar.png",
       },
     });
-
-    console.log("User created successfully:", user.id);
 
     return NextResponse.json({ success: true, redirectTo: "/login" });
   } catch (error) {

@@ -52,7 +52,7 @@ export async function POST(request: Request) {
     }
 
     // Set the cookie
-    cookies().set("user-token", user.id);
+    cookies().set("token", user.id);
 
     // Return redirect URL with the success response
     return NextResponse.json({ success: true, redirectTo: "/" });

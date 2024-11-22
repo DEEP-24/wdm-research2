@@ -15,43 +15,42 @@ model User {
   email    String @unique
   password String
 
-  imageURL String
+  imageUrl String
 
   researchInterests String?
   expertise         String?
-
-  lastPasswordResetAt DateTime?
 
   role UserRole
 
   phone   String
   street  String
-  aptNo   String
+  apt     String
   city    String
   state   String
   zipcode String
   dob     DateTime
 
-  linkedInURL String?
-  twitterURL  String?
-  githubURL   String?
-  papers      String?
+  linkedInUrl String?
+  twitterUrl  String?
+  githubUrl   String?
 
-  events Event[]
+  papers String?
 
-  registrations EventRegistration[]
+  events AcademicEvent[]
+
+  registrations AcademicEventRegistration[]
 
   projectProposals ProjectProposal[]
 
-  proposalReviews ProposalReview[]
+  proposalReviews ProjectProposalReview[]
 
-  following  Followers[] @relation("follower")
-  followedBy Followers[] @relation("following")
+  following  FollowersFollowings[] @relation("follower")
+  followedBy FollowersFollowings[] @relation("following")
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  sharedFiles SharedFile[]
+  sharedFiles Files[]
 
   forums Forum[]
   posts  Post[]
@@ -63,29 +62,30 @@ model User {
   createdInvestmentOpportunities InvestmentOpportunity[] @relation("CreatedOpportunities")
   investments                    Investment[]            @relation("UserInvestments")
 
-  sentMessages     Message[] @relation("SentMessages")
-  receivedMessages Message[] @relation("ReceivedMessages")
+  sentMessages     Chat[] @relation("SentMessages")
+  receivedMessages Chat[] @relation("ReceivedMessages")
 
   @@map("users")
 }
 
-model Message {
-  id         String   @id @default(uuid())
-  senderId   String
-  receiverId String
-  content    String   @db.Text
-  sentAt     DateTime @default(now())
-  isRead     Boolean  @default(false)
+model Chat {
+  id      String   @id @default(uuid())
+  content String   @db.Text
+  sentAt  DateTime @default(now())
+  isRead  Boolean  @default(false)
 
-  sender   User @relation("SentMessages", fields: [senderId], references: [id])
-  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  sender   User   @relation("SentMessages", fields: [senderId], references: [id])
+  senderId String
+
+  receiver   User   @relation("ReceivedMessages", fields: [receiverId], references: [id])
+  receiverId String
 
   @@index([senderId])
   @@index([receiverId])
-  @@map("messages")
+  @@map("chats")
 }
 
-model Followers {
+model FollowersFollowings {
   follower    User   @relation("follower", fields: [followerId], references: [id])
   followerId  String
   following   User   @relation("following", fields: [followingId], references: [id])
@@ -97,10 +97,10 @@ model Followers {
   @@id([followerId, followingId])
   @@index([followerId])
   @@index([followingId])
-  @@map("followers")
+  @@map("followers_followings")
 }
 
-model Event {
+model AcademicEvent {
   id                   String    @id @default(uuid()) @map("id")
   title                String
   description          String?
@@ -112,8 +112,8 @@ model Event {
   registrationDeadline DateTime?
   status               String?
 
-  sessions      EventSession[]
-  registrations EventRegistration[]
+  sessions      AcademicEventSession[]
+  registrations AcademicEventRegistration[]
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
@@ -121,10 +121,10 @@ model Event {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("events")
+  @@map("academic_events")
 }
 
-model EventSession {
+model AcademicEventSession {
   id           String    @id @default(uuid()) @map("id")
   title        String
   description  String?
@@ -133,25 +133,25 @@ model EventSession {
   location     String?
   maxAttendees Int?
 
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event   AcademicEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId String
 
-  registrations EventRegistration[]
+  registrations AcademicEventRegistration[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("event_sessions")
+  @@map("academic_event_sessions")
 }
 
-model EventRegistration {
+model AcademicEventRegistration {
   id          String   @id @default(uuid()) @map("id")
   bookingDate DateTime @default(now())
 
-  event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event   AcademicEvent @relation(fields: [eventId], references: [id], onDelete: Cascade)
   eventId String
 
-  session   EventSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  session   AcademicEventSession? @relation(fields: [sessionId], references: [id], onDelete: Cascade)
   sessionId String?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -160,29 +160,31 @@ model EventRegistration {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@map("event_registrations")
+  @@map("academic_event_registrations")
 }
 
 model ProjectProposal {
-  id              String           @id @default(uuid()) @map("id")
-  title           String
-  description     String?
-  status          ProposalStatus   @default(SUBMITTED)
-  submittedAt     DateTime         @default(now()) @db.Timestamp(6)
-  attachments     String?
-  proposalReviews ProposalReview[]
+  id          String         @id @default(uuid()) @map("id")
+  title       String
+  description String?
+  status      ProposalStatus @default(SUBMITTED)
+  submittedAt DateTime       @default(now()) @db.Timestamp(6)
+  attachments String?
+
+  proposalReviews ProjectProposalReview[]
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
-  createdAt        DateTime           @default(now()) @map("created_at")
-  updatedAt        DateTime           @updatedAt @map("updated_at")
-  GrantApplication GrantApplication[]
+  grantApplications GrantApplication[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("project_proposals")
 }
 
-model ProposalReview {
+model ProjectProposalReview {
   id String @id @default(uuid()) @map("id")
 
   feedback   String?
@@ -197,10 +199,10 @@ model ProposalReview {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("proposal_reviews")
+  @@map("project_proposal_reviews")
 }
 
-model SharedFile {
+model Files {
   id String @id @default(uuid()) @map("id")
 
   customName String
@@ -214,7 +216,7 @@ model SharedFile {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  @@map("shared_files")
+  @@map("files")
 }
 
 model Forum {
@@ -250,13 +252,14 @@ model Post {
 }
 
 model GrantApplication {
-  id                String          @id @default(uuid()) @map("id")
+  id            String      @id @default(uuid()) @map("id")
+  requestAmount Float
+  keywords      String
+  status        GrantStatus @default(SUBMITTED)
+  attachments   Json?
+
   projectProposal   ProjectProposal @relation(fields: [projectProposalId], references: [id], onDelete: Cascade)
   projectProposalId String
-  requestAmount     Float
-  keywords          String
-  status            GrantStatus     @default(SUBMITTED)
-  attachments       Json?
 
   reviewedBy   User?   @relation("ReviewedApplications", fields: [reviewedById], references: [id])
   reviewedById String?

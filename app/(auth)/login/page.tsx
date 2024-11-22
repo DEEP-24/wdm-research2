@@ -21,6 +21,10 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { type LoginFormData, loginSchema } from "@/lib/schema";
 
+type FieldErrors = {
+  [key: string]: string[];
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -28,10 +32,26 @@ export default function LoginPage() {
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string[] }>({});
   const [mounted, setMounted] = useState(false);
 
-  // Handle mounting state
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch("/api/auth/user", {});
+
+        if (response.ok) {
+          router.push("/");
+          return;
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+      }
+    };
+
+    checkAuth();
+  }, [router]);
 
   const {
     register,
@@ -41,7 +61,6 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
-  // Don't render anything until mounted
   if (!mounted) {
     return null;
   }
@@ -63,55 +82,66 @@ export default function LoginPage() {
 
       if (!response.ok) {
         if (responseData.fieldErrors) {
-          setFieldErrors(responseData.fieldErrors);
+          const fieldErrors = responseData.fieldErrors as FieldErrors;
+          setFieldErrors(fieldErrors);
+
+          Object.values(fieldErrors).forEach((errorArray: string[]) => {
+            errorArray.forEach((error) => toast.error(error));
+          });
           return;
         }
         throw new Error(responseData.error || "Login failed");
       }
 
-      router.push(responseData.redirectTo || "/");
+      toast.success("Successfully logged in!");
+      // Force a router refresh and then redirect
+      router.refresh();
+      router.push("/");
     } catch (error) {
       console.error("Login error:", error);
-      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <Card className="w-full bg-white/80 backdrop-blur-sm shadow-lg border border-blue-200 max-w-md">
+    <div className="w-full">
+      <Card className="border border-zinc-200">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center text-blue-600">
-            Welcome Back
-          </CardTitle>
-          <CardDescription className="text-center text-blue-700">
-            Sign in to your account to continue your research journey
+          <CardTitle className="text-2xl font-semibold text-zinc-900">Sign in</CardTitle>
+          <CardDescription className="text-zinc-500">
+            Welcome back to your research workspace
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-blue-800">
+              <Label htmlFor="email" className="text-sm font-medium text-zinc-700">
                 Email
               </Label>
               <Input
                 {...register("email")}
                 type="email"
                 className={cn(
-                  "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all",
+                  "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
                   (errors.email || fieldErrors.email) && "border-red-500",
                 )}
               />
-              {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+              {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
               {fieldErrors.email?.map((error) => (
-                <p key={`email-${error}`} className="text-sm text-red-500 mt-1">
+                <p key={`email-${error}`} className="text-sm text-red-500">
                   {error}
                 </p>
               ))}
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-blue-800">
+              <Label htmlFor="password" className="text-sm font-medium text-zinc-700">
                 Password
               </Label>
               <div className="relative">
@@ -119,44 +149,50 @@ export default function LoginPage() {
                   {...register("password")}
                   type={showPassword ? "text" : "password"}
                   className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all pr-10",
+                    "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all pr-10",
                     (errors.password || fieldErrors.password) && "border-red-500",
                   )}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
-              )}
+              {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
               {fieldErrors.password?.map((error) => (
-                <p key={`password-${error}`} className="text-sm text-red-500 mt-1">
+                <p key={`password-${error}`} className="text-sm text-red-500">
                   {error}
                 </p>
               ))}
             </div>
+
             <Button
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-2 px-4 rounded-md transition-all shadow-md hover:shadow-lg"
+              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white transition-colors"
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign in"}
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-100 rounded-full animate-spin" />
+                  <span>Signing in...</span>
+                </div>
+              ) : (
+                "Sign in"
+              )}
             </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <div className="text-sm text-center w-full text-blue-700">
+        <CardFooter className="border-t border-zinc-200 mt-2">
+          <div className="text-sm text-center w-full text-zinc-600 mt-4">
             Don't have an account?{" "}
             <Link
               href="/register"
-              className="text-blue-600 hover:text-indigo-600 font-semibold transition-colors"
+              className="font-medium text-zinc-900 hover:text-zinc-700 transition-colors"
             >
-              Register
+              Create account
             </Link>
           </div>
         </CardFooter>

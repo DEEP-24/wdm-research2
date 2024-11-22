@@ -8,10 +8,10 @@ async function main() {
   await prisma.investmentOpportunity.deleteMany();
   await prisma.fundingOpportunity.deleteMany();
   await prisma.projectProposal.deleteMany();
-  await prisma.proposalReview.deleteMany();
-  await prisma.eventRegistration.deleteMany();
-  await prisma.sharedFile.deleteMany();
-  await prisma.event.deleteMany();
+  await prisma.projectProposalReview.deleteMany();
+  await prisma.academicEventRegistration.deleteMany();
+  await prisma.files.deleteMany();
+  await prisma.academicEvent.deleteMany();
   await prisma.forum.deleteMany();
   await prisma.post.deleteMany();
   await prisma.user.deleteMany();
@@ -27,12 +27,12 @@ async function main() {
       expertise: "IT Administration",
       phone: "1234567890",
       street: "123 Admin Street",
-      aptNo: "A1",
+      apt: "A1",
       city: "San Francisco",
       state: "CA",
       zipcode: "94105",
       dob: new Date("1980-01-01"),
-      imageURL:
+      imageUrl:
         "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fFVzZXIlMjBhdmF0YXJ8ZW58MHx8MHx8fDA%3D",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -50,12 +50,12 @@ async function main() {
       expertise: "Event Planning",
       phone: "0987654321",
       street: "456 Event Ave",
-      aptNo: "B2",
+      apt: "B2",
       city: "Los Angeles",
       state: "CA",
       zipcode: "90001",
       dob: new Date("1985-02-15"),
-      imageURL:
+      imageUrl:
         "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fFVzZXIlMjBhdmF0YXJ8ZW58MHx8MHx8fDA%3D",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -73,12 +73,16 @@ async function main() {
       expertise: "Angel Investment",
       phone: "1234509876",
       street: "789 Investor Blvd",
-      aptNo: "PH3",
+      apt: "PH3",
       city: "New York",
       state: "NY",
       zipcode: "10001",
       dob: new Date("1975-03-20"),
-      imageURL:
+      linkedInUrl: "http://linkedin.com",
+      twitterUrl: "http://twitter.com",
+      githubUrl: "http://github.com",
+      papers: "https://example.com/papers",
+      imageUrl:
         "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fFVzZXIlMjBhdmF0YXJ8ZW58MHx8MHx8fDA%3D",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -96,16 +100,16 @@ async function main() {
       expertise: "Software Development",
       phone: "1092837465",
       street: "321 User Lane",
-      aptNo: "C4",
+      apt: "C4",
       city: "Seattle",
       state: "WA",
       zipcode: "98101",
       dob: new Date("1990-04-10"),
-      linkedInURL: "http://linkedin.com",
-      twitterURL: "http://twitter.com",
-      githubURL: "http://github.com",
+      linkedInUrl: "http://linkedin.com",
+      twitterUrl: "http://twitter.com",
+      githubUrl: "http://github.com",
       papers: "https://example.com/papers",
-      imageURL:
+      imageUrl:
         "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8VXNlciUyMGF2YXRhcnxlbnwwfHwwfHx8MA%3D%3D",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -123,16 +127,16 @@ async function main() {
       expertise: "Data Science",
       phone: "5556667777",
       street: "567 Pine Street",
-      aptNo: "D5",
+      apt: "D5",
       city: "Boston",
       state: "MA",
       zipcode: "02108",
       dob: new Date("1988-07-15"),
-      linkedInURL: "http://linkedin.com",
-      twitterURL: "http://twitter.com",
-      githubURL: "http://github.com",
+      linkedInUrl: "http://linkedin.com",
+      twitterUrl: "http://twitter.com",
+      githubUrl: "http://github.com",
       papers: "https://example.com/papers",
-      imageURL:
+      imageUrl:
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -150,16 +154,16 @@ async function main() {
       expertise: "Network Security",
       phone: "8889990000",
       street: "789 Tech Boulevard",
-      aptNo: "E12",
+      apt: "E12",
       city: "Austin",
       state: "TX",
       zipcode: "78701",
       dob: new Date("1992-03-25"),
-      linkedInURL: "http://linkedin.com",
-      twitterURL: "http://twitter.com",
-      githubURL: "http://github.com",
+      linkedInUrl: "http://linkedin.com",
+      twitterUrl: "http://twitter.com",
+      githubUrl: "http://github.com",
       papers: "https://example.com/papers",
-      imageURL:
+      imageUrl:
         "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3",
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -167,7 +171,7 @@ async function main() {
   });
 
   // Add sample events
-  await prisma.event.create({
+  await prisma.academicEvent.create({
     data: {
       title: "Tech Innovation Summit 2024",
       description: "Annual gathering of tech innovators and investors",
@@ -202,7 +206,7 @@ async function main() {
     },
   });
 
-  await prisma.event.create({
+  await prisma.academicEvent.create({
     data: {
       title: "AI Research Symposium",
       description: "Latest developments in artificial intelligence",
@@ -229,7 +233,7 @@ async function main() {
     },
   });
 
-  await prisma.event.create({
+  await prisma.academicEvent.create({
     data: {
       title: "Startup Pitch Night",
       description: "Evening of startup presentations and networking",
@@ -256,7 +260,7 @@ async function main() {
     },
   });
 
-  await prisma.event.create({
+  await prisma.academicEvent.create({
     data: {
       title: "Blockchain Technology Forum",
       description: "Deep dive into blockchain innovations and applications",
@@ -291,7 +295,7 @@ async function main() {
     },
   });
 
-  await prisma.event.create({
+  await prisma.academicEvent.create({
     data: {
       title: "Healthcare Innovation Conference",
       description: "Exploring the future of healthcare technology",

@@ -91,281 +91,248 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <Card className="w-full bg-white/80 backdrop-blur-sm shadow-lg border border-blue-200">
+    <div className="w-full">
+      <Card className="border border-zinc-200">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center text-blue-600">
-            Create an Account
-          </CardTitle>
-          <CardDescription className="text-center text-blue-700">
-            Start your journey in collaborative research
+          <CardTitle className="text-2xl font-semibold text-zinc-900">Create account</CardTitle>
+          <CardDescription className="text-zinc-500">
+            Join our research collaboration platform
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="firstName" className="text-xs sm:text-sm font-medium text-blue-800">
-                  First Name
-                </Label>
-                <Input
-                  {...register("firstName")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.firstName && "border-red-500",
-                  )}
-                />
-                {errors.firstName && (
-                  <p className="text-xs text-red-500">{errors.firstName.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="lastName" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Last Name
-                </Label>
-                <Input
-                  {...register("lastName")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.lastName && "border-red-500",
-                  )}
-                />
-                {errors.lastName && (
-                  <p className="text-xs text-red-500">{errors.lastName.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Email
-                </Label>
-                <Input
-                  type="email"
-                  {...register("email")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.email && "border-red-500",
-                  )}
-                />
-                {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Password
-                </Label>
-                <div className="relative">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Basic Information Section */}
+              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="firstName" className="text-sm font-medium text-zinc-700">
+                    First Name
+                  </Label>
                   <Input
-                    type={showPassword ? "text" : "password"}
-                    {...register("password")}
+                    {...register("firstName")}
                     className={cn(
-                      "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm pr-10",
-                      errors.password && "border-red-500",
+                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
+                      errors.firstName && "border-red-500",
                     )}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
+                  {errors.firstName && (
+                    <p className="text-sm text-red-500">{errors.firstName.message}</p>
+                  )}
                 </div>
-                {errors.password && (
-                  <p className="text-xs text-red-500">{errors.password.message}</p>
-                )}
-              </div>
 
-              <div className="space-y-2">
-                <Label
-                  htmlFor="confirmPassword"
-                  className="text-xs sm:text-sm font-medium text-blue-800"
-                >
-                  Confirm Password
-                </Label>
-                <div className="relative">
+                <div className="space-y-2">
+                  <Label htmlFor="lastName" className="text-sm font-medium text-zinc-700">
+                    Last Name
+                  </Label>
                   <Input
-                    type={showConfirmPassword ? "text" : "password"}
-                    {...register("confirmPassword")}
+                    {...register("lastName")}
                     className={cn(
-                      "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm pr-10",
-                      errors.confirmPassword && "border-red-500",
+                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
+                      errors.lastName && "border-red-500",
                     )}
                   />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-600 hover:text-blue-800"
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
+                  {errors.lastName && (
+                    <p className="text-sm text-red-500">{errors.lastName.message}</p>
+                  )}
                 </div>
-                {errors.confirmPassword && (
-                  <p className="text-xs text-red-500">{errors.confirmPassword.message}</p>
-                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-sm font-medium text-zinc-700">
+                    Email
+                  </Label>
+                  <Input
+                    type="email"
+                    {...register("email")}
+                    className={cn(
+                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
+                      errors.email && "border-red-500",
+                    )}
+                  />
+                  {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
+                </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="role" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Role
-                </Label>
-                <Select onValueChange={handleRoleChange} defaultValue="user">
-                  <SelectTrigger className="bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm">
-                    <SelectValue placeholder="Select a role" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.values(UserRole)
-                      .filter((role) => role !== "ADMIN")
-                      .map((role) => (
-                        <SelectItem
-                          key={role}
-                          value={role.toLowerCase() as "user" | "organizer" | "investor"}
-                        >
-                          {role.charAt(0) + role.slice(1).toLowerCase()}
-                        </SelectItem>
-                      ))}
-                  </SelectContent>
-                </Select>
-                {errors.role && <p className="text-xs text-red-500">{errors.role.message}</p>}
-              </div>
+              {/* Account Information Section */}
+              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="role" className="text-sm font-medium text-zinc-700">
+                    Role
+                  </Label>
+                  <Select onValueChange={handleRoleChange} defaultValue="user">
+                    <SelectTrigger className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all">
+                      <SelectValue placeholder="Select a role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.values(UserRole)
+                        .filter((role) => role !== "ADMIN")
+                        .map((role) => (
+                          <SelectItem
+                            key={role}
+                            value={role.toLowerCase() as "user" | "organizer" | "investor"}
+                          >
+                            {role.charAt(0) + role.slice(1).toLowerCase()}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="imageURL" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Profile Image URL
-                </Label>
-                <Input
-                  {...register("imageURL")}
-                  className="bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm"
-                  placeholder="https://example.com/your-image.jpg"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="phone" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Phone
-                </Label>
-                <Input
-                  {...register("phone")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.phone && "border-red-500",
-                  )}
-                />
-                {errors.phone && <p className="text-xs text-red-500">{errors.phone.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="street" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Street Address
-                </Label>
-                <Input
-                  {...register("street")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.street && "border-red-500",
-                  )}
-                />
-                {errors.street && <p className="text-xs text-red-500">{errors.street.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="aptNo" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Apt/Suite No.
-                </Label>
-                <Input
-                  {...register("aptNo")}
-                  className="bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="city" className="text-xs sm:text-sm font-medium text-blue-800">
-                  City
-                </Label>
-                <Input
-                  {...register("city")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.city && "border-red-500",
-                  )}
-                />
-                {errors.city && <p className="text-xs text-red-500">{errors.city.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="state" className="text-xs sm:text-sm font-medium text-blue-800">
-                  State
-                </Label>
-                <Input
-                  {...register("state")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.state && "border-red-500",
-                  )}
-                />
-                {errors.state && <p className="text-xs text-red-500">{errors.state.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="zipcode" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Zipcode
-                </Label>
-                <Input
-                  {...register("zipcode")}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.zipcode && "border-red-500",
-                  )}
-                />
-                {errors.zipcode && <p className="text-xs text-red-500">{errors.zipcode.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="dob" className="text-xs sm:text-sm font-medium text-blue-800">
-                  Date of Birth
-                </Label>
-                <Input
-                  type="date"
-                  {...register("dob")}
-                  max={new Date().toISOString().split("T")[0]}
-                  className={cn(
-                    "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
-                    errors.dob && "border-red-500",
-                  )}
-                />
-                {errors.dob && <p className="text-xs text-red-500">{errors.dob.message}</p>}
-              </div>
-
-              {selectedRole === "user" && (
-                <>
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="expertise"
-                      className="text-xs sm:text-sm font-medium text-blue-800"
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-sm font-medium text-zinc-700">
+                    Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      type={showPassword ? "text" : "password"}
+                      {...register("password")}
+                      className={cn(
+                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all pr-10",
+                        errors.password && "border-red-500",
+                      )}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
                     >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-sm text-red-500">{errors.password.message}</p>
+                  )}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword" className="text-sm font-medium text-zinc-700">
+                    Confirm Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      type={showConfirmPassword ? "text" : "password"}
+                      {...register("confirmPassword")}
+                      className={cn(
+                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all pr-10",
+                        errors.confirmPassword && "border-red-500",
+                      )}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                  {errors.confirmPassword && (
+                    <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Contact Information Section */}
+              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-sm font-medium text-zinc-700">
+                    Phone
+                  </Label>
+                  <Input
+                    {...register("phone")}
+                    className={cn(
+                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
+                      errors.phone && "border-red-500",
+                    )}
+                  />
+                  {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="dob" className="text-sm font-medium text-zinc-700">
+                    Date of Birth
+                  </Label>
+                  <Input
+                    type="date"
+                    {...register("dob")}
+                    max={new Date().toISOString().split("T")[0]}
+                    className={cn(
+                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
+                      errors.dob && "border-red-500",
+                    )}
+                  />
+                  {errors.dob && <p className="text-sm text-red-500">{errors.dob.message}</p>}
+                </div>
+              </div>
+
+              {/* Address Section */}
+              <div className="lg:col-span-3 space-y-4">
+                <Label className="text-sm font-medium text-zinc-700">Address</Label>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="md:col-span-2">
+                    <Input
+                      {...register("street")}
+                      placeholder="Street address"
+                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      {...register("aptNo")}
+                      placeholder="Apt/Suite (optional)"
+                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      {...register("city")}
+                      placeholder="City"
+                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      {...register("state")}
+                      placeholder="State"
+                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      {...register("zipcode")}
+                      placeholder="ZIP code"
+                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Research Fields (Only for USER role) */}
+              {selectedRole === "user" && (
+                <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="expertise" className="text-sm font-medium text-zinc-700">
                       Expertise
                     </Label>
                     <Input
                       {...register("expertise")}
+                      placeholder="Your field of expertise"
                       className={cn(
-                        "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
+                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
                         errors.expertise && "border-red-500",
                       )}
                     />
                     {errors.expertise && (
-                      <p className="text-xs text-red-500">{errors.expertise.message}</p>
+                      <p className="text-sm text-red-500">{errors.expertise.message}</p>
                     )}
                   </div>
 
-                  <div className="space-y-2 md:col-span-2 lg:col-span-3">
+                  <div className="space-y-2">
                     <Label
                       htmlFor="researchInterests"
-                      className="text-xs sm:text-sm font-medium text-blue-800"
+                      className="text-sm font-medium text-zinc-700"
                     >
                       Research Interests
                     </Label>
@@ -373,35 +340,42 @@ export default function RegisterPage() {
                       {...register("researchInterests")}
                       placeholder="e.g., AI, Climate Science, Neurobiology"
                       className={cn(
-                        "bg-white/70 border-blue-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-400 transition-all text-sm",
+                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
                         errors.researchInterests && "border-red-500",
                       )}
                     />
                     {errors.researchInterests && (
-                      <p className="text-xs text-red-500">{errors.researchInterests.message}</p>
+                      <p className="text-sm text-red-500">{errors.researchInterests.message}</p>
                     )}
                   </div>
-                </>
+                </div>
               )}
             </div>
 
             <Button
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-2 px-4 rounded-md transition-all shadow-md hover:shadow-lg"
+              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white transition-colors h-10"
               type="submit"
               disabled={isLoading}
             >
-              {isLoading ? "Registering..." : "Register"}
+              {isLoading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-100 rounded-full animate-spin" />
+                  <span>Creating account...</span>
+                </div>
+              ) : (
+                "Create account"
+              )}
             </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <div className="text-sm text-center w-full text-blue-700">
+        <CardFooter className="border-t border-zinc-200 mt-2">
+          <div className="text-sm text-center w-full text-zinc-600 mt-2">
             Already have an account?{" "}
             <Link
               href="/login"
-              className="text-blue-600 hover:text-indigo-600 font-semibold transition-colors"
+              className="font-medium text-zinc-900 hover:text-zinc-700 transition-colors"
             >
-              Login
+              Sign in
             </Link>
           </div>
         </CardFooter>
