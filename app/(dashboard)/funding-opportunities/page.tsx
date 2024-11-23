@@ -83,6 +83,8 @@ export default function FundingOpportunities() {
       const description = formData.get("description") as string;
       const amountStr = formData.get("amount") as string;
       const deadline = formData.get("deadline") as string;
+      const deadlineDate = new Date(deadline);
+      deadlineDate.setUTCHours(12, 0, 0, 0); // Set to noon UTC to avoid timezone issues
       const topics = formData.get("topics") as string;
       const contactEmail = formData.get("contactEmail") as string;
       const organizationName = formData.get("organizationName") as string;
@@ -115,7 +117,7 @@ export default function FundingOpportunities() {
         title: title.trim(),
         description: description.trim(),
         amount,
-        deadline: new Date(deadline).toISOString(), // Convert to ISO string
+        deadline: deadlineDate.toISOString(), // Send as ISO string
         topics: topics
           .split(",")
           .map((t) => t.trim())
@@ -176,6 +178,8 @@ export default function FundingOpportunities() {
       const description = formData.get("description") as string;
       const amountStr = formData.get("amount") as string;
       const deadline = formData.get("deadline") as string;
+      const deadlineDate = new Date(deadline);
+      deadlineDate.setUTCHours(12, 0, 0, 0); // Set to noon UTC to avoid timezone issues
       const topics = formData.get("topics") as string;
       const contactEmail = formData.get("contactEmail") as string;
       const organizationName = formData.get("organizationName") as string;
@@ -208,7 +212,7 @@ export default function FundingOpportunities() {
         title: title.trim(),
         description: description.trim(),
         amount,
-        deadline: new Date(deadline).toISOString(),
+        deadline: deadlineDate.toISOString(), // Send as ISO string
         topics: topics
           .split(",")
           .map((t) => t.trim())
@@ -242,9 +246,12 @@ export default function FundingOpportunities() {
   };
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Funding Opportunities</h1>
+    <div className="h-full flex-1 flex-col space-y-8 p-8 md:flex">
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">Funding Opportunities</h2>
+          <p className="text-muted-foreground">Browse and manage available funding opportunities</p>
+        </div>
         {isAdmin && (
           <Button
             onClick={() => {
@@ -258,51 +265,52 @@ export default function FundingOpportunities() {
         )}
       </div>
 
-      <ScrollArea className="h-[calc(100vh-200px)]">
+      <ScrollArea className="h-[calc(100vh-220px)]">
         {opportunities.length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-[50vh] text-center">
-            <div className="text-gray-500 mb-4">
+          <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
+            <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
               {isAdmin ? (
                 <>
-                  <h3 className="text-xl font-semibold mb-2">No Funding Opportunities Yet</h3>
-                  <p className="text-sm">
-                    Get started by creating your first funding opportunity using the "Create New"
-                    button above.
+                  <h3 className="mt-4 text-lg font-semibold">No opportunities created</h3>
+                  <p className="mb-4 mt-2 text-sm text-muted-foreground">
+                    Create your first funding opportunity to get started.
                   </p>
+                  <Button onClick={() => setIsDialogOpen(true)}>
+                    <PlusIcon className="mr-2 h-4 w-4" />
+                    Create Opportunity
+                  </Button>
                 </>
               ) : (
                 <>
-                  <h3 className="text-xl font-semibold mb-2">No Opportunities Available</h3>
-                  <p className="text-sm">
-                    There are currently no funding opportunities available. Please check back later.
+                  <h3 className="mt-4 text-lg font-semibold">No opportunities available</h3>
+                  <p className="mb-4 mt-2 text-sm text-muted-foreground">
+                    Check back later for new funding opportunities.
                   </p>
                 </>
               )}
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {opportunities.map((opportunity) => (
-              <Card key={opportunity.id} className="flex flex-col h-full">
+              <Card key={opportunity.id} className="flex flex-col">
                 <CardHeader>
-                  <CardTitle className="text-xl font-semibold text-blue-700">
-                    {opportunity.title}
-                  </CardTitle>
-                  <p className="text-gray-600">{opportunity.description}</p>
+                  <div className="space-y-1">
+                    <CardTitle className="text-xl font-semibold">{opportunity.title}</CardTitle>
+                    <div className="flex items-center space-x-1 text-sm text-muted-foreground">
+                      <CalendarIcon className="h-4 w-4" />
+                      <span>Due {new Date(opportunity.deadline).toLocaleDateString()}</span>
+                    </div>
+                  </div>
                 </CardHeader>
                 <CardContent className="flex-grow space-y-4">
-                  <div className="text-sm space-y-2">
-                    <p className="font-semibold text-lg">
-                      Amount: ${opportunity.amount.toLocaleString()}
-                    </p>
-                    <p className="flex items-center text-gray-500">
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      Deadline: {new Date(opportunity.deadline).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold mb-2">Topics:</h4>
-                    <div className="flex flex-wrap gap-2">
+                  <p className="text-sm text-muted-foreground line-clamp-2">
+                    {opportunity.description}
+                  </p>
+
+                  <div className="space-y-2">
+                    <div className="font-medium">${opportunity.amount.toLocaleString()}</div>
+                    <div className="flex flex-wrap gap-1">
                       {(typeof opportunity.topics === "string"
                         ? JSON.parse(opportunity.topics)
                         : opportunity.topics
@@ -313,26 +321,29 @@ export default function FundingOpportunities() {
                             index
                           }`}
                           variant="secondary"
+                          className="px-2 py-0.5"
                         >
                           {topic}
                         </Badge>
                       ))}
                     </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold mb-1">Contact Information:</h4>
-                    <p className="text-sm">{opportunity.organizationName}</p>
-                    <p className="text-sm text-blue-600">{opportunity.contactEmail}</p>
-                    <p className="text-sm flex items-center">
-                      <PhoneIcon className="mr-2 h-4 w-4" />
-                      {opportunity.phoneNumber}
-                    </p>
+
+                  <div className="space-y-2">
+                    <div className="text-sm font-medium">{opportunity.organizationName}</div>
+                    <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+                      <PhoneIcon className="h-4 w-4" />
+                      <span>{opportunity.phoneNumber}</span>
+                    </div>
+                    <div className="text-sm text-blue-600">{opportunity.contactEmail}</div>
                   </div>
 
                   {isAdmin && (
-                    <div className="flex gap-2">
+                    <div className="flex space-x-2 pt-2">
                       <Button
                         variant="outline"
+                        size="sm"
+                        className="w-full"
                         onClick={() => {
                           setSelectedOpportunity(opportunity);
                           setIsDialogOpen(true);
@@ -341,7 +352,12 @@ export default function FundingOpportunities() {
                         <EditIcon className="h-4 w-4 mr-2" />
                         Edit
                       </Button>
-                      <Button variant="destructive" onClick={() => handleDelete(opportunity.id)}>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        className="w-[42px]"
+                        onClick={() => handleDelete(opportunity.id)}
+                      >
                         <TrashIcon className="h-4 w-4" />
                       </Button>
                     </div>
@@ -353,113 +369,323 @@ export default function FundingOpportunities() {
         )}
       </ScrollArea>
 
+      {/* Create Modal */}
       {isAdmin && (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>
-                {selectedOpportunity ? "Edit Opportunity" : "Create New Opportunity"}
+        <Dialog open={isDialogOpen && !selectedOpportunity} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="sm:max-w-[600px] bg-white p-0">
+            <div className="p-6 border-b border-gray-100">
+              <DialogTitle className="text-xl font-medium text-gray-800">
+                Create New Opportunity
               </DialogTitle>
-            </DialogHeader>
+            </div>
 
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                if (selectedOpportunity) {
-                  handleEdit(new FormData(e.currentTarget));
-                } else {
-                  handleCreate(new FormData(e.currentTarget));
-                }
+                handleCreate(new FormData(e.currentTarget));
               }}
+              className="p-6 space-y-6"
             >
-              <div className="space-y-4">
+              {/* Form fields for Create */}
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="create-title" className="text-sm font-medium text-gray-700">
+                    Title
+                  </Label>
                   <Input
-                    id="title"
+                    id="create-title"
                     name="title"
-                    defaultValue={selectedOpportunity?.title}
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter opportunity title"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    name="description"
-                    defaultValue={selectedOpportunity?.description}
-                    required
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="amount">Amount ($)</Label>
+                  <Label htmlFor="create-amount" className="text-sm font-medium text-gray-700">
+                    Amount ($)
+                  </Label>
                   <Input
-                    id="amount"
+                    id="create-amount"
                     name="amount"
                     type="number"
-                    defaultValue={selectedOpportunity?.amount}
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter amount"
                     required
                   />
                 </div>
+              </div>
+
+              <div>
+                <Label htmlFor="create-description" className="text-sm font-medium text-gray-700">
+                  Description
+                </Label>
+                <Textarea
+                  id="create-description"
+                  name="description"
+                  className="mt-1.5 border-gray-200"
+                  placeholder="Enter opportunity description"
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="deadline">Deadline</Label>
+                  <Label htmlFor="create-deadline" className="text-sm font-medium text-gray-700">
+                    Deadline
+                  </Label>
                   <Input
-                    id="deadline"
+                    id="create-deadline"
                     name="deadline"
                     type="date"
                     required
+                    className="mt-1.5 border-gray-200"
                     min={new Date().toISOString().split("T")[0]}
-                    defaultValue={
-                      selectedOpportunity
-                        ? new Date(selectedOpportunity.deadline).toISOString().split("T")[0]
-                        : new Date().toISOString().split("T")[0]
-                    }
+                    defaultValue={new Date().toISOString().split("T")[0]}
                   />
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Deadline must be today or a future date
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Must be today or a future date
                   </p>
                 </div>
                 <div>
-                  <Label htmlFor="topics">Topics (comma-separated)</Label>
+                  <Label htmlFor="create-topics" className="text-sm font-medium text-gray-700">
+                    Topics
+                  </Label>
                   <Input
-                    id="topics"
+                    id="create-topics"
                     name="topics"
-                    defaultValue={
-                      selectedOpportunity ? JSON.parse(selectedOpportunity.topics).join(", ") : ""
-                    }
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter topics, separated by commas"
                     required
                   />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Separate multiple topics with commas
+                  </p>
                 </div>
-                <div>
-                  <Label htmlFor="organizationName">Organization Name</Label>
-                  <Input
-                    id="organizationName"
-                    name="organizationName"
-                    defaultValue={selectedOpportunity?.organizationName}
-                    required
-                  />
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="create-org-name" className="text-sm font-medium text-gray-700">
+                      Organization Name
+                    </Label>
+                    <Input
+                      id="create-org-name"
+                      name="organizationName"
+                      className="mt-1.5 border-gray-200"
+                      placeholder="Enter organization name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="create-phone" className="text-sm font-medium text-gray-700">
+                      Phone Number
+                    </Label>
+                    <Input
+                      id="create-phone"
+                      name="phoneNumber"
+                      className="mt-1.5 border-gray-200"
+                      placeholder="Enter phone number"
+                      required
+                    />
+                  </div>
                 </div>
+
                 <div>
-                  <Label htmlFor="contactEmail">Contact Email</Label>
+                  <Label htmlFor="create-email" className="text-sm font-medium text-gray-700">
+                    Contact Email
+                  </Label>
                   <Input
-                    id="contactEmail"
+                    id="create-email"
                     name="contactEmail"
                     type="email"
-                    defaultValue={selectedOpportunity?.contactEmail}
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter contact email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4 border-t border-gray-100">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsDialogOpen(false)}
+                  className="border-gray-200 hover:bg-gray-50"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white">
+                  Create Opportunity
+                </Button>
+              </div>
+            </form>
+          </DialogContent>
+        </Dialog>
+      )}
+
+      {/* Edit Modal */}
+      {isAdmin && selectedOpportunity && (
+        <Dialog open={isDialogOpen && !!selectedOpportunity} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="sm:max-w-[600px] bg-white p-0">
+            <div className="p-6 border-b border-gray-100">
+              <DialogTitle className="text-xl font-medium text-gray-800">
+                Edit Opportunity
+              </DialogTitle>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleEdit(new FormData(e.currentTarget));
+              }}
+              className="p-6 space-y-6"
+            >
+              {/* Form fields for Edit */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="edit-title" className="text-sm font-medium text-gray-700">
+                    Title
+                  </Label>
+                  <Input
+                    id="edit-title"
+                    name="title"
+                    defaultValue={selectedOpportunity.title}
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter opportunity title"
                     required
                   />
                 </div>
                 <div>
-                  <Label htmlFor="phoneNumber">Phone Number</Label>
+                  <Label htmlFor="edit-amount" className="text-sm font-medium text-gray-700">
+                    Amount ($)
+                  </Label>
                   <Input
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    defaultValue={selectedOpportunity?.phoneNumber}
+                    id="edit-amount"
+                    name="amount"
+                    type="number"
+                    defaultValue={selectedOpportunity.amount}
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter amount"
                     required
                   />
                 </div>
-                <Button type="submit">
-                  {selectedOpportunity ? "Update" : "Create"} Opportunity
+              </div>
+
+              <div>
+                <Label htmlFor="edit-description" className="text-sm font-medium text-gray-700">
+                  Description
+                </Label>
+                <Textarea
+                  id="edit-description"
+                  name="description"
+                  defaultValue={selectedOpportunity.description}
+                  className="mt-1.5 border-gray-200"
+                  placeholder="Enter opportunity description"
+                  rows={3}
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="edit-deadline" className="text-sm font-medium text-gray-700">
+                    Deadline
+                  </Label>
+                  <Input
+                    id="edit-deadline"
+                    name="deadline"
+                    type="date"
+                    required
+                    className="mt-1.5 border-gray-200"
+                    min={new Date().toISOString().split("T")[0]}
+                    defaultValue={
+                      new Date(selectedOpportunity.deadline).toISOString().split("T")[0]
+                    }
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Must be today or a future date
+                  </p>
+                </div>
+                <div>
+                  <Label htmlFor="edit-topics" className="text-sm font-medium text-gray-700">
+                    Topics
+                  </Label>
+                  <Input
+                    id="edit-topics"
+                    name="topics"
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter topics, separated by commas"
+                    defaultValue={JSON.parse(selectedOpportunity.topics).join(", ")}
+                    required
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Separate multiple topics with commas
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="edit-org-name" className="text-sm font-medium text-gray-700">
+                      Organization Name
+                    </Label>
+                    <Input
+                      id="edit-org-name"
+                      name="organizationName"
+                      className="mt-1.5 border-gray-200"
+                      placeholder="Enter organization name"
+                      defaultValue={selectedOpportunity.organizationName}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="edit-phone" className="text-sm font-medium text-gray-700">
+                      Phone Number
+                    </Label>
+                    <Input
+                      id="edit-phone"
+                      name="phoneNumber"
+                      className="mt-1.5 border-gray-200"
+                      placeholder="Enter phone number"
+                      defaultValue={selectedOpportunity.phoneNumber}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="edit-email" className="text-sm font-medium text-gray-700">
+                    Contact Email
+                  </Label>
+                  <Input
+                    id="edit-email"
+                    name="contactEmail"
+                    type="email"
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter contact email"
+                    defaultValue={selectedOpportunity.contactEmail}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4 border-t border-gray-100">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setIsDialogOpen(false);
+                    setSelectedOpportunity(null);
+                  }}
+                  className="border-gray-200 hover:bg-gray-50"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white">
+                  Update Opportunity
                 </Button>
               </div>
             </form>

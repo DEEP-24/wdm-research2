@@ -2,27 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 
-export async function GET() {
-  try {
-    const opportunities = await db.fundingOpportunity.findMany({
-      include: {
-        createdBy: {
-          select: {
-            id: true,
-            firstName: true,
-            lastName: true,
-            email: true,
-          },
-        },
-      },
-    });
-    return NextResponse.json(opportunities);
-  } catch {
-    return NextResponse.json({ error: "Failed to fetch opportunities" }, { status: 500 });
-  }
-}
-
-export async function POST(req: Request) {
+export async function PUT(req: Request, { params }: { params: { opportunityId: string } }) {
   try {
     const user = await getCurrentUser();
     if (!user || user.role !== "ADMIN") {
@@ -54,8 +34,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Amount must be a positive number" }, { status: 400 });
     }
 
-    // Create the opportunity with the date string directly
-    const opportunity = await db.fundingOpportunity.create({
+    const opportunity = await db.fundingOpportunity.update({
+      where: {
+        id: params.opportunityId,
+      },
       data: {
         title: data.title,
         description: data.description,
@@ -65,7 +47,6 @@ export async function POST(req: Request) {
         contactEmail: data.contactEmail,
         organizationName: data.organizationName,
         phoneNumber: data.phoneNumber,
-        createdById: user.id,
       },
       include: {
         createdBy: {
@@ -81,7 +62,27 @@ export async function POST(req: Request) {
 
     return NextResponse.json(opportunity);
   } catch (error) {
-    console.error("Create opportunity error:", error);
-    return NextResponse.json({ error: "Failed to create opportunity" }, { status: 500 });
+    console.error("Update opportunity error:", error);
+    return NextResponse.json({ error: "Failed to update opportunity" }, { status: 500 });
+  }
+}
+
+export async function DELETE(_req: Request, { params }: { params: { opportunityId: string } }) {
+  try {
+    const user = await getCurrentUser();
+    if (!user || user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    await db.fundingOpportunity.delete({
+      where: {
+        id: params.opportunityId,
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Delete opportunity error:", error);
+    return NextResponse.json({ error: "Failed to delete opportunity" }, { status: 500 });
   }
 }
