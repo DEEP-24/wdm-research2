@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Card } from "@/components/ui/card";
 
 const faqData = [
   {
@@ -22,23 +23,41 @@ const faqData = [
     answer:
       "To update your profile information, go to the 'Profile' page in your dashboard. Click on the 'Edit Profile' button to make changes to your personal information, contact details, or other relevant data.",
   },
-  // Add more FAQ items as needed
+  {
+    question: "How do I connect with other researchers?",
+    answer:
+      "You can find and connect with other researchers through the 'Researchers' page. Follow researchers to stay updated with their work and use the chat feature to communicate directly.",
+  },
 ];
 
 const FAQPage = () => {
   return (
-    <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Frequently Asked Questions</h1>
+    <div className="container mx-auto p-6 space-y-8">
+      <div className="space-y-4">
+        <h1 className="text-4xl font-bold text-center">Frequently Asked Questions</h1>
+        <p className="text-center text-muted-foreground max-w-2xl mx-auto">
+          Find answers to the most common questions about our platform
+        </p>
+      </div>
 
-      <Accordion type="single" collapsible className="w-full">
-        {faqData.map((faq, index) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger>{faq.question}</AccordionTrigger>
-            <AccordionContent>{faq.answer}</AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <Card className="max-w-3xl mx-auto">
+        <Accordion type="single" collapsible className="w-full">
+          {faqData.map((faq, index) => (
+            <AccordionItem
+              key={`faq-${
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                index
+              }`}
+              value={`item-${index}`}
+            >
+              <AccordionTrigger className="text-left px-4 hover:no-underline hover:bg-muted/50">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent className="px-4 pb-4">{faq.answer}</AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </Card>
     </div>
   );
 };
