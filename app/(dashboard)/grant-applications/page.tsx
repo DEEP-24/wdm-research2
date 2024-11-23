@@ -24,7 +24,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import type { User } from "@/types/user";
 import { GrantStatus } from "@prisma/client";
-import { EyeIcon, InfoIcon, PaperclipIcon, Trash2 } from "lucide-react";
+import { EyeIcon, FileIcon, InfoIcon, PaperclipIcon, PlusIcon, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -241,178 +241,215 @@ export default function GrantApplications() {
   }
 
   return (
-    <div className="container mx-auto p-4 space-y-6">
-      <div className="flex justify-end">
+    <div className="container mx-auto px-4 py-6 max-w-4xl">
+      {/* Header Section */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">Grant Applications</h1>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button>New Application</Button>
+            <Button variant="outline" className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto">
+              <PlusIcon className="w-4 h-4 mr-2" />
+              New Application
+            </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Create New Grant Application</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="project_select">Select Project</Label>
-                <Select onValueChange={handleProjectSelect}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a project" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {projects.map((project) => (
-                      <SelectItem key={project.id} value={project.id}>
-                        {project.title}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <Label htmlFor="project_title">Project Title</Label>
-                <Input
-                  id="project_title"
-                  name="project_title"
-                  value={selectedProject?.title || ""}
-                  disabled
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="project_description">Project Description</Label>
-                <Textarea
-                  id="project_description"
-                  name="project_description"
-                  value={selectedProject?.description || ""}
-                  disabled
-                  rows={5}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="requestAmount">Requested Amount ($)</Label>
-                <Input
-                  id="requestAmount"
-                  name="requestAmount"
-                  type="number"
-                  value={newApplication.requestAmount}
-                  onChange={handleInputChange}
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="keywords">Keywords (comma-separated)</Label>
-                <Input
-                  id="keywords"
-                  name="keywords"
-                  value={newApplication.keywords}
-                  onChange={handleInputChange}
-                  placeholder="e.g., sustainability, innovation, technology"
-                  required
-                />
-              </div>
-              <div>
-                <Label htmlFor="attachments">Attachments</Label>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="attachmentName" className="text-sm text-gray-600">
-                        Name
-                      </Label>
-                      <Input
-                        id="attachmentName"
-                        value={attachmentInput.name}
-                        onChange={(e) =>
-                          setAttachmentInput((prev) => ({ ...prev, name: e.target.value }))
-                        }
-                        placeholder="Document name"
-                        className="border-blue-200 focus:border-blue-400"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="attachmentUrl" className="text-sm text-gray-600">
-                        URL
-                      </Label>
-                      <Input
-                        id="attachmentUrl"
-                        value={attachmentInput.url}
-                        onChange={(e) =>
-                          setAttachmentInput((prev) => ({ ...prev, url: e.target.value }))
-                        }
-                        placeholder="https://..."
-                        className="border-blue-200 focus:border-blue-400"
-                      />
-                    </div>
+          <DialogContent className="sm:max-w-[600px] bg-white p-0">
+            <div className="p-6 border-b border-gray-100">
+              <DialogHeader>
+                <DialogTitle className="text-xl font-medium text-gray-800">
+                  Create New Grant Application
+                </DialogTitle>
+              </DialogHeader>
+            </div>
+
+            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left Column */}
+                <div className="space-y-6">
+                  {/* Project Selection */}
+                  <div className="space-y-2">
+                    <Label htmlFor="project_select" className="text-sm font-medium text-gray-700">
+                      Select Project
+                    </Label>
+                    <Select onValueChange={handleProjectSelect}>
+                      <SelectTrigger className="w-full border-gray-200">
+                        <SelectValue placeholder="Select a project" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {projects.map((project) => (
+                          <SelectItem key={project.id} value={project.id}>
+                            {project.title}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleAddAttachment}
-                    disabled={!attachmentInput.name || !attachmentInput.url}
-                    className="w-full"
-                  >
-                    Add Attachment
-                  </Button>
+
+                  {/* Project Title */}
+                  <div className="space-y-2">
+                    <Label htmlFor="project_title" className="text-sm font-medium text-gray-700">
+                      Project Title
+                    </Label>
+                    <Input
+                      id="project_title"
+                      name="project_title"
+                      value={selectedProject?.title || ""}
+                      disabled
+                      required
+                      className="bg-gray-50 border-gray-200"
+                    />
+                  </div>
+
+                  {/* Request Amount */}
+                  <div className="space-y-2">
+                    <Label htmlFor="requestAmount" className="text-sm font-medium text-gray-700">
+                      Requested Amount ($)
+                    </Label>
+                    <Input
+                      id="requestAmount"
+                      name="requestAmount"
+                      type="number"
+                      value={newApplication.requestAmount}
+                      onChange={handleInputChange}
+                      required
+                      className="border-gray-200"
+                      placeholder="Enter amount"
+                    />
+                  </div>
+
+                  {/* Keywords */}
+                  <div className="space-y-2">
+                    <Label htmlFor="keywords" className="text-sm font-medium text-gray-700">
+                      Keywords
+                    </Label>
+                    <Input
+                      id="keywords"
+                      name="keywords"
+                      value={newApplication.keywords}
+                      onChange={handleInputChange}
+                      placeholder="e.g., sustainability, innovation"
+                      required
+                      className="border-gray-200"
+                    />
+                    <p className="text-xs text-gray-500">Separate keywords with commas</p>
+                  </div>
                 </div>
 
-                {newApplication.attachments.length > 0 && (
-                  <div className="mt-4">
-                    <Label className="text-blue-600">Current Attachments:</Label>
-                    <ul className="list-disc pl-5 space-y-2">
-                      {newApplication.attachments.map((file, index) => (
-                        <li
-                          key={`attachment-${
-                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                            index
-                          }`}
-                          className="text-sm flex items-center gap-2 bg-gray-50 p-2 rounded"
-                        >
-                          <div className="flex-1 grid grid-cols-2 gap-2">
-                            <Input
-                              type="text"
-                              defaultValue={file.name}
-                              onBlur={(e) => {
-                                const currentAttachments = [...newApplication.attachments];
-                                const updatedAttachments = currentAttachments.map((att, idx) => {
-                                  if (idx === index) {
-                                    return { ...att, name: e.target.value || "Untitled" };
-                                  }
-                                  return att;
-                                });
-                                setNewApplication((prev) => ({
-                                  ...prev,
-                                  attachments: updatedAttachments,
-                                }));
-                              }}
-                              className="flex-1 h-8"
-                              placeholder="Name"
-                            />
-                            <Input
-                              type="text"
-                              defaultValue={file.url}
-                              onBlur={(e) => {
-                                const currentAttachments = [...newApplication.attachments];
-                                const updatedAttachments = currentAttachments.map((att, idx) => {
-                                  if (idx === index) {
-                                    return { ...att, url: e.target.value };
-                                  }
-                                  return att;
-                                });
-                                setNewApplication((prev) => ({
-                                  ...prev,
-                                  attachments: updatedAttachments,
-                                }));
-                              }}
-                              className="flex-1 h-8"
-                              placeholder="URL"
-                            />
-                          </div>
-                          <div className="flex gap-1">
+                {/* Right Column */}
+                <div className="space-y-6">
+                  {/* Project Description */}
+                  <div className="space-y-2">
+                    <Label
+                      htmlFor="project_description"
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Project Description
+                    </Label>
+                    <Textarea
+                      id="project_description"
+                      name="project_description"
+                      value={selectedProject?.description || ""}
+                      disabled
+                      rows={3}
+                      required
+                      className="bg-gray-50 border-gray-200 resize-none h-[120px]"
+                    />
+                  </div>
+
+                  {/* Attachments Section */}
+                  <div className="space-y-3">
+                    <Label className="text-sm font-medium text-gray-700">Attachments</Label>
+
+                    {/* Add New Attachment */}
+                    <div className="p-3 bg-gray-50 rounded-lg space-y-3">
+                      <div className="grid grid-cols-2 gap-3">
+                        <Input
+                          id="attachmentName"
+                          value={attachmentInput.name}
+                          onChange={(e) =>
+                            setAttachmentInput((prev) => ({ ...prev, name: e.target.value }))
+                          }
+                          placeholder="Document name"
+                          className="border-gray-200 bg-white h-9"
+                        />
+                        <Input
+                          id="attachmentUrl"
+                          value={attachmentInput.url}
+                          onChange={(e) =>
+                            setAttachmentInput((prev) => ({ ...prev, url: e.target.value }))
+                          }
+                          placeholder="https://..."
+                          className="border-gray-200 bg-white h-9"
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={handleAddAttachment}
+                        disabled={!attachmentInput.name || !attachmentInput.url}
+                        className="w-full bg-white h-9"
+                      >
+                        <PlusIcon className="w-4 h-4 mr-2" />
+                        Add Attachment
+                      </Button>
+                    </div>
+
+                    {/* Attachment List */}
+                    {newApplication.attachments.length > 0 && (
+                      <div className="max-h-[180px] overflow-y-auto space-y-2">
+                        {newApplication.attachments.map((file, index) => (
+                          <div
+                            key={`attachment-${
+                              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                              index
+                            }`}
+                            className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg"
+                          >
+                            <div className="flex-1 grid grid-cols-2 gap-2">
+                              <Input
+                                type="text"
+                                defaultValue={file.name}
+                                onBlur={(e) => {
+                                  const currentAttachments = [...newApplication.attachments];
+                                  const updatedAttachments = currentAttachments.map((att, idx) => {
+                                    if (idx === index) {
+                                      return { ...att, name: e.target.value || "Untitled" };
+                                    }
+                                    return att;
+                                  });
+                                  setNewApplication((prev) => ({
+                                    ...prev,
+                                    attachments: updatedAttachments,
+                                  }));
+                                }}
+                                className="h-7 border-gray-200 bg-white text-sm"
+                                placeholder="Name"
+                              />
+                              <Input
+                                type="text"
+                                defaultValue={file.url}
+                                onBlur={(e) => {
+                                  const currentAttachments = [...newApplication.attachments];
+                                  const updatedAttachments = currentAttachments.map((att, idx) => {
+                                    if (idx === index) {
+                                      return { ...att, url: e.target.value };
+                                    }
+                                    return att;
+                                  });
+                                  setNewApplication((prev) => ({
+                                    ...prev,
+                                    attachments: updatedAttachments,
+                                  }));
+                                }}
+                                className="h-7 border-gray-200 bg-white text-sm"
+                                placeholder="URL"
+                              />
+                            </div>
                             <Button
                               type="button"
                               variant="ghost"
                               size="sm"
-                              className="h-8 w-8 p-0 text-red-600 hover:text-red-800"
+                              className="h-7 w-7 p-0 text-gray-400 hover:text-red-600"
                               onClick={() => {
                                 const currentAttachments = [...newApplication.attachments];
                                 const updatedAttachments = currentAttachments.filter(
@@ -427,314 +464,332 @@ export default function GrantApplications() {
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
-                        </li>
-                      ))}
-                    </ul>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
-              <Button type="submit" className="w-full">
-                Submit Application
-              </Button>
+
+              {/* Submit Button */}
+              <div className="pt-4 border-t border-gray-100">
+                <Button type="submit" className="w-full bg-gray-900 hover:bg-gray-800 text-white">
+                  Submit Application
+                </Button>
+              </div>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-blue-700">
-              Application Resources
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-64">
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <InfoIcon className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Eligibility Criteria:</strong> Carefully review the eligibility
-                    requirements for each grant opportunity. Ensure your organization and project
-                    meet all specified criteria before applying.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <InfoIcon className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Project Alignment:</strong> Clearly demonstrate how your project aligns
-                    with the funding opportunity's goals and priorities. Use specific examples and
-                    data to support your claims.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <InfoIcon className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Budget Preparation:</strong> Develop a detailed, realistic budget that
-                    accurately reflects your project's needs. Be prepared to justify each expense
-                    and show how it contributes to your project's success.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <InfoIcon className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Proposal Writing Tips:</strong> Write a clear, concise, and compelling
-                    project description. Use simple language, avoid jargon, and focus on the problem
-                    you're addressing and your proposed solution.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <InfoIcon className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Supporting Documents:</strong> Gather all necessary supporting
-                    documents, such as financial statements, tax records, and letters of support.
-                    Ensure they are up-to-date and properly formatted.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <InfoIcon className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Review Process:</strong> Have colleagues or mentors review your
-                    application before submission. Fresh eyes can catch errors and provide valuable
-                    feedback on clarity and persuasiveness.
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <InfoIcon className="w-5 h-5 mr-2 text-blue-500 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <strong>Submission Deadlines:</strong> Note all deadlines and submit your
-                    application well in advance. Late submissions are often automatically
-                    disqualified, regardless of merit.
-                  </div>
-                </li>
-              </ul>
-            </ScrollArea>
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-2xl font-semibold text-blue-700">
-              {currentUser.role === "ADMIN" ? "All Applications" : "Your Applications"}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[400px] pr-4">
-              {filteredApplications.length === 0 ? (
-                <div className="text-center py-8">
-                  <p className="text-gray-500 mb-4">No applications found.</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredApplications.map((app) => (
-                    <Card
-                      key={app.id}
-                      className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-                    >
-                      <CardHeader className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
-                        <CardTitle className="text-lg font-bold truncate">
-                          {app.projectProposal.title}
-                        </CardTitle>
-                        {currentUser.role === "ADMIN" && (
-                          <div className="text-sm text-white/80">
-                            Submitted by: {app.submittedBy.firstName} {app.submittedBy.lastName}
-                          </div>
-                        )}
-                      </CardHeader>
-                      <CardContent className="flex-grow flex flex-col justify-between p-4 space-y-3">
-                        <div className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium text-gray-600">
-                              Requested Amount:
-                            </span>
-                            <span className="text-sm font-semibold">
-                              ${app.requestAmount.toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium text-gray-600">Status:</span>
-                            <Badge
-                              variant={
-                                app.status === "ACCEPTED"
-                                  ? "secondary"
-                                  : app.status === "REJECTED"
-                                    ? "destructive"
-                                    : "default"
-                              }
-                              className="capitalize"
-                            >
-                              {app.status.toLowerCase()}
-                            </Badge>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          {app.reviewedBy && (
-                            <div className="flex items-center justify-between">
-                              <span className="text-sm font-medium text-gray-600">
-                                Reviewed by:
-                              </span>
-                              <div className="flex items-center">
-                                <Avatar className="h-6 w-6 mr-2">
-                                  <AvatarImage
-                                    src={`https://api.dicebear.com/6.x/initials/svg?seed=${app.reviewedBy.firstName} ${app.reviewedBy.lastName}`}
-                                  />
-                                  <AvatarFallback>
-                                    {`${app.reviewedBy.firstName[0]}${app.reviewedBy.lastName[0]}`}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <span className="text-sm font-semibold">{`${app.reviewedBy.firstName} ${app.reviewedBy.lastName}`}</span>
-                              </div>
-                            </div>
-                          )}
-                          <div>
-                            <span className="text-sm font-medium text-gray-600 block mb-1">
-                              Keywords:
-                            </span>
-                            <div className="flex flex-wrap gap-1">
-                              {app.keywords.split(",").map((keyword, i) => (
-                                <Badge
-                                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                                  key={i}
-                                  variant="secondary"
-                                  className="text-xs bg-blue-100 text-blue-800"
-                                >
-                                  {keyword.trim()}
-                                </Badge>
-                              ))}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="space-y-2">
-                          {app.attachments && app.attachments.length > 0 && (
-                            <div>
-                              <span className="text-sm font-medium text-gray-600 block mb-1">
-                                Attachments:
-                              </span>
-                              <div className="flex items-center">
-                                <PaperclipIcon className="w-4 h-4 mr-2 text-blue-500" />
-                                <span className="text-sm">{app.attachments.length} file(s)</span>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="w-full mt-2"
-                          onClick={() => setSelectedApplication(app)}
-                        >
-                          <EyeIcon className="w-4 h-4 mr-2" /> View Details
-                        </Button>
-                        {currentUser.role === "ADMIN" && (
-                          <div className="mt-2">
-                            <Label htmlFor={`status-${app.id}`}>Update Status</Label>
-                            <Select
-                              defaultValue={app.status}
-                              onValueChange={(value) => handleStatusChange(app.id, value)}
-                            >
-                              <SelectTrigger id={`status-${app.id}`}>
-                                <SelectValue placeholder="Select status" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                {Object.values(GrantStatus).map((status) => (
-                                  <SelectItem key={status} value={status}>
-                                    {status.toLowerCase()}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        )}
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              )}
-            </ScrollArea>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Application Details Dialog */}
-      <Dialog open={!!selectedApplication} onOpenChange={() => setSelectedApplication(null)}>
-        <DialogContent className="sm:max-w-[600px] bg-white">
-          <DialogHeader>
-            <DialogTitle className="text-xl font-semibold text-blue-700">
-              Application Details
-            </DialogTitle>
-          </DialogHeader>
-          {selectedApplication && (
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-blue-600">Project Title</h3>
-                <p>{selectedApplication.projectProposal.title}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-blue-600">Project Description</h3>
-                <p>{selectedApplication.projectProposal.description}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-blue-600">Requested Amount</h3>
-                <p>${selectedApplication.requestAmount.toLocaleString()}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-blue-600">Keywords</h3>
-                <div className="flex flex-wrap gap-1">
-                  {selectedApplication.keywords.split(",").map((keyword, i) => (
-                    <Badge
-                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                      key={i}
-                      variant="secondary"
-                      className="text-xs bg-blue-100 text-blue-800"
-                    >
-                      {keyword.trim()}
-                    </Badge>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <h3 className="font-semibold text-blue-600">Status</h3>
-                <Badge
-                  variant={
-                    selectedApplication.status === "ACCEPTED"
-                      ? "secondary"
-                      : selectedApplication.status === "REJECTED"
-                        ? "destructive"
-                        : "default"
-                  }
-                  className="capitalize"
-                >
-                  {selectedApplication.status.toLowerCase()}
-                </Badge>
-              </div>
-              {selectedApplication.reviewedBy && (
+      {/* Resources Card */}
+      <Card className="border border-gray-100 shadow-sm mb-6">
+        <CardHeader>
+          <CardTitle className="text-xl font-medium text-gray-800">Application Resources</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <ScrollArea className="h-64">
+            <ul className="space-y-4">
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <InfoIcon className="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-semibold text-blue-600">Reviewed By</h3>
-                  <p>{`${selectedApplication.reviewedBy.firstName} ${selectedApplication.reviewedBy.lastName}`}</p>
+                  <strong className="text-gray-900">Grant Writing Best Practices</strong>
+                  <p className="text-gray-600 mt-1">
+                    Focus on clear objectives, measurable outcomes, and strong methodology. Use data
+                    and evidence to support your claims.
+                  </p>
                 </div>
-              )}
-              <div>
-                <h3 className="font-semibold text-blue-600">Attachments</h3>
-                {selectedApplication.attachments.length > 0 ? (
-                  <ul className="list-disc pl-5">
-                    {selectedApplication.attachments.map((file, index) => (
-                      // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                      <li key={index} className="flex items-center justify-between">
-                        <span>{file.name}</span>
+              </li>
+
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <InfoIcon className="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-gray-900">Budget Guidelines</strong>
+                  <p className="text-gray-600 mt-1">
+                    Include detailed cost breakdowns, justify expenses, and ensure alignment with
+                    project goals. Consider both direct and indirect costs.
+                  </p>
+                </div>
+              </li>
+
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <InfoIcon className="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-gray-900">Required Documentation</strong>
+                  <p className="text-gray-600 mt-1">
+                    Prepare organizational documents, tax records, financial statements, and
+                    relevant certifications. Include letters of support if applicable.
+                  </p>
+                </div>
+              </li>
+
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <InfoIcon className="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-gray-900">Timeline Management</strong>
+                  <p className="text-gray-600 mt-1">
+                    Submit well before deadlines. Plan for internal review time and potential
+                    technical issues. Set reminders for key milestones.
+                  </p>
+                </div>
+              </li>
+
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <InfoIcon className="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-gray-900">Review Checklist</strong>
+                  <p className="text-gray-600 mt-1">
+                    ✓ Complete all required fields ✓ Attach supporting documents ✓ Verify budget
+                    calculations ✓ Proofread for clarity ✓ Check formatting
+                  </p>
+                </div>
+              </li>
+
+              <li className="flex items-start p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                <InfoIcon className="w-5 h-5 mr-3 text-gray-400 flex-shrink-0 mt-0.5" />
+                <div>
+                  <strong className="text-gray-900">Common Pitfalls</strong>
+                  <p className="text-gray-600 mt-1">
+                    Avoid vague objectives, unrealistic budgets, missing documentation, and
+                    last-minute submissions. Follow all formatting guidelines.
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </ScrollArea>
+        </CardContent>
+      </Card>
+
+      {/* Applications List */}
+      <Card className="border border-gray-100 shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-xl font-medium text-gray-800">
+            {currentUser.role === "ADMIN" ? "All Applications" : "Your Applications"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <ScrollArea className="h-[600px]">
+            {filteredApplications.length === 0 ? (
+              <div className="text-center py-12 px-4">
+                <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <FileIcon className="w-8 h-8 text-gray-400" />
+                </div>
+                <p className="text-gray-600 font-medium mb-2">No applications found</p>
+                <p className="text-sm text-gray-500">Start by creating a new application!</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6">
+                {filteredApplications.map((app) => (
+                  <div
+                    key={app.id}
+                    className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md"
+                  >
+                    <div className="flex flex-col sm:flex-row justify-between gap-4">
+                      <div className="space-y-3 flex-1">
+                        <div>
+                          <h3 className="font-medium text-gray-900 group-hover:text-gray-700">
+                            {app.projectProposal.title}
+                          </h3>
+                          <p className="text-sm text-gray-500 mt-1">
+                            {app.projectProposal.description}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-wrap items-center gap-4 text-xs">
+                          <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md text-gray-500">
+                            ${app.requestAmount.toLocaleString()}
+                          </span>
+                          <Badge
+                            variant={
+                              app.status === "ACCEPTED"
+                                ? "secondary"
+                                : app.status === "REJECTED"
+                                  ? "destructive"
+                                  : "default"
+                            }
+                            className="capitalize px-2 py-1"
+                          >
+                            {app.status.toLowerCase()}
+                          </Badge>
+                        </div>
+
+                        <div className="flex flex-wrap gap-1">
+                          {app.keywords.split(",").map((keyword, i) => (
+                            <Badge
+                              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                              key={i}
+                              variant="secondary"
+                              className="text-xs bg-gray-50 text-gray-600"
+                            >
+                              {keyword.trim()}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex sm:flex-col items-center gap-2 sm:w-auto">
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-blue-600"
-                          onClick={() => window.open(file.url, "_blank")}
+                          onClick={() => setSelectedApplication(app)}
+                          className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
                         >
-                          <EyeIcon className="w-4 h-4 mr-2" /> View
+                          <EyeIcon className="w-4 h-4 sm:mr-2" />
+                          <span className="hidden sm:inline">View</span>
                         </Button>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>No attachments</p>
-                )}
+                        {currentUser.role === "ADMIN" && (
+                          <Select
+                            defaultValue={app.status}
+                            onValueChange={(value) => handleStatusChange(app.id, value)}
+                          >
+                            <SelectTrigger className="w-full text-sm">
+                              <SelectValue placeholder="Update Status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.values(GrantStatus).map((status) => (
+                                <SelectItem key={status} value={status}>
+                                  {status.toLowerCase()}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+        </CardContent>
+      </Card>
+
+      {/* Application Details Dialog */}
+      <Dialog open={!!selectedApplication} onOpenChange={() => setSelectedApplication(null)}>
+        <DialogContent className="sm:max-w-[600px] bg-white p-0">
+          <div className="p-6 border-b border-gray-100">
+            <DialogTitle className="text-xl font-medium text-gray-800">
+              Application Details
+            </DialogTitle>
+          </div>
+
+          {selectedApplication && (
+            <div className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Left Column */}
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Project Title</Label>
+                    <div className="p-3 bg-gray-50 rounded-lg text-gray-900">
+                      {selectedApplication.projectProposal.title}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Request Amount</Label>
+                    <div className="p-3 bg-gray-50 rounded-lg text-gray-900">
+                      ${selectedApplication.requestAmount.toLocaleString()}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Status</Label>
+                    <div className="flex items-center gap-2">
+                      <Badge
+                        variant={
+                          selectedApplication.status === "ACCEPTED"
+                            ? "secondary"
+                            : selectedApplication.status === "REJECTED"
+                              ? "destructive"
+                              : "default"
+                        }
+                        className="capitalize"
+                      >
+                        {selectedApplication.status.toLowerCase()}
+                      </Badge>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Keywords</Label>
+                    <div className="flex flex-wrap gap-1">
+                      {selectedApplication.keywords.split(",").map((keyword, i) => (
+                        <Badge
+                          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                          key={i}
+                          variant="secondary"
+                          className="text-xs bg-gray-50 text-gray-600"
+                        >
+                          {keyword.trim()}
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column */}
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Project Description</Label>
+                    <div className="p-3 bg-gray-50 rounded-lg text-gray-900 min-h-[120px]">
+                      {selectedApplication.projectProposal.description}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="text-sm font-medium text-gray-700">Submitted By</Label>
+                    <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={selectedApplication.submittedBy.imageURL} />
+                        <AvatarFallback>
+                          {`${selectedApplication.submittedBy.firstName[0]}${selectedApplication.submittedBy.lastName[0]}`}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="text-gray-900">
+                        {selectedApplication.submittedBy.firstName}{" "}
+                        {selectedApplication.submittedBy.lastName}
+                      </div>
+                    </div>
+                  </div>
+
+                  {selectedApplication.reviewedBy && (
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Reviewed By</Label>
+                      <div className="p-3 bg-gray-50 rounded-lg text-gray-900">
+                        {selectedApplication.reviewedBy.firstName}{" "}
+                        {selectedApplication.reviewedBy.lastName}
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedApplication.attachments.length > 0 && (
+                    <div className="space-y-2">
+                      <Label className="text-sm font-medium text-gray-700">Attachments</Label>
+                      <div className="space-y-2">
+                        {selectedApplication.attachments.map((file, index) => (
+                          <div
+                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                            key={index}
+                            className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                          >
+                            <div className="flex items-center gap-2">
+                              <PaperclipIcon className="h-4 w-4 text-gray-400" />
+                              <span className="text-gray-900">{file.name}</span>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="text-gray-600 hover:text-gray-900"
+                              onClick={() => window.open(file.url, "_blank")}
+                            >
+                              <EyeIcon className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           )}

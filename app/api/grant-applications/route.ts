@@ -78,7 +78,7 @@ export async function GET() {
             id: true,
             firstName: true,
             lastName: true,
-            imageURL: true,
+            imageUrl: true,
           },
         },
         reviewedBy: {
