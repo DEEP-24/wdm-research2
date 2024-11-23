@@ -28,6 +28,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { UserRole } from "@prisma/client";
 import {
   AlertCircle,
+  CalendarIcon,
   ClockIcon,
   MapPinIcon,
   Pencil,
@@ -113,7 +114,7 @@ const EditEventButton = ({
       if (Number.isNaN(dateObj.getTime())) {
         return "";
       }
-      return moment(dateObj).format('YYYY-MM-DDTHH:mm');
+      return moment(dateObj).format("YYYY-MM-DDTHH:mm");
     } catch {
       return "";
     }
@@ -300,10 +301,10 @@ const EditEventButton = ({
           id: event.sessions[index]?.id,
           title: data.sessions[index].title,
           description: data.sessions[index].description,
-          startTime: savedSessionData[index]?.startTime 
+          startTime: savedSessionData[index]?.startTime
             ? moment(savedSessionData[index].startTime).utc().toISOString()
             : null,
-          endTime: savedSessionData[index]?.endTime 
+          endTime: savedSessionData[index]?.endTime
             ? moment(savedSessionData[index].endTime).utc().toISOString()
             : null,
           location: data.isVirtual ? null : data.location,
@@ -341,12 +342,8 @@ const EditEventButton = ({
       } = {};
 
       event.sessions.forEach((session, index) => {
-        const startTime = session.startTime 
-          ? moment.utc(session.startTime).local().toDate()
-          : null;
-        const endTime = session.endTime 
-          ? moment.utc(session.endTime).local().toDate()
-          : null;
+        const startTime = session.startTime ? moment.utc(session.startTime).local().toDate() : null;
+        const endTime = session.endTime ? moment.utc(session.endTime).local().toDate() : null;
 
         initialSessionData[index] = {
           startTime,
@@ -567,12 +564,18 @@ const EditEventButton = ({
                             type="datetime-local"
                             value={formatDateForInput(savedSessionData[index]?.startTime)}
                             onChange={(e) => handleStartTimeChange(e, index)}
-                            min={watch("startDate") 
-                              ? `${new Date(watch("startDate")).toISOString().split("T")[0]}T00:00`
-                              : undefined}
-                            max={watch("endDate")
-                              ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
-                              : undefined}
+                            min={
+                              watch("startDate")
+                                ? `${
+                                    new Date(watch("startDate")).toISOString().split("T")[0]
+                                  }T00:00`
+                                : undefined
+                            }
+                            max={
+                              watch("endDate")
+                                ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
+                                : undefined
+                            }
                             className="border-blue-200 focus:border-blue-400"
                             disabled={savedSessions[index] && !editingSessions[index]}
                           />
@@ -585,12 +588,18 @@ const EditEventButton = ({
                             type="datetime-local"
                             value={formatDateForInput(savedSessionData[index]?.endTime)}
                             onChange={(e) => handleEndTimeChange(e, index)}
-                            min={watch("startDate")
-                              ? `${new Date(watch("startDate")).toISOString().split("T")[0]}T00:00`
-                              : undefined}
-                            max={watch("endDate")
-                              ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
-                              : undefined}
+                            min={
+                              watch("startDate")
+                                ? `${
+                                    new Date(watch("startDate")).toISOString().split("T")[0]
+                                  }T00:00`
+                                : undefined
+                            }
+                            max={
+                              watch("endDate")
+                                ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
+                                : undefined
+                            }
                             className="border-blue-200 focus:border-blue-400"
                             disabled={savedSessions[index] && !editingSessions[index]}
                           />
@@ -804,7 +813,7 @@ export default function EventsPage() {
       if (Number.isNaN(dateObj.getTime())) {
         return "";
       }
-      return moment(dateObj).format('YYYY-MM-DDTHH:mm');
+      return moment(dateObj).format("YYYY-MM-DDTHH:mm");
     } catch {
       return "";
     }
@@ -1013,6 +1022,7 @@ export default function EventsPage() {
         const response = await fetch("/api/user/profile");
         if (response.ok) {
           const userData = await response.json();
+          console.log("Current user role:", userData.role);
           setUser(userData);
         }
       } catch (error) {
@@ -1050,12 +1060,12 @@ export default function EventsPage() {
       }
 
       try {
-        const response = await fetch(`/api/reservations`);
+        const response = await fetch("/api/reservations");
         if (!response.ok) {
           throw new Error("Failed to fetch registrations");
         }
         const data = await response.json();
-        console.log('Fetched registrations:', data);
+        console.log("Fetched registrations:", data);
         setRegistrations(data);
       } catch (error) {
         console.error("Failed to fetch registrations:", error);
@@ -1175,11 +1185,9 @@ export default function EventsPage() {
   };
 
   const isSessionRegistered = (eventId: number | string, sessionId: number | string) => {
-    return registrations.some(
-      (reg) => {
-        return reg.eventId === (eventId) && reg.sessionId === (sessionId);
-      }
-    );
+    return registrations.some((reg) => {
+      return reg.eventId === eventId && reg.sessionId === sessionId;
+    });
   };
 
   const handleDeleteEvent = async (eventId: string) => {
@@ -1231,14 +1239,19 @@ export default function EventsPage() {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-blue-700">Events</h1>
-        <div className="w-full sm:w-auto">
-          {user?.role === UserRole.ORGANIZER && (
+    <div className="h-[calc(100vh-4rem)] p-4">
+      <div className="h-full flex flex-col lg:flex-row gap-8">
+        {user?.role === UserRole.ORGANIZER && (
+          <div className="absolute top-4 right-4 z-10">
             <Dialog open={isCreateEventOpen} onOpenChange={setIsCreateEventOpen}>
               <DialogTrigger asChild>
-                <Button className="w-full sm:w-auto">Create New Event</Button>
+                <Button
+                  className="bg-black text-white hover:bg-gray-800 shadow-sm transition-colors"
+                  size="lg"
+                >
+                  <PlusIcon className="w-5 h-5 mr-2" />
+                  Create Event
+                </Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[700px] bg-white max-h-[80vh] overflow-y-auto">
                 <DialogHeader className="bg-white pb-4 border-b">
@@ -1472,12 +1485,20 @@ export default function EventsPage() {
                                   type="datetime-local"
                                   value={formatDateForInput(savedSessionData[index]?.startTime)}
                                   onChange={(e) => handleStartTimeChange(e, index)}
-                                  min={watch("startDate") 
-                                    ? `${new Date(watch("startDate")).toISOString().split("T")[0]}T00:00`
-                                    : undefined}
-                                  max={watch("endDate")
-                                    ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
-                                    : undefined}
+                                  min={
+                                    watch("startDate")
+                                      ? `${
+                                          new Date(watch("startDate")).toISOString().split("T")[0]
+                                        }T00:00`
+                                      : undefined
+                                  }
+                                  max={
+                                    watch("endDate")
+                                      ? `${
+                                          new Date(watch("endDate")).toISOString().split("T")[0]
+                                        }T23:59`
+                                      : undefined
+                                  }
                                   className="border-blue-200 focus:border-blue-400"
                                   disabled={savedSessions[index] && !editingSessions[index]}
                                 />
@@ -1493,12 +1514,20 @@ export default function EventsPage() {
                                   type="datetime-local"
                                   value={formatDateForInput(savedSessionData[index]?.endTime)}
                                   onChange={(e) => handleEndTimeChange(e, index)}
-                                  min={watch("startDate")
-                                    ? `${new Date(watch("startDate")).toISOString().split("T")[0]}T00:00`
-                                    : undefined}
-                                  max={watch("endDate")
-                                    ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
-                                    : undefined}
+                                  min={
+                                    watch("startDate")
+                                      ? `${
+                                          new Date(watch("startDate")).toISOString().split("T")[0]
+                                        }T00:00`
+                                      : undefined
+                                  }
+                                  max={
+                                    watch("endDate")
+                                      ? `${
+                                          new Date(watch("endDate")).toISOString().split("T")[0]
+                                        }T23:59`
+                                      : undefined
+                                  }
                                   className="border-blue-200 focus:border-blue-400"
                                   disabled={savedSessions[index] && !editingSessions[index]}
                                 />
@@ -1637,161 +1666,220 @@ export default function EventsPage() {
                 </form>
               </DialogContent>
             </Dialog>
-          )}
+          </div>
+        )}
+
+        <div className="flex-1 min-w-0 h-full lg:max-w-[65%]">
+          <Card className="h-full bg-white rounded-md shadow-sm overflow-hidden border border-gray-100">
+            <CardContent className="p-0 h-full">
+              <Calendar
+                localizer={localizer}
+                events={events.map((event) => ({
+                  ...event,
+                  start: event.startDate
+                    ? new Date(
+                        new Date(event.startDate).getTime() +
+                          new Date().getTimezoneOffset() * 60000,
+                      )
+                    : new Date(),
+                  end: event.endDate
+                    ? new Date(
+                        new Date(event.endDate).getTime() + new Date().getTimezoneOffset() * 60000,
+                      )
+                    : new Date(),
+                }))}
+                startAccessor="start"
+                endAccessor="end"
+                style={{ height: "100%" }}
+                onSelectEvent={handleSelectEvent}
+                view={view}
+                onView={(newView: View) => handleViewChange(newView as ViewType)}
+                date={date}
+                onNavigate={handleNavigate}
+                views={["month", "week", "day"]}
+                className="p-4"
+              />
+            </CardContent>
+          </Card>
+        </div>
+
+        <div className="flex-1 min-w-0 h-full lg:max-w-[35%] overflow-hidden">
+          <div className="h-full overflow-y-auto">
+            {selectedEvent ? (
+              <Card className="bg-white rounded-md shadow-sm border border-gray-100">
+                <div className="bg-gray-50 p-6 border-b border-gray-100">
+                  <CardTitle className="text-2xl font-medium text-gray-900 mb-2">
+                    {selectedEvent.title}
+                  </CardTitle>
+                  <div className="flex flex-wrap gap-2">
+                    <Badge className="bg-gray-200 text-gray-700 hover:bg-gray-300">
+                      {selectedEvent.status}
+                    </Badge>
+                    <Badge className="bg-gray-200 text-gray-700 hover:bg-gray-300">
+                      {selectedEvent.isVirtual ? "Virtual" : "In-person"}
+                    </Badge>
+                  </div>
+                </div>
+
+                <CardContent className="p-6 space-y-6">
+                  <p className="text-gray-600">{selectedEvent.description}</p>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center p-3 bg-gray-50 rounded-md border border-gray-100">
+                      <ClockIcon className="w-5 h-5 text-gray-600 mr-3" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {moment.utc(selectedEvent.startDate).format("MMM D, YYYY")} -
+                          {moment.utc(selectedEvent.endDate).format("MMM D, YYYY")}
+                        </p>
+                        <p className="text-xs text-gray-500">Event Duration</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center p-3 bg-gray-50 rounded-md border border-gray-100">
+                      <MapPinIcon className="w-5 h-5 text-gray-600 mr-3" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedEvent.isVirtual ? "Virtual Event" : selectedEvent.location}
+                        </p>
+                        <p className="text-xs text-gray-500">Location</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center p-3 bg-gray-50 rounded-md border border-gray-100">
+                      <UsersIcon className="w-5 h-5 text-gray-600 mr-3" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">
+                          {selectedEvent.maxAttendees} Attendees
+                        </p>
+                        <p className="text-xs text-gray-500">Maximum Capacity</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {user?.role === UserRole.ORGANIZER && (
+                    <div className="flex gap-2 pt-4">
+                      <EditEventButton
+                        event={selectedEvent}
+                        onEventUpdated={(updatedEvent) => {
+                          setEvents((prev) =>
+                            prev.map((event) =>
+                              event.id === updatedEvent.id ? updatedEvent : event,
+                            ),
+                          );
+                          setSelectedEvent(updatedEvent);
+                        }}
+                      />
+                      <Button
+                        onClick={() => handleDeleteEvent(selectedEvent.id)}
+                        variant="destructive"
+                        size="sm"
+                        className="w-full bg-red-50 text-red-900 hover:bg-red-100 border border-red-200"
+                      >
+                        <TrashIcon className="w-4 h-4 mr-2" /> Delete Event
+                      </Button>
+                    </div>
+                  )}
+
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="sessions" className="border-gray-100">
+                      <AccordionTrigger className="text-lg font-medium text-gray-900">
+                        Event Sessions
+                      </AccordionTrigger>
+                      <AccordionContent>
+                        <div className="space-y-4">
+                          {selectedEvent.sessions && selectedEvent.sessions.length > 0 ? (
+                            selectedEvent.sessions.map((session) => (
+                              <div
+                                key={session.id}
+                                className="p-4 bg-gray-50 rounded-md border border-gray-100"
+                              >
+                                <div className="flex justify-between items-start">
+                                  <div className="space-y-2">
+                                    <h4 className="font-medium text-gray-900">{session.title}</h4>
+                                    <p className="text-sm text-gray-600">{session.description}</p>
+
+                                    <div className="flex items-center text-sm text-gray-600">
+                                      <ClockIcon className="w-4 h-4 mr-2" />
+                                      {session.startTime ? (
+                                        <>
+                                          {moment(session.startTime).format("MMM D, YYYY • h:mm A")}
+                                          {" - "}
+                                          {session.endTime
+                                            ? moment(session.endTime).format("h:mm A")
+                                            : ""}
+                                        </>
+                                      ) : (
+                                        ""
+                                      )}
+                                    </div>
+
+                                    <div className="flex items-center text-sm text-gray-600">
+                                      <MapPinIcon className="w-4 h-4 mr-2" />
+                                      {selectedEvent.isVirtual
+                                        ? "Virtual Session"
+                                        : session.location}
+                                    </div>
+
+                                    <div className="flex items-center text-sm text-gray-600">
+                                      <UsersIcon className="w-4 h-4 mr-2" />
+                                      {session.maxAttendees} Max Attendees
+                                    </div>
+
+                                    {isSessionRegistered(selectedEvent.id, session.id) ? (
+                                      <Badge className="bg-gray-100 text-gray-800">
+                                        Already Reserved
+                                      </Badge>
+                                    ) : (
+                                      <Button
+                                        onClick={() => handleRegister(selectedEvent.id, session.id)}
+                                        className="mt-2 bg-black text-white hover:bg-gray-800"
+                                      >
+                                        Register for Session
+                                      </Button>
+                                    )}
+                                  </div>
+
+                                  {user?.role === UserRole.ORGANIZER && (
+                                    <Button
+                                      onClick={() =>
+                                        handleDeleteSession(selectedEvent.id, session.id)
+                                      }
+                                      variant="destructive"
+                                      size="sm"
+                                      className="bg-red-50 text-red-900 hover:bg-red-100 border border-red-200"
+                                    >
+                                      <TrashIcon className="w-4 h-4" />
+                                    </Button>
+                                  )}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p className="text-gray-500 italic">
+                              No sessions available for this event.
+                            </p>
+                          )}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="bg-white border border-gray-100 rounded-md p-8 h-full flex items-center justify-center">
+                <div className="text-center space-y-4">
+                  <div className="bg-gray-50 rounded-full p-4 w-16 h-16 mx-auto border border-gray-100">
+                    <CalendarIcon className="w-8 h-8 text-gray-600" />
+                  </div>
+                  <h3 className="text-xl font-medium text-gray-900">No Event Selected</h3>
+                  <p className="text-gray-500">Select an event from the calendar to view details</p>
+                </div>
+              </Card>
+            )}
+          </div>
         </div>
       </div>
-
-      <Card className="bg-white shadow-lg mb-6">
-        <CardContent className="p-0">
-          <Calendar
-            localizer={localizer}
-            events={events.map((event) => ({
-              ...event,
-              start: event.startDate
-                ? new Date(
-                    new Date(event.startDate).getTime() + new Date().getTimezoneOffset() * 60000,
-                  )
-                : new Date(),
-              end: event.endDate
-                ? new Date(
-                    new Date(event.endDate).getTime() + new Date().getTimezoneOffset() * 60000
-                  )
-                : new Date(),
-            }))}
-            startAccessor="start"
-            endAccessor="end"
-            style={{ height: 500 }}
-            onSelectEvent={handleSelectEvent}
-            view={view}
-            onView={(newView: View) => handleViewChange(newView as ViewType)}
-            date={date}
-            onNavigate={handleNavigate}
-            views={["month", "week", "day"]}
-          />
-        </CardContent>
-      </Card>
-
-      {selectedEvent && (
-        <Card className="bg-white shadow-lg mt-6">
-          <CardHeader>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
-              <CardTitle className="text-xl font-semibold text-blue-700 mb-2 sm:mb-0">
-                {selectedEvent.title}
-              </CardTitle>
-              {user?.role === UserRole.ORGANIZER && (
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2 w-full sm:w-auto">
-                  <EditEventButton
-                    event={selectedEvent}
-                    onEventUpdated={(updatedEvent) => {
-                      setEvents((prev) =>
-                        prev.map((event) => (event.id === updatedEvent.id ? updatedEvent : event)),
-                      );
-                      setSelectedEvent(updatedEvent);
-                    }}
-                  />
-                  <Button
-                    onClick={() => handleDeleteEvent(selectedEvent.id)}
-                    variant="destructive"
-                    size="sm"
-                    className="w-full sm:w-auto"
-                  >
-                    <TrashIcon className="w-4 h-4 mr-2" /> Delete Event
-                  </Button>
-                </div>
-              )}
-            </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <p>{selectedEvent.description}</p>
-              <div className="flex items-center text-sm text-gray-600">
-                <ClockIcon className="w-4 h-4 mr-2" />
-                {moment.utc(selectedEvent.startDate).format("MMM D, YYYY")} -{" "}
-                {moment.utc(selectedEvent.endDate).format("MMM D, YYYY")}
-              </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <MapPinIcon className="w-4 h-4 mr-2" />
-                {selectedEvent.isVirtual && "Virtual Event"}
-                {selectedEvent.location && !selectedEvent.isVirtual && selectedEvent.location}
-              </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <UsersIcon className="w-4 h-4 mr-2" />
-                Max Attendees: {selectedEvent.maxAttendees}
-              </div>
-              <Badge variant={selectedEvent.isVirtual ? "secondary" : "default"}>
-                {selectedEvent.isVirtual ? "Virtual" : "In-person"}
-              </Badge>
-              <div className="text-sm text-gray-600">
-                Registration Deadline:{" "}
-                {moment(selectedEvent.registrationDeadline).format("MMM D, YYYY")}
-              </div>
-              <div className="text-sm font-semibold text-blue-700">
-                Status: {selectedEvent.status}
-              </div>
-
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="sessions">
-                  <AccordionTrigger>Event Sessions</AccordionTrigger>
-                  <AccordionContent>
-                    {selectedEvent.sessions && selectedEvent.sessions.length > 0 ? (
-                      selectedEvent.sessions.map((session) => (
-                        <div key={session.id} className="mb-4 p-3 bg-gray-100 rounded-lg">
-                          <div className="flex justify-between items-start">
-                            <div>
-                              <h4 className="font-semibold">{session.title}</h4>
-                              <p className="text-sm text-gray-600">{session.description}</p>
-                              <div className="flex items-center text-sm text-gray-600 mt-1">
-                                <ClockIcon className="w-4 h-4 mr-1" />
-                                {session.startTime
-                                  ? new Date(session.startTime).toLocaleString()
-                                  : ""}{" "}
-                                -{" "}
-                                {session.endTime ? new Date(session.endTime).toLocaleString() : ""}
-                              </div>
-                              <div className="flex items-center text-sm text-gray-600">
-                                <MapPinIcon className="w-4 h-4 mr-1" />
-                                {selectedEvent.isVirtual && "Virtual Event"}
-                                {session.location && !selectedEvent.isVirtual && session.location}
-                              </div>
-                              <div className="flex items-center text-sm text-gray-600">
-                                <UsersIcon className="w-4 h-4 mr-1" />
-                                Max Attendees: {session.maxAttendees}
-                              </div>
-                              {isSessionRegistered(selectedEvent.id, session.id) ? (
-                                <Badge className="mt-2" variant="secondary">
-                                  Already Reserved
-                                </Badge>
-                              ) : user?.role === UserRole.USER ? (
-                                <Button
-                                  onClick={() => handleRegister(selectedEvent.id, session.id)}
-                                  className="mt-2"
-                                >
-                                  Register for Session
-                                </Button>
-                              ) : null}
-                            </div>
-                            {user?.role === UserRole.ORGANIZER && (
-                              <Button
-                                onClick={() => handleDeleteSession(selectedEvent.id, session.id)}
-                                variant="destructive"
-                                size="sm"
-                              >
-                                <TrashIcon className="w-4 h-4" />
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <p>No sessions available for this event.</p>
-                    )}
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }

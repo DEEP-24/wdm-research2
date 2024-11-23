@@ -17,7 +17,7 @@ export async function GET() {
     }
 
     // Fetch all reservations with related data
-    const reservations = await db.eventRegistration.findMany({
+    const reservations = await db.academicEventRegistration.findMany({
       include: {
         event: {
           include: {

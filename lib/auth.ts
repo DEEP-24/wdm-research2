@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 
 export async function getCurrentUser() {
   try {
-    const token = cookies().get("user-token");
+    const token = cookies().get("token");
 
     if (!token) {
       return null;
@@ -19,13 +19,13 @@ export async function getCurrentUser() {
         firstName: true,
         lastName: true,
         role: true,
-        aptNo: true,
+        apt: true,
         city: true,
         dob: true,
         expertise: true,
         phone: true,
         researchInterests: true,
-        imageURL: true,
+        imageUrl: true,
         state: true,
         street: true,
         zipcode: true,

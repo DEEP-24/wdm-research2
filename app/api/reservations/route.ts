@@ -5,12 +5,12 @@ import { getCurrentUser } from "@/lib/auth";
 export async function GET() {
   try {
     const user = await getCurrentUser();
-    
+
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const registrations = await db.eventRegistration.findMany({
+    const registrations = await db.academicEventRegistration.findMany({
       where: {
         userId: user.id,
       },
@@ -23,32 +23,28 @@ export async function GET() {
         session: true,
       },
       orderBy: {
-        bookingDate: 'desc',
+        bookingDate: "desc",
       },
     });
 
     return NextResponse.json(registrations);
   } catch (error) {
     console.error("Error fetching reservations:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch reservations" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to fetch reservations" }, { status: 500 });
   }
 }
 
 export async function DELETE(request: Request) {
   try {
     const user = await getCurrentUser();
-    
+
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const { registrationId } = await request.json();
 
-    
-    const registration = await db.eventRegistration.findFirst({
+    const registration = await db.academicEventRegistration.findFirst({
       where: {
         id: registrationId,
         userId: user.id,
@@ -56,14 +52,11 @@ export async function DELETE(request: Request) {
     });
 
     if (!registration) {
-      return NextResponse.json(
-        { error: "Registration not found" },
-        { status: 404 }
-      );
+      return NextResponse.json({ error: "Registration not found" }, { status: 404 });
     }
 
     // Delete the registration
-    await db.eventRegistration.delete({
+    await db.academicEventRegistration.delete({
       where: {
         id: registrationId,
       },
@@ -72,9 +65,6 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ message: "Registration cancelled successfully" });
   } catch (error) {
     console.error("Error cancelling registration:", error);
-    return NextResponse.json(
-      { error: "Failed to cancel registration" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to cancel registration" }, { status: 500 });
   }
-} 
+}

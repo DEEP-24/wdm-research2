@@ -31,6 +31,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Card, CardContent } from "@/components/ui/card";
+import { MessageSquare } from "lucide-react";
+import { Label } from "@/components/ui/label";
 
 interface User {
   id: string;
@@ -284,48 +287,94 @@ const ForumsPage = () => {
   const renderForumContent = () => {
     if (isAdmin) {
       return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           {forums.map((forum) => (
-            <div key={forum.id} className="bg-white shadow-md rounded-lg p-4">
-              <div className="flex justify-between items-start mb-2">
-                <h3 className="text-xl font-semibold text-blue-600">{forum.name}</h3>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
-                      <MoreVertical className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => openEditDialog(forum)}>
-                      <Edit className="mr-2 h-4 w-4" />
-                      Edit
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="text-red-600"
-                      onClick={() => openDeleteDialog(forum)}
-                    >
-                      <Trash className="mr-2 h-4 w-4" />
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+            <div
+              key={forum.id}
+              className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md"
+            >
+              <div className="flex flex-col sm:flex-row justify-between gap-4">
+                <div className="space-y-2 flex-1">
+                  <div className="flex items-start gap-3">
+                    <h3 className="font-medium text-gray-900 group-hover:text-gray-700">
+                      {forum.name}
+                    </h3>
+                  </div>
+                  <p className="text-sm text-gray-500">{forum.description}</p>
+                  <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                      Created by {forum.createdBy.firstName} {forum.createdBy.lastName}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex sm:flex-col items-center gap-2 sm:w-auto">
+                  <Button
+                    onClick={() => handleJoinForum(forum)}
+                    variant="ghost"
+                    size="sm"
+                    className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
+                  >
+                    View Posts
+                  </Button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
+                      >
+                        <MoreVertical className="h-4 w-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => openEditDialog(forum)}>
+                        <Edit className="mr-2 h-4 w-4" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="text-red-600"
+                        onClick={() => openDeleteDialog(forum)}
+                      >
+                        <Trash className="mr-2 h-4 w-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
-              <p className="text-blue-800 mb-4">{forum.description}</p>
-              <Button onClick={() => handleJoinForum(forum)}>View Posts</Button>
             </div>
           ))}
         </div>
       );
     }
 
-    // Regular user view - show forums with join button
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         {forums.map((forum) => (
-          <div key={forum.id} className="bg-white shadow-md rounded-lg p-4">
-            <h3 className="text-xl font-semibold mb-2 text-blue-600">{forum.name}</h3>
-            <p className="text-blue-800 mb-4">{forum.description}</p>
-            <Button onClick={() => handleJoinForum(forum)}>Join Forum</Button>
+          <div
+            key={forum.id}
+            className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md"
+          >
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <div className="space-y-2 flex-1">
+                <h3 className="font-medium text-gray-900 group-hover:text-gray-700">
+                  {forum.name}
+                </h3>
+                <p className="text-sm text-gray-500">{forum.description}</p>
+                <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-500">
+                  <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                    Created by {forum.createdBy.firstName} {forum.createdBy.lastName}
+                  </span>
+                </div>
+              </div>
+              <Button
+                onClick={() => handleJoinForum(forum)}
+                className="bg-gray-900 hover:bg-gray-800 text-white"
+              >
+                Join Forum
+              </Button>
+            </div>
           </div>
         ))}
       </div>
@@ -333,156 +382,247 @@ const ForumsPage = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-blue-50 min-h-screen">
+    <div className="container mx-auto px-4 py-6 max-w-4xl">
       {!selectedForum || (isAdmin && !selectedForum) ? (
-        <>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-            <h2 className="text-2xl font-semibold text-blue-700 mb-4 sm:mb-0">
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">
               {isAdmin ? "Manage Forums" : "Available Forums"}
-            </h2>
+            </h1>
             {isAdmin && (
               <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button variant="default">Create New Forum</Button>
+                  <Button
+                    variant="outline"
+                    className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
+                  >
+                    Create New Forum
+                  </Button>
                 </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create New Forum</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleCreateForum} className="space-y-4">
-                    <Input
-                      type="text"
-                      value={newForum.name}
-                      onChange={(e) => setNewForum({ ...newForum, name: e.target.value })}
-                      placeholder="Forum Name"
-                    />
-                    <Textarea
-                      value={newForum.description}
-                      onChange={(e) => setNewForum({ ...newForum, description: e.target.value })}
-                      placeholder="Forum Description"
-                      rows={4}
-                    />
-                    <div className="flex justify-end space-x-4">
+                <DialogContent className="sm:max-w-[425px] bg-white p-0">
+                  <div className="p-6 border-b border-gray-100">
+                    <DialogTitle className="text-xl font-medium text-gray-800">
+                      Create New Forum
+                    </DialogTitle>
+                  </div>
+                  <form onSubmit={handleCreateForum} className="p-6 space-y-6">
+                    <div>
+                      <Label htmlFor="name" className="text-sm font-medium text-gray-700">
+                        Forum Name
+                      </Label>
+                      <Input
+                        id="name"
+                        value={newForum.name}
+                        onChange={(e) => setNewForum({ ...newForum, name: e.target.value })}
+                        className="mt-1.5 border-gray-200"
+                        placeholder="Enter forum name"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="description" className="text-sm font-medium text-gray-700">
+                        Description
+                      </Label>
+                      <Textarea
+                        id="description"
+                        value={newForum.description}
+                        onChange={(e) => setNewForum({ ...newForum, description: e.target.value })}
+                        className="mt-1.5 border-gray-200"
+                        placeholder="Enter forum description"
+                        rows={4}
+                      />
+                    </div>
+                    <div className="flex justify-end gap-2 pt-4">
                       <Button
                         type="button"
                         variant="outline"
                         onClick={() => setIsDialogOpen(false)}
+                        className="border-gray-200 hover:bg-gray-50"
                       >
                         Cancel
                       </Button>
-                      <Button type="submit">Create Forum</Button>
+                      <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white">
+                        Create Forum
+                      </Button>
                     </div>
                   </form>
                 </DialogContent>
               </Dialog>
             )}
           </div>
-          {forums.length === 0 ? (
-            <div className="text-center py-8">
-              <p className="text-xl text-blue-700 mb-4">No forums available</p>
-              {isAdmin && <p className="text-blue-600">Create a new forum to get started!</p>}
-            </div>
-          ) : (
-            renderForumContent()
-          )}
-        </>
+
+          <Card className="border border-gray-100 shadow-sm">
+            <CardContent className="p-6">
+              {forums.length === 0 ? (
+                <div className="text-center py-12 px-4">
+                  <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <MessageSquare className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <p className="text-gray-600 font-medium mb-2">No forums available</p>
+                  {isAdmin && (
+                    <p className="text-sm text-gray-500">Create a new forum to get started!</p>
+                  )}
+                </div>
+              ) : (
+                renderForumContent()
+              )}
+            </CardContent>
+          </Card>
+        </div>
       ) : (
-        <div className="bg-white shadow-md rounded-lg p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
-            <div className="flex items-center w-full sm:w-2/3 mb-4 sm:mb-0">
+        <div className="space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div className="flex items-center gap-3">
               <Button
                 onClick={handleLeaveForum}
                 variant="ghost"
-                className="mr-2 p-2"
-                aria-label="Back to forums"
+                size="sm"
+                className="text-gray-600 hover:text-gray-800 hover:bg-gray-50"
               >
-                <ArrowLeft className="h-6 w-6" />
+                <ArrowLeft className="h-4 w-4" />
               </Button>
-              <h2 className="text-2xl font-semibold text-blue-700 break-words">
+              <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">
                 {selectedForum.name}
-              </h2>
+              </h1>
             </div>
-            <Button onClick={handleLeaveForum} className="w-full sm:w-auto">
+            <Button
+              onClick={handleLeaveForum}
+              variant="outline"
+              className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
+            >
               {isAdmin ? "Back to Forums" : "Leave Forum"}
             </Button>
           </div>
-          <p className="text-blue-800 mb-6">{selectedForum.description}</p>
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
-            <h3 className="text-xl font-semibold text-blue-600 mb-4 sm:mb-0">Forum Posts</h3>
-            {!isAdmin && !!currentUser && (
-              <Dialog open={isNewPostDialogOpen} onOpenChange={setIsNewPostDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button variant="default">Create New Post</Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Create New Post</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleCreatePost} className="space-y-4">
-                    <Input
-                      type="text"
-                      value={newPost.title}
-                      onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-                      placeholder="Post Title"
-                    />
-                    <Textarea
-                      value={newPost.content}
-                      onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
-                      placeholder="Post Content"
-                      rows={4}
-                    />
-                    <div className="flex justify-end space-x-4">
+
+          <Card className="border border-gray-100 shadow-sm">
+            <CardContent className="p-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h2 className="text-xl font-medium text-gray-800">Forum Posts</h2>
+                {!isAdmin && !!currentUser && (
+                  <Dialog open={isNewPostDialogOpen} onOpenChange={setIsNewPostDialogOpen}>
+                    <DialogTrigger asChild>
                       <Button
-                        type="button"
                         variant="outline"
-                        onClick={() => setIsNewPostDialogOpen(false)}
+                        className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
                       >
-                        Cancel
+                        Create New Post
                       </Button>
-                      <Button type="submit">Create Post</Button>
+                    </DialogTrigger>
+                    <DialogContent className="sm:max-w-[425px] bg-white p-0">
+                      <div className="p-6 border-b border-gray-100">
+                        <DialogTitle className="text-xl font-medium text-gray-800">
+                          Create New Post
+                        </DialogTitle>
+                      </div>
+                      <form onSubmit={handleCreatePost} className="p-6 space-y-6">
+                        <div>
+                          <Label htmlFor="post-title" className="text-sm font-medium text-gray-700">
+                            Title
+                          </Label>
+                          <Input
+                            id="post-title"
+                            value={newPost.title}
+                            onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+                            className="mt-1.5 border-gray-200"
+                            placeholder="Enter post title"
+                          />
+                        </div>
+                        <div>
+                          <Label
+                            htmlFor="post-content"
+                            className="text-sm font-medium text-gray-700"
+                          >
+                            Content
+                          </Label>
+                          <Textarea
+                            id="post-content"
+                            value={newPost.content}
+                            onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
+                            className="mt-1.5 border-gray-200"
+                            placeholder="Enter post content"
+                            rows={4}
+                          />
+                        </div>
+                        <div className="flex justify-end gap-2 pt-4">
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => setIsNewPostDialogOpen(false)}
+                            className="border-gray-200 hover:bg-gray-50"
+                          >
+                            Cancel
+                          </Button>
+                          <Button
+                            type="submit"
+                            className="bg-gray-900 hover:bg-gray-800 text-white"
+                          >
+                            Create Post
+                          </Button>
+                        </div>
+                      </form>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
+
+              <ScrollArea className="h-[600px] rounded-md border border-gray-100">
+                <div className="p-4 space-y-4">
+                  {posts.map((post) => (
+                    <div
+                      key={post.id}
+                      className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200"
+                    >
+                      <h4 className="font-medium text-gray-900 mb-2">{post.title}</h4>
+                      <p className="text-sm text-gray-600 mb-3">{post.content}</p>
+                      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
+                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                          Posted by {post.author.firstName} {post.author.lastName}
+                        </span>
+                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                          {new Date(post.createdAt).toLocaleString()}
+                        </span>
+                      </div>
                     </div>
-                  </form>
-                </DialogContent>
-              </Dialog>
-            )}
-          </div>
-          <ScrollArea className="h-[400px] sm:h-[600px] pr-4">
-            <div className="space-y-4">
-              {posts.map((post) => (
-                <div key={post.id} className="bg-blue-100 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold mb-2 text-blue-700">{post.title}</h4>
-                  <p className="mb-2 text-blue-800">{post.content}</p>
-                  <p className="text-sm text-blue-600">
-                    Posted by {post.author.firstName} {post.author.lastName} on{" "}
-                    {new Date(post.createdAt).toLocaleString()}
-                  </p>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </ScrollArea>
+              </ScrollArea>
+            </CardContent>
+          </Card>
         </div>
       )}
 
       {/* Edit Forum Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Edit Forum</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleEditForum} className="space-y-4">
-            <Input
-              type="text"
-              value={newForum.name}
-              onChange={(e) => setNewForum({ ...newForum, name: e.target.value })}
-              placeholder="Forum Name"
-            />
-            <Textarea
-              value={newForum.description}
-              onChange={(e) => setNewForum({ ...newForum, description: e.target.value })}
-              placeholder="Forum Description"
-              rows={4}
-            />
-            <div className="flex justify-end space-x-4">
+        <DialogContent className="sm:max-w-[425px] bg-white p-0">
+          <div className="p-6 border-b border-gray-100">
+            <DialogTitle className="text-xl font-medium text-gray-800">Edit Forum</DialogTitle>
+          </div>
+          <form onSubmit={handleEditForum} className="p-6 space-y-6">
+            <div>
+              <Label htmlFor="edit-name" className="text-sm font-medium text-gray-700">
+                Forum Name
+              </Label>
+              <Input
+                id="edit-name"
+                value={newForum.name}
+                onChange={(e) => setNewForum({ ...newForum, name: e.target.value })}
+                className="mt-1.5 border-gray-200"
+                placeholder="Enter forum name"
+              />
+            </div>
+            <div>
+              <Label htmlFor="edit-description" className="text-sm font-medium text-gray-700">
+                Description
+              </Label>
+              <Textarea
+                id="edit-description"
+                value={newForum.description}
+                onChange={(e) => setNewForum({ ...newForum, description: e.target.value })}
+                className="mt-1.5 border-gray-200"
+                placeholder="Enter forum description"
+                rows={4}
+              />
+            </div>
+            <div className="flex justify-end gap-2 pt-4">
               <Button
                 type="button"
                 variant="outline"
@@ -491,10 +631,13 @@ const ForumsPage = () => {
                   setNewForum({ name: "", description: "" });
                   setForumToEdit(null);
                 }}
+                className="border-gray-200 hover:bg-gray-50"
               >
                 Cancel
               </Button>
-              <Button type="submit">Update Forum</Button>
+              <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white">
+                Update Forum
+              </Button>
             </div>
           </form>
         </DialogContent>

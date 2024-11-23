@@ -13,7 +13,7 @@ export async function DELETE(
     }
 
     // First check if the user is the event organizer
-    const event = await db.event.findFirst({
+    const event = await db.academicEvent.findFirst({
       where: {
         id: params.eventId,
         userId: user.id,
@@ -24,7 +24,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Not authorized to delete this session" }, { status: 403 });
     }
 
-    await db.eventSession.delete({
+    await db.academicEventSession.delete({
       where: {
         id: params.sessionId,
         eventId: params.eventId,

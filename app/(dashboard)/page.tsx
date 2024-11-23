@@ -27,6 +27,7 @@ import {
 } from "recharts";
 import moment from "moment";
 import { UserRole } from "@prisma/client";
+import { cn } from "@/lib/utils";
 
 const activityData = [
   { name: "Mon", value: 10 },
@@ -40,26 +41,26 @@ const activityData = [
 
 const platformFeatures = [
   {
-    title: "File Sharing",
-    description: "Upload and share research documents securely.",
+    title: "Research Hub",
+    description: "Access and share research papers, data, and findings securely.",
     icon: FileIcon,
     href: "/file-sharing",
   },
   {
-    title: "Forums",
-    description: "Engage in discussions with researchers worldwide.",
+    title: "Research Community",
+    description: "Connect and collaborate with researchers in your field.",
     icon: MessageCircleIcon,
     href: "/forums",
   },
   {
-    title: "Event Management",
-    description: "View upcoming events and manage your reservations.",
+    title: "Research Events",
+    description: "Discover conferences, seminars, and workshops.",
     icon: CalendarIcon,
     href: "/events",
   },
   {
-    title: "Funding Opportunities",
-    description: "Explore and apply for various funding options.",
+    title: "Research Funding",
+    description: "Find grants and funding opportunities for your research.",
     icon: BadgeDollarSignIcon,
     href: "/funding-opportunities",
   },
@@ -89,9 +90,21 @@ const quickLinks = {
 };
 
 const projects = [
-  { name: "Quantum Computing Research", link: "https://research.ibm.com/quantum-computing" },
-  { name: "AI Ethics Study", link: "https://pmc.ncbi.nlm.nih.gov/articles/PMC10097940" },
-  { name: "Climate Change Impact Analysis", link: "https://www.epa.gov/cira" },
+  {
+    name: "RocketChat",
+    description: "Open source team chat solution with real-time conversations",
+    link: "https://github.com/RocketChat/Rocket.Chat",
+  },
+  {
+    name: "Umami Analytics",
+    description: "Privacy-focused alternative to Google Analytics",
+    link: "https://github.com/umami-software/umami",
+  },
+  {
+    name: "Plausible",
+    description: "Simple, privacy-friendly web analytics platform",
+    link: "https://github.com/plausible/analytics",
+  },
 ];
 
 // Update the Event interface at the top of the file
@@ -168,138 +181,141 @@ export default function DashboardPage() {
     }
   };
 
-  return <div className="container mx-auto px-4 py-3">{renderDashboardContent()}</div>;
+  return <div className="container mx-auto">{renderDashboardContent()}</div>;
 }
 
 function renderAdminUserDashboard(latestNews: Event[]) {
   return (
-    <>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <Link
-          href="/researchers"
-          className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow"
-        >
-          <h2 className="text-xl font-semibold mb-2">Chat</h2>
-          <p className="text-gray-600">Connect with other researchers in real-time.</p>
-        </Link>
-        <Link
-          href="/file-sharing"
-          className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow"
-        >
-          <h2 className="text-xl font-semibold mb-2">File Sharing</h2>
-          <p className="text-gray-600">Upload and share documents with your peers.</p>
-        </Link>
-        <Link
-          href="/forums"
-          className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow"
-        >
-          <h2 className="text-xl font-semibold mb-2">Discussion Forums</h2>
-          <p className="text-gray-600">Participate in topic-based discussions.</p>
-        </Link>
-      </div>
-
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold mb-4">Platform Features</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {platformFeatures.map((feature, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-            <div key={index} className="bg-white rounded-xl shadow-md overflow-hidden">
-              <div className="p-5">
-                <div className="flex items-center justify-center w-12 h-12 bg-blue-100 rounded-full mb-4">
+    <div className="space-y-8">
+      {/* Platform Features */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {platformFeatures.map((feature, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+          <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="flex items-center space-x-4">
+                <div className="p-2 rounded-lg bg-blue-50">
                   <feature.icon className="h-6 w-6 text-blue-600" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 mb-4">{feature.description}</p>
-                <Link
-                  href={feature.href}
-                  className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-300"
-                >
-                  Learn more
-                  <ArrowRightIcon className="ml-2 h-4 w-4" />
-                </Link>
+                <h3 className="font-semibold">{feature.title}</h3>
               </div>
-            </div>
-          ))}
-        </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-gray-500 mb-4">{feature.description}</p>
+              <Link
+                href={feature.href}
+                className="text-sm text-blue-600 hover:text-blue-700 inline-flex items-center"
+              >
+                Explore
+                <ArrowRightIcon className="ml-1 h-4 w-4" />
+              </Link>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle>Latest News & Updates</CardTitle>
+      {/* Stats and Activity */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Latest News & Events</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-3">
-              {latestNews.length > 0 ? (
-                latestNews.map((news: Event) => (
-                  <li key={news.id} className="flex justify-between items-center">
-                    <span>{news.title}</span>
-                    <span className="text-sm text-gray-500">
-                      {moment(news.start_date).format("YYYY-MM-DD")}
+            {latestNews.length > 0 ? (
+              <div className="space-y-4">
+                {latestNews.map((news: Event) => (
+                  <div key={news.id} className="flex justify-between items-center pb-2 border-b">
+                    <span className="text-sm font-medium">{news.title}</span>
+                    <span className="text-xs text-gray-500">
+                      {moment(news.start_date).format("MMM D, YYYY")}
                     </span>
-                  </li>
-                ))
-              ) : (
-                <li>No recent updates</li>
-              )}
-            </ul>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500">No latest news & events</p>
+            )}
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm">
-          <CardHeader>
-            <CardTitle>Quick Links</CardTitle>
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Research Tools</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-wrap gap-4">
-              <QuickLinkButton href="/events" icon={CalendarIcon} label="Upcoming Events" />
+            <div className="grid grid-cols-2 gap-3">
+              <QuickLinkButton href="/events" icon={CalendarIcon} label="Research Events" />
               <QuickLinkButton href="/reservations" icon={FileTextIcon} label="My Reservations" />
               <QuickLinkButton href="/projects" icon={BriefcaseIcon} label="Research Projects" />
-              <QuickLinkButton href="/profile" icon={UsersIcon} label="User Profile" />
+              <QuickLinkButton href="/profile" icon={UsersIcon} label="Profile" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="shadow-sm mb-6">
-        <CardHeader>
-          <CardTitle>Recent Activity</CardTitle>
+      {/* Activity Chart */}
+      <Card className="border-none shadow-md">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-medium">Research Activity</CardTitle>
         </CardHeader>
         <CardContent>
-          <ResponsiveContainer width="100%" height={200}>
-            <AreaChart data={activityData}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Area type="monotone" dataKey="value" stroke="#8884d8" fill="#8884d8" />
-            </AreaChart>
-          </ResponsiveContainer>
+          <div className="h-[200px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={activityData}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
+                <YAxis stroke="#94a3b8" fontSize={12} />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#3b82f6"
+                  fillOpacity={1}
+                  fill="url(#colorValue)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
         </CardContent>
       </Card>
 
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle>Popular Projects</CardTitle>
+      {/* Popular Projects */}
+      <Card className="border-none shadow-md">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-medium">Featured Open Source Projects</CardTitle>
         </CardHeader>
         <CardContent>
-          <ul className="space-y-3">
+          <div className="space-y-4">
             {projects.map((project, index) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <li key={index} className="flex justify-between items-center">
-                <span>{project.name}</span>
-                <Link href={project.link} passHref target="_blank">
-                  <Button variant="ghost" size="sm">
-                    View <ArrowRightIcon className="ml-2 h-4 w-4" />
+              <div
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                key={index}
+                className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b last:border-0 gap-2"
+              >
+                <div className="space-y-1">
+                  <span className="text-sm font-medium">{project.name}</span>
+                  <p className="text-xs text-gray-500">{project.description}</p>
+                </div>
+                <Link href={project.link} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-blue-600 hover:text-blue-700 whitespace-nowrap"
+                  >
+                    View Project <ArrowRightIcon className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 }
 
@@ -312,9 +328,12 @@ interface QuickLinkButtonProps {
 function QuickLinkButton({ href, icon: Icon, label }: QuickLinkButtonProps) {
   return (
     <Link href={href}>
-      <Button variant="outline" className="flex items-center gap-2 px-4 py-2 h-auto">
-        <Icon className="h-5 w-5" />
-        <span>{label}</span>
+      <Button
+        variant="outline"
+        className="w-full h-auto py-4 px-4 flex flex-col items-center gap-2 hover:bg-gray-50"
+      >
+        <Icon className="h-5 w-5 text-gray-500" />
+        <span className="text-sm font-medium">{label}</span>
       </Button>
     </Link>
   );
@@ -322,57 +341,127 @@ function QuickLinkButton({ href, icon: Icon, label }: QuickLinkButtonProps) {
 
 function renderInvestorDashboard() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+    <div className="space-y-8">
+      {/* Investment Overview Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
         {[
           {
-            title: "Investment Opportunities",
-            description: "Explore new and exciting investment opportunities in research projects.",
-            href: "/investment-opportunities",
-            buttonText: "View Opportunities",
+            title: "Active Investments",
+            description: "Track your ongoing research investments",
+            icon: BriefcaseIcon,
+            href: "/investments",
           },
           {
-            title: "My Investments",
-            description: "Track and manage your current investments in ongoing research projects.",
-            href: "/investments",
-            buttonText: "View My Investments",
+            title: "New Opportunities",
+            description: "Discover promising research projects",
+            icon: BadgeDollarSignIcon,
+            href: "/investment-opportunities",
           },
-        ].map((card, index) => (
+        ].map((feature, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <Card key={index}>
-            <CardHeader className="border-b p-6">
-              <CardTitle className="text-2xl font-semibold">{card.title}</CardTitle>
+          <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
+            <CardHeader>
+              <div className="flex items-center space-x-4">
+                <div className="p-2 rounded-lg bg-blue-50">
+                  <feature.icon className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="font-semibold">{feature.title}</h3>
+              </div>
             </CardHeader>
-            <CardContent className="p-6">
-              <p className="text-gray-600 mb-6">{card.description}</p>
-              <Link href={card.href} className="block">
-                <Button className="w-full bg-black border-2 border-gray-900 text-white hover:bg-gray-900 transition-colors duration-300">
-                  {card.buttonText}
-                </Button>
+            <CardContent>
+              <p className="text-sm text-gray-500 mb-4">{feature.description}</p>
+              <Link
+                href={feature.href}
+                className="text-sm text-blue-600 hover:text-blue-700 inline-flex items-center"
+              >
+                View Details
+                <ArrowRightIcon className="ml-1 h-4 w-4" />
               </Link>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <Card className="mb-8">
-        <CardHeader className="border-b p-6">
-          <CardTitle className="text-2xl font-semibold">Quick Links</CardTitle>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {quickLinks.investor.map((link, index) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <Link key={index} href={link.href} className="block">
-                <Button
-                  variant="outline"
-                  className="w-full justify-start hover:bg-gray-50 transition-colors duration-300 border-gray-200"
+      {/* Investment Stats and Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Investment Portfolio</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {[
+                { name: "AI Research Fund", amount: "$250,000", status: "Active" },
+                { name: "Biotech Innovation", amount: "$180,000", status: "Pending" },
+                { name: "Clean Energy Project", amount: "$320,000", status: "Active" },
+              ].map((investment, index) => (
+                <div
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  key={index}
+                  className="flex justify-between items-center pb-2 border-b last:border-0"
                 >
-                  <link.icon className="mr-3 h-5 w-5 text-gray-500" />
-                  <span className="text-gray-700">{link.title}</span>
-                </Button>
-              </Link>
-            ))}
+                  <div className="space-y-1">
+                    <span className="text-sm font-medium">{investment.name}</span>
+                    <p className="text-xs text-gray-500">{investment.amount}</p>
+                  </div>
+                  <span
+                    className={cn(
+                      "text-xs px-2 py-1 rounded-full",
+                      investment.status === "Active"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-yellow-100 text-yellow-700",
+                    )}
+                  >
+                    {investment.status}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Quick Actions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              {quickLinks.investor.map((link, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <QuickLinkButton key={index} href={link.href} icon={link.icon} label={link.title} />
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Investment Activity Chart */}
+      <Card className="border-none shadow-md">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-medium">Investment Activity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="h-[200px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={activityData}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
+                <YAxis stroke="#94a3b8" fontSize={12} />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#3b82f6"
+                  fillOpacity={1}
+                  fill="url(#colorValue)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
@@ -381,109 +470,130 @@ function renderInvestorDashboard() {
 }
 
 function renderOrganizerDashboard(upcomingEvents: Event[], reservations: any[]) {
-  const totalReservations = reservations.length;
-
-  const stats = [
-    { title: "Total Events", value: Math.floor(Math.random() * 50) + 10 },
-    { title: "Active Participants", value: Math.floor(Math.random() * 1000) + 500 },
-    { title: "Venue Bookings", value: Math.floor(Math.random() * 20) + 5 },
-    { title: "Revenue (USD)", value: (Math.random() * 100000 + 50000).toFixed(2) },
-    { title: "Total Reservations", value: totalReservations },
-  ];
-
-  // Filter and sort upcoming events
-  const filteredUpcomingEvents = upcomingEvents
-    .filter((event) => moment(event.start_date).isAfter(moment()))
-    .sort((a, b) => moment(a.start_date).diff(moment(b.start_date)))
-    .slice(0, 5);
-
   return (
-    <>
-      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Organizer Dashboard</h1>
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-6 mb-4 sm:mb-6">
-        {stats.map((stat, index) => (
+    <div className="space-y-8">
+      {/* Event Management Overview */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          {
+            title: "Upcoming Events",
+            value: upcomingEvents.length,
+            description: "Events scheduled",
+            icon: CalendarIcon,
+          },
+          {
+            title: "Active Reservations",
+            value: reservations.length,
+            description: "Current bookings",
+            icon: FileTextIcon,
+          },
+          {
+            title: "Total Attendees",
+            value: "1,234",
+            description: "Registered participants",
+            icon: UsersIcon,
+          },
+          {
+            title: "Venue Utilization",
+            value: "87%",
+            description: "Space efficiency",
+            icon: BriefcaseIcon,
+          },
+        ].map((stat, index) => (
           // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-          <Card key={index} className="shadow-sm">
-            <CardHeader className="p-3 sm:p-4">
-              <CardTitle className="text-xs sm:text-sm font-medium text-gray-500">
-                {stat.title}
-              </CardTitle>
+          <Card key={index} className="border-none shadow-md">
+            <CardHeader>
+              <div className="flex items-center space-x-4">
+                <div className="p-2 rounded-lg bg-blue-50">
+                  <stat.icon className="h-6 w-6 text-blue-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">{stat.title}</h3>
+                  <p className="text-2xl font-bold text-blue-600">{stat.value}</p>
+                </div>
+              </div>
             </CardHeader>
-            <CardContent className="p-3 sm:p-4">
-              <p className="text-lg sm:text-xl lg:text-2xl font-bold">{stat.value}</p>
+            <CardContent>
+              <p className="text-sm text-gray-500">{stat.description}</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-4 sm:mb-6">
-        <Card className="shadow-sm">
-          <CardHeader className="p-3 sm:p-4">
-            <CardTitle className="text-base sm:text-lg font-semibold">Upcoming Events</CardTitle>
+      {/* Event List and Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Upcoming Events</CardTitle>
           </CardHeader>
-          <CardContent className="p-3 sm:p-4">
-            {filteredUpcomingEvents.length > 0 ? (
-              <ul className="space-y-2 sm:space-y-3">
-                {filteredUpcomingEvents.map((event: Event) => (
-                  <li
-                    key={event.id}
-                    className="flex justify-between items-center text-sm sm:text-base"
-                  >
-                    <span className="font-medium">{event.title}</span>
-                    <span className="text-xs sm:text-sm text-gray-500">
-                      {moment(event.start_date).format("MMM D, YYYY")}
-                    </span>
-                  </li>
+          <CardContent>
+            {upcomingEvents.length > 0 ? (
+              <div className="space-y-4">
+                {upcomingEvents.map((event: Event) => (
+                  <div key={event.id} className="flex justify-between items-center pb-2 border-b">
+                    <div className="space-y-1">
+                      <span className="text-sm font-medium">{event.title}</span>
+                      <p className="text-xs text-gray-500">
+                        {moment(event.start_date).format("MMM D, YYYY")}
+                      </p>
+                    </div>
+                    <Button variant="outline" size="sm">
+                      Manage
+                    </Button>
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : (
-              <p className="text-sm sm:text-base">No upcoming events found.</p>
+              <p className="text-sm text-gray-500">No upcoming events scheduled</p>
             )}
           </CardContent>
         </Card>
 
-        <Card className="shadow-sm">
-          <CardHeader className="p-3 sm:p-4">
-            <CardTitle className="text-base sm:text-lg font-semibold">Venue Reservations</CardTitle>
+        <Card className="border-none shadow-md">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg font-medium">Quick Actions</CardTitle>
           </CardHeader>
-          <CardContent className="p-3 sm:p-4">
-            <ul className="space-y-2 sm:space-y-3">
-              <li className="flex justify-between items-center text-sm sm:text-base">
-                <span>Main Auditorium</span>
-                <span className="text-green-600">Confirmed</span>
-              </li>
-              <li className="flex justify-between items-center text-sm sm:text-base">
-                <span>Conference Room A</span>
-                <span className="text-yellow-600">Pending</span>
-              </li>
-              <li className="flex justify-between items-center text-sm sm:text-base">
-                <span>Exhibition Hall</span>
-                <span className="text-green-600">Confirmed</span>
-              </li>
-            </ul>
+          <CardContent>
+            <div className="grid grid-cols-2 gap-3">
+              {quickLinks.organizer.map((link, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <QuickLinkButton key={index} href={link.href} icon={link.icon} label={link.title} />
+              ))}
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="shadow-sm mb-4 sm:mb-6">
-        <CardHeader className="p-3 sm:p-4">
-          <CardTitle className="text-base sm:text-lg font-semibold">Quick Links</CardTitle>
+      {/* Event Activity Chart */}
+      <Card className="border-none shadow-md">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg font-medium">Event Activity</CardTitle>
         </CardHeader>
-        <CardContent className="p-3 sm:p-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-            {quickLinks.organizer.map((link, index) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <Link key={index} href={link.href}>
-                <Button variant="outline" className="w-full justify-start text-sm sm:text-base">
-                  <link.icon className="mr-2 h-4 w-4" />
-                  {link.title}
-                </Button>
-              </Link>
-            ))}
+        <CardContent>
+          <div className="h-[200px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={activityData}>
+                <defs>
+                  <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
+                <YAxis stroke="#94a3b8" fontSize={12} />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="value"
+                  stroke="#3b82f6"
+                  fillOpacity={1}
+                  fill="url(#colorValue)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </CardContent>
       </Card>
-    </>
+    </div>
   );
 }

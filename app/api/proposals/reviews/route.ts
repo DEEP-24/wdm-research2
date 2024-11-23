@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const reviews = await db.proposalReview.findMany({
+    const reviews = await db.projectProposalReview.findMany({
       include: {
         reviewer: {
           select: {
@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     }
 
     const data = await req.json();
-    const review = await db.proposalReview.create({
+    const review = await db.projectProposalReview.create({
       data: {
         projectProposalId: data.projectProposalId,
         reviewerId: user.id,

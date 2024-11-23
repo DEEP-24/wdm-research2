@@ -8,8 +8,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 import type { User } from "@/types/user";
 import {
   ArrowUpDownIcon,
@@ -28,8 +28,6 @@ import {
   MessageCircleIcon,
   MessageSquareIcon,
   ScanEyeIcon,
-  SearchIcon,
-  SendIcon,
   UserIcon,
   Users2Icon,
   XIcon,
@@ -38,7 +36,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
 
 const roleBasedSidebarItems = {
   user: [

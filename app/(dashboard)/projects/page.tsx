@@ -1,32 +1,5 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Textarea } from "@/components/ui/textarea";
-import type { User } from "@/types/user";
-import { UserRole, ProposalStatus } from "@prisma/client";
-import { EyeIcon, MessageCircleIcon, PaperclipIcon, SendIcon, Pencil, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,6 +10,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -44,6 +29,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import type { User } from "@/types/user";
+import { ProposalStatus, UserRole } from "@prisma/client";
+import { EyeIcon, PaperclipIcon, Pencil, SendIcon, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { CalendarIcon } from "lucide-react";
 
 interface ProjectProposal {
   id: string;
@@ -256,9 +258,11 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-blue-700">Project Proposals</h1>
+    <div className="container mx-auto px-4 py-6 max-w-4xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">
+          {currentUser.role === UserRole.USER ? "My Projects" : "All Projects"}
+        </h1>
         <Dialog
           open={isDialogOpen}
           onOpenChange={(open) => {
@@ -274,152 +278,91 @@ export default function ProjectsPage() {
           <DialogTrigger asChild>
             <Button
               onClick={() => setIsDialogOpen(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
+              variant="outline"
+              className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
             >
               <SendIcon className="w-4 h-4 mr-2" /> Submit New Proposal
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-white">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-semibold text-blue-700">
+          <DialogContent className="sm:max-w-[425px] bg-white p-0">
+            <div className="p-6 border-b border-gray-100">
+              <DialogTitle className="text-xl font-medium text-gray-800">
                 {isEditMode ? "Edit Proposal" : "Submit New Proposal"}
               </DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="title" className="text-blue-600">
-                  Project Title
-                </Label>
-                <Input
-                  id="title"
-                  name="title"
-                  value={newProposal.title}
-                  onChange={handleInputChange}
-                  required
-                  className="border-blue-200 focus:border-blue-400"
-                />
-              </div>
-              <div>
-                <Label htmlFor="description" className="text-blue-600">
-                  Project Description
-                </Label>
-                <Textarea
-                  id="description"
-                  name="description"
-                  value={newProposal.description || ""}
-                  onChange={handleInputChange}
-                  required
-                  className="border-blue-200 focus:border-blue-400"
-                />
-              </div>
-              <div>
-                <Label className="text-blue-600">Attachments</Label>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="attachmentName" className="text-sm text-gray-600">
-                        Name
-                      </Label>
-                      <Input
-                        id="attachmentName"
-                        value={attachmentInput.name}
-                        onChange={(e) =>
-                          setAttachmentInput((prev) => ({ ...prev, name: e.target.value }))
-                        }
-                        placeholder="Document name"
-                        className="border-blue-200 focus:border-blue-400"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="attachmentUrl" className="text-sm text-gray-600">
-                        URL
-                      </Label>
-                      <Input
-                        id="attachmentUrl"
-                        value={attachmentInput.url}
-                        onChange={(e) =>
-                          setAttachmentInput((prev) => ({ ...prev, url: e.target.value }))
-                        }
-                        placeholder="https://..."
-                        className="border-blue-200 focus:border-blue-400"
-                      />
-                    </div>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={handleAddAttachment}
-                    disabled={!attachmentInput.name || !attachmentInput.url}
-                    className="w-full"
-                  >
-                    Add Attachment
-                  </Button>
+            </div>
+            <form onSubmit={handleSubmit} className="p-6">
+              <div className="space-y-6">
+                <div>
+                  <Label htmlFor="title" className="text-sm font-medium text-gray-700">
+                    Project Title
+                  </Label>
+                  <Input
+                    id="title"
+                    name="title"
+                    value={newProposal.title}
+                    onChange={handleInputChange}
+                    required
+                    className="mt-1.5 border-gray-200"
+                    placeholder="Enter project title"
+                  />
                 </div>
 
-                {newProposal.attachments && getAttachments(newProposal.attachments).length > 0 && (
-                  <div className="mt-4">
-                    <Label className="text-blue-600">Current Attachments:</Label>
-                    <ul className="list-disc pl-5 space-y-2">
-                      {getAttachments(newProposal.attachments).map(
-                        (file: { name: string; url: string }, index: number) => (
-                          <li
-                            key={`attachment-${
+                <div>
+                  <Label htmlFor="description" className="text-sm font-medium text-gray-700">
+                    Project Description
+                  </Label>
+                  <Textarea
+                    id="description"
+                    name="description"
+                    value={newProposal.description || ""}
+                    onChange={handleInputChange}
+                    required
+                    className="mt-1.5 min-h-[100px] border-gray-200"
+                    placeholder="Describe your project"
+                  />
+                </div>
+
+                {/* Current Attachments List with Edit Options */}
+                {isEditMode &&
+                  newProposal.attachments &&
+                  getAttachments(newProposal.attachments).length > 0 && (
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">
+                        Current Attachments
+                      </Label>
+                      <div className="mt-1.5 space-y-2">
+                        {getAttachments(newProposal.attachments).map((file, index) => (
+                          <div
+                            key={`current-attachment-${
                               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                               index
                             }`}
-                            className="text-sm flex items-center gap-2 bg-gray-50 p-2 rounded"
+                            className="space-y-2 p-3 bg-gray-50 rounded-lg border border-gray-100"
                           >
-                            <div className="flex-1 grid grid-cols-2 gap-2">
+                            <div className="flex items-center justify-between gap-2">
                               <Input
-                                type="text"
-                                defaultValue={file.name}
-                                onBlur={(e) => {
+                                value={file.name}
+                                onChange={(e) => {
                                   const currentAttachments = [
                                     ...getAttachments(newProposal.attachments),
                                   ];
-                                  const updatedAttachments = currentAttachments.map((att, idx) => {
-                                    if (idx === index) {
-                                      return { ...att, name: e.target.value || "Untitled" };
-                                    }
-                                    return att;
-                                  });
+                                  currentAttachments[index] = {
+                                    ...currentAttachments[index],
+                                    name: e.target.value,
+                                  };
                                   setNewProposal((prev) => ({
                                     ...prev,
-                                    attachments: JSON.stringify(updatedAttachments),
+                                    attachments: JSON.stringify(currentAttachments),
                                   }));
                                 }}
-                                className="flex-1 h-8"
-                                placeholder="Name"
+                                className="border-gray-200 text-sm"
+                                placeholder="Document name"
                               />
-                              <Input
-                                type="text"
-                                defaultValue={file.url}
-                                onBlur={(e) => {
-                                  const currentAttachments = [
-                                    ...getAttachments(newProposal.attachments),
-                                  ];
-                                  const updatedAttachments = currentAttachments.map((att, idx) => {
-                                    if (idx === index) {
-                                      return { ...att, url: e.target.value };
-                                    }
-                                    return att;
-                                  });
-                                  setNewProposal((prev) => ({
-                                    ...prev,
-                                    attachments: JSON.stringify(updatedAttachments),
-                                  }));
-                                }}
-                                className="flex-1 h-8"
-                                placeholder="URL"
-                              />
-                            </div>
-                            <div className="flex gap-1">
                               <Button
                                 type="button"
                                 variant="ghost"
                                 size="sm"
-                                className="h-8 w-8 p-0 text-red-600 hover:text-red-800"
+                                className="h-8 w-8 p-0 text-gray-400 hover:text-red-500"
                                 onClick={() => {
                                   const currentAttachments = [
                                     ...getAttachments(newProposal.attachments),
@@ -436,194 +379,336 @@ export default function ProjectsPage() {
                                 <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
-                          </li>
-                        ),
-                      )}
-                    </ul>
+                            <Input
+                              value={file.url}
+                              onChange={(e) => {
+                                const currentAttachments = [
+                                  ...getAttachments(newProposal.attachments),
+                                ];
+                                currentAttachments[index] = {
+                                  ...currentAttachments[index],
+                                  url: e.target.value,
+                                };
+                                setNewProposal((prev) => ({
+                                  ...prev,
+                                  attachments: JSON.stringify(currentAttachments),
+                                }));
+                              }}
+                              className="border-gray-200 text-sm"
+                              placeholder="URL"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                {/* Add New Attachments Section */}
+                <div>
+                  <Label className="text-sm font-medium text-gray-700">
+                    {isEditMode ? "Add New Attachment" : "Attachments"}
+                  </Label>
+                  <div className="mt-1.5 space-y-3">
+                    <div className="grid grid-cols-2 gap-3">
+                      <Input
+                        placeholder="Document name"
+                        value={attachmentInput.name}
+                        onChange={(e) =>
+                          setAttachmentInput((prev) => ({ ...prev, name: e.target.value }))
+                        }
+                        className="border-gray-200"
+                      />
+                      <Input
+                        placeholder="URL"
+                        value={attachmentInput.url}
+                        onChange={(e) =>
+                          setAttachmentInput((prev) => ({ ...prev, url: e.target.value }))
+                        }
+                        className="border-gray-200"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={handleAddAttachment}
+                      disabled={!attachmentInput.name || !attachmentInput.url}
+                      className="w-full border-gray-200 hover:bg-gray-50"
+                    >
+                      <PaperclipIcon className="w-4 h-4 mr-2" />
+                      Add Attachment
+                    </Button>
                   </div>
-                )}
+                </div>
+
+                {!isEditMode &&
+                  newProposal.attachments &&
+                  getAttachments(newProposal.attachments).length > 0 && (
+                    <div>
+                      <Label className="text-sm font-medium text-gray-700">Added Attachments</Label>
+                      <div className="mt-1.5 space-y-2">
+                        {getAttachments(newProposal.attachments).map((file, index) => (
+                          <div
+                            key={`attachment-${
+                              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                              index
+                            }`}
+                            className="flex items-center justify-between p-2 bg-gray-50 rounded-md border border-gray-100"
+                          >
+                            <span className="text-sm text-gray-600 truncate flex-1">
+                              {file.name}
+                            </span>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-gray-400 hover:text-red-500"
+                              onClick={() => {
+                                const currentAttachments = [
+                                  ...getAttachments(newProposal.attachments),
+                                ];
+                                const updatedAttachments = currentAttachments.filter(
+                                  (_, i) => i !== index,
+                                );
+                                setNewProposal((prev) => ({
+                                  ...prev,
+                                  attachments: JSON.stringify(updatedAttachments),
+                                }));
+                              }}
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
               </div>
-              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-                {isEditMode ? "Update Proposal" : "Submit Proposal"}
-              </Button>
+
+              <div className="mt-6">
+                <Button type="submit" className="w-full bg-gray-900 hover:bg-gray-800 text-white">
+                  {isEditMode ? "Update Proposal" : "Submit Proposal"}
+                </Button>
+              </div>
             </form>
           </DialogContent>
         </Dialog>
       </div>
 
-      <Card className="bg-white shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-xl font-semibold text-blue-700">
-            {currentUser.role === UserRole.USER ? "My Projects" : "All Projects"}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+      <Card className="border border-gray-100 shadow-sm">
+        <CardContent className="p-6">
           {proposals.length === 0 ? (
-            <div className="text-center py-6 text-gray-500">
-              <PaperclipIcon className="w-10 h-10 mx-auto mb-2 opacity-50" />
-              <p>No project proposals found.</p>
-              <p className="text-sm">Submit a new proposal to get started!</p>
+            <div className="text-center py-12 px-4">
+              <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <PaperclipIcon className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-gray-600 font-medium mb-2">No project proposals found</p>
+              <p className="text-sm text-gray-500">Submit a new proposal to get started!</p>
             </div>
           ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Status</TableHead>
-                  {currentUser?.role !== "USER" && <TableHead>Submitted By</TableHead>}
-                  <TableHead>Submitted At</TableHead>
-                  <TableHead>Attachments</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {proposals.map((proposal) => (
-                  <TableRow key={proposal.id}>
-                    <TableCell>
-                      <span>{proposal.title}</span>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          proposal.status === "APPROVED"
-                            ? "default"
-                            : proposal.status === "REJECTED"
-                              ? "destructive"
-                              : "secondary"
-                        }
-                      >
-                        {proposal.status}
-                      </Badge>
-                    </TableCell>
-                    {currentUser?.role !== "USER" && (
-                      <TableCell>
-                        {proposal.user.firstName} {proposal.user.lastName}
-                      </TableCell>
-                    )}
-                    <TableCell>{new Date(proposal.submittedAt).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      {proposal.attachments ? (
-                        <div className="flex items-center text-sm text-blue-600">
-                          <PaperclipIcon className="w-4 h-4 mr-2" />
-                          {getAttachments(proposal.attachments).length} file(s)
-                        </div>
-                      ) : (
-                        <span className="text-gray-400">No attachments</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <Button
+            <div className="grid grid-cols-1 gap-6">
+              {proposals.map((proposal) => (
+                <div
+                  key={proposal.id}
+                  className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md"
+                >
+                  <div className="flex flex-col sm:flex-row justify-between gap-4">
+                    <div className="space-y-2 flex-1">
+                      <div className="flex items-start justify-between gap-3">
+                        <h3 className="font-medium text-gray-900 group-hover:text-gray-700">
+                          {proposal.title}
+                        </h3>
+                        <Badge
                           variant="outline"
-                          size="sm"
-                          className="text-blue-600 hover:text-blue-800"
-                          onClick={() => setViewProposal(proposal)}
+                          className={cn(
+                            "shrink-0 uppercase text-[10px] font-semibold px-2.5 py-0.5",
+                            {
+                              "border-green-200 bg-green-50 text-green-700":
+                                proposal.status === "APPROVED",
+                              "border-red-200 bg-red-50 text-red-700":
+                                proposal.status === "REJECTED",
+                              "border-yellow-200 bg-yellow-50 text-yellow-700":
+                                proposal.status === "UNDER_REVIEW",
+                              "border-gray-200 bg-gray-50 text-gray-700":
+                                proposal.status === "SUBMITTED",
+                            },
+                          )}
                         >
-                          <EyeIcon className="w-4 h-4 mr-2" /> View
-                        </Button>
+                          {proposal.status.replace("_", " ")}
+                        </Badge>
+                      </div>
+                      <p className="text-sm text-gray-500 line-clamp-2">{proposal.description}</p>
 
-                        {currentUser?.role === "ADMIN" ? (
-                          <Select
-                            defaultValue={proposal.status}
-                            onValueChange={(value) => handleStatusChange(proposal.id, value)}
-                          >
-                            <SelectTrigger className="w-[140px]">
-                              <SelectValue placeholder="Change status" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {Object.values(ProposalStatus).map((status) => (
-                                <SelectItem key={status} value={status}>
-                                  {status.charAt(0) +
-                                    status.slice(1).toLowerCase().replace("_", " ")}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        ) : (
-                          currentUser?.id === proposal.userId && (
-                            <>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="text-amber-600 hover:text-amber-800"
-                                onClick={() => handleEdit(proposal)}
-                              >
-                                <Pencil className="w-4 h-4 mr-2" /> Edit
-                              </Button>
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="text-red-600 hover:text-red-800"
-                                onClick={() => setProposalToDelete(proposal)}
-                              >
-                                <Trash2 className="w-4 h-4 mr-2" /> Delete
-                              </Button>
-                            </>
-                          )
+                      <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-500">
+                        {currentUser?.role !== "USER" && (
+                          <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                            By {proposal.user.firstName} {proposal.user.lastName}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                          <CalendarIcon className="w-3.5 h-3.5" />
+                          {new Date(proposal.submittedAt).toLocaleDateString()}
+                        </span>
+                        {proposal.attachments && (
+                          <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                            <PaperclipIcon className="w-3.5 h-3.5" />
+                            {getAttachments(proposal.attachments).length} files
+                          </span>
                         )}
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                    </div>
+
+                    <div className="flex sm:flex-col items-center gap-2 sm:w-auto">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
+                        onClick={() => setViewProposal(proposal)}
+                      >
+                        <EyeIcon className="w-4 h-4 sm:mr-2" />
+                        <span className="hidden sm:inline">View</span>
+                      </Button>
+
+                      {currentUser?.role === "ADMIN" ? (
+                        <Select
+                          defaultValue={proposal.status}
+                          onValueChange={(value) => handleStatusChange(proposal.id, value)}
+                        >
+                          <SelectTrigger className="h-8 w-full border-gray-200 bg-white">
+                            <SelectValue placeholder="Status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {Object.values(ProposalStatus).map((status) => (
+                              <SelectItem key={status} value={status} className="text-sm">
+                                {status.charAt(0) + status.slice(1).toLowerCase().replace("_", " ")}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      ) : (
+                        currentUser?.id === proposal.userId && (
+                          <>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
+                              onClick={() => handleEdit(proposal)}
+                            >
+                              <Pencil className="w-4 h-4 sm:mr-2" />
+                              <span className="hidden sm:inline">Edit</span>
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="w-full text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                              onClick={() => setProposalToDelete(proposal)}
+                            >
+                              <Trash2 className="w-4 h-4 sm:mr-2" />
+                              <span className="hidden sm:inline">Delete</span>
+                            </Button>
+                          </>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           )}
         </CardContent>
       </Card>
 
       {viewProposal && (
         <Dialog open={!!viewProposal} onOpenChange={() => setViewProposal(null)}>
-          <DialogContent className="sm:max-w-[600px] bg-white">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-semibold text-blue-700">
+          <DialogContent className="sm:max-w-[600px] bg-white p-0">
+            <div className="p-6 border-b border-gray-100">
+              <DialogTitle className="text-xl font-medium text-gray-800">
                 {viewProposal.title}
               </DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4">
-              <p>{viewProposal.description}</p>
-              <div className="text-sm text-gray-600">
-                Status: <Badge variant="secondary">{viewProposal.status}</Badge>
+              <Badge
+                variant="outline"
+                className={cn("mt-2 uppercase text-xs font-semibold", {
+                  "border-green-200 bg-green-50 text-green-700": viewProposal.status === "APPROVED",
+                  "border-red-200 bg-red-50 text-red-700": viewProposal.status === "REJECTED",
+                  "border-yellow-200 bg-yellow-50 text-yellow-700":
+                    viewProposal.status === "UNDER_REVIEW",
+                  "border-gray-200 bg-gray-50 text-gray-700": viewProposal.status === "SUBMITTED",
+                })}
+              >
+                {viewProposal.status.replace("_", " ")}
+              </Badge>
+            </div>
+            <div className="p-6 space-y-6">
+              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                <h4 className="text-sm font-medium text-gray-700 mb-2">Description</h4>
+                <p className="text-gray-600 text-sm leading-relaxed">{viewProposal.description}</p>
               </div>
-              <div className="text-sm text-gray-600">
-                Submitted by: {viewProposal.user.firstName} {viewProposal.user.lastName}
+
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Submitted by</h4>
+                  <p className="text-gray-600 text-sm">
+                    {viewProposal.user.firstName} {viewProposal.user.lastName}
+                  </p>
+                </div>
+                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
+                  <h4 className="text-sm font-medium text-gray-700 mb-2">Submitted on</h4>
+                  <p className="text-gray-600 text-sm">
+                    {new Date(viewProposal.submittedAt).toLocaleDateString()}
+                  </p>
+                </div>
               </div>
-              <div className="text-sm text-gray-600">
-                Submitted: {new Date(viewProposal.submittedAt).toLocaleString()}
-              </div>
-              {viewProposal.attachments && viewProposal.attachments.length > 0 && (
+
+              {viewProposal.attachments && getAttachments(viewProposal.attachments).length > 0 && (
                 <div>
-                  <h3 className="font-semibold text-blue-700">Attachments:</h3>
-                  <ul className="list-disc pl-5">
-                    {getAttachments(viewProposal.attachments).map(
-                      (attachment: { url: string; name: string }, index: number) => (
-                        <li
-                          key={`attachment-${viewProposal.id}-${index}`}
-                          className="text-blue-600 flex items-center"
-                        >
-                          <PaperclipIcon className="w-4 h-4 mr-2" />
-                          <a href={attachment.url} target="_blank" rel="noopener noreferrer">
-                            {attachment.name || `Attachment ${index + 1}`}
-                          </a>
-                        </li>
-                      ),
-                    )}
-                  </ul>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Attachments</h4>
+                  <div className="grid gap-2">
+                    {getAttachments(viewProposal.attachments).map((attachment, index) => (
+                      <a
+                        key={`attachment-${viewProposal.id}-${index}`}
+                        href={attachment.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center p-3 text-sm text-gray-600 hover:text-gray-900 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all group"
+                      >
+                        <PaperclipIcon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-600" />
+                        <span className="flex-1">
+                          {attachment.name || `Attachment ${index + 1}`}
+                        </span>
+                        <span className="text-xs text-gray-400 group-hover:text-gray-500">
+                          View →
+                        </span>
+                      </a>
+                    ))}
+                  </div>
                 </div>
               )}
-              <div className="space-y-2">
-                <h3 className="font-semibold text-blue-700">Reviews:</h3>
-                {getProposalReviews(viewProposal.id).map((review: ProposalReview) => (
-                  <div key={review.id} className="bg-gray-100 p-3 rounded">
-                    <p className="text-sm">{review.feedback}</p>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Reviewed by: {review.reviewer.firstName} {review.reviewer.lastName}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Reviewed on: {new Date(review.reviewedAt).toLocaleString()}
-                    </p>
+
+              {getProposalReviews(viewProposal.id).length > 0 && (
+                <div>
+                  <h4 className="text-sm font-medium text-gray-700 mb-3">Reviews</h4>
+                  <div className="space-y-3">
+                    {getProposalReviews(viewProposal.id).map((review) => (
+                      <div
+                        key={review.id}
+                        className="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                      >
+                        <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+                          {review.feedback}
+                        </p>
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-100">
+                            By {review.reviewer.firstName} {review.reviewer.lastName}
+                          </span>
+                          <time dateTime={review.reviewedAt} className="text-gray-400">
+                            {new Date(review.reviewedAt).toLocaleString()}
+                          </time>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
           </DialogContent>
         </Dialog>
@@ -631,18 +716,22 @@ export default function ProjectsPage() {
 
       {proposalToDelete && (
         <AlertDialog open={!!proposalToDelete} onOpenChange={() => setProposalToDelete(null)}>
-          <AlertDialogContent>
+          <AlertDialogContent className="bg-white sm:max-w-[400px]">
             <AlertDialogHeader>
-              <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the proposal &quot;
-                {proposalToDelete.title}&quot; and all its associated data.
+              <AlertDialogTitle className="text-xl font-medium text-gray-800">
+                Delete Proposal
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-gray-600">
+                Are you sure you want to delete "{proposalToDelete.title}"? This action cannot be
+                undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogFooter className="gap-2">
+              <AlertDialogCancel className="border-gray-200 hover:bg-gray-50 transition-colors">
+                Cancel
+              </AlertDialogCancel>
               <AlertDialogAction
-                className="bg-red-600 hover:bg-red-700 text-white"
+                className="bg-red-500 hover:bg-red-600 text-white border-0 transition-colors"
                 onClick={() => handleDelete(proposalToDelete.id)}
               >
                 Delete

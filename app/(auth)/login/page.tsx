@@ -85,25 +85,14 @@ export default function LoginPage() {
           const fieldErrors = responseData.fieldErrors as FieldErrors;
           setFieldErrors(fieldErrors);
 
-          Object.values(fieldErrors).forEach((errorArray: string[]) => {
-            errorArray.forEach((error) => toast.error(error));
-          });
           return;
         }
         throw new Error(responseData.error || "Login failed");
       }
 
-      toast.success("Successfully logged in!");
-      // Force a router refresh and then redirect
-      router.refresh();
       router.push("/");
     } catch (error) {
-      console.error("Login error:", error);
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        toast.error("An unexpected error occurred");
-      }
+      toast.error(error instanceof Error ? error.message : "An unexpected error occurred");
     } finally {
       setIsLoading(false);
     }

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const events = await db.event.findMany({
+    const events = await db.academicEvent.findMany({
       include: {
         sessions: true,
         registrations: true,
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
     const data = await request.json();
 
-    const event = await db.event.create({
+    const event = await db.academicEvent.create({
       data: {
         title: data.title,
         description: data.description,

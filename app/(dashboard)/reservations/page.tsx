@@ -148,96 +148,118 @@ export default function ReservationsPage() {
   if (isLoading) {
     return (
       <div className="container mx-auto p-4 text-center">
-        <p>Loading reservations...</p>
+        <p className="text-gray-600">Loading reservations...</p>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <div className="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-blue-700 text-center sm:text-left">
+    <div className="container mx-auto px-4 py-6 max-w-4xl">
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">
           {user?.role === UserRole.ORGANIZER ? "All Reservations" : "My Reservations"}
         </h1>
-        <Button onClick={handleBackToEvents}>Back to Events</Button>
+        <Button
+          onClick={handleBackToEvents}
+          variant="outline"
+          className="border-gray-200 hover:bg-gray-50"
+        >
+          Back to Events
+        </Button>
       </div>
 
       {registrations.length > 0 ? (
         <ScrollArea className="h-[calc(100vh-200px)] pr-4">
-          {registrations.map((registration) => (
-            <Card key={registration.id} className="mb-4 bg-white shadow-lg">
-              <CardHeader>
-                <div className="flex justify-between items-center">
-                  <div>
-                    <CardTitle className="text-xl font-semibold text-blue-700">
-                      {registration.event.title} - {registration.session.title}
-                    </CardTitle>
-                    {user?.role === UserRole.ORGANIZER && (
-                      <p className="text-sm text-gray-600 mt-1">
-                        Reserved by: {registration.user.name} ({registration.user.email})
+          <div className="space-y-4">
+            {registrations.map((registration) => (
+              <Card key={registration.id} className="border border-gray-100">
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="space-y-1">
+                      <CardTitle className="text-lg font-medium text-gray-800">
+                        {registration.event.title}
+                      </CardTitle>
+                      <p className="text-sm font-medium text-gray-500">
+                        {registration.session.title}
                       </p>
+                      {user?.role === UserRole.ORGANIZER && (
+                        <p className="text-sm text-gray-500">
+                          Reserved by: {registration.user.name}
+                          <span className="block text-gray-400">{registration.user.email}</span>
+                        </p>
+                      )}
+                    </div>
+                    {user?.role !== UserRole.ORGANIZER && (
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="text-red-500 hover:text-red-600 hover:bg-red-50"
+                          >
+                            Cancel
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent className="bg-white">
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Cancel Reservation</AlertDialogTitle>
+                            <AlertDialogDescription className="text-gray-500">
+                              Are you sure you want to cancel this reservation? This action cannot
+                              be undone.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel className="border-gray-200">
+                              No, keep it
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => handleCancelReservation(registration.id)}
+                              className="bg-red-500 hover:bg-red-600"
+                            >
+                              Yes, cancel it
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     )}
                   </div>
-                  {user?.role !== UserRole.ORGANIZER && (
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="sm">
-                          Cancel Reservation
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Cancel Reservation</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to cancel this reservation? This action cannot be
-                            undone.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>No, keep it</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={() => handleCancelReservation(registration.id)}
-                          >
-                            Yes, cancel it
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  )}
-                </div>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-2">
-                  <p className="text-sm text-gray-600">{registration.event.description}</p>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <CalendarIcon className="w-4 h-4 mr-2" />
-                    {moment(registration.session.startTime).format("MMM D, YYYY")}
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-gray-600 mb-4">{registration.event.description}</p>
+                  <div className="space-y-2 text-sm text-gray-500">
+                    <div className="flex items-center gap-2">
+                      <CalendarIcon className="w-4 h-4 text-gray-400" />
+                      {moment(registration.session.startTime).format("MMM D, YYYY")}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <ClockIcon className="w-4 h-4 text-gray-400" />
+                      {moment(registration.session.startTime).format("HH:mm")} -{" "}
+                      {moment(registration.session.endTime).format("HH:mm")}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <MapPinIcon className="w-4 h-4 text-gray-400" />
+                      {registration.session.location}
+                    </div>
+                    <div className="pt-2 text-xs text-gray-400">
+                      Booked on: {moment(registration.bookingDate).format("MMM D, YYYY HH:mm")}
+                    </div>
                   </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <ClockIcon className="w-4 h-4 mr-2" />
-                    {moment(registration.session.startTime).format("HH:mm")} -{" "}
-                    {moment(registration.session.endTime).format("HH:mm")}
-                  </div>
-                  <div className="flex items-center text-sm text-gray-600">
-                    <MapPinIcon className="w-4 h-4 mr-2" />
-                    {registration.session.location}
-                  </div>
-                  <p className="text-sm font-semibold text-blue-700">
-                    Booked on: {moment(registration.bookingDate).format("MMM D, YYYY HH:mm")}
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </ScrollArea>
       ) : (
-        <Card className="bg-white shadow-lg p-6 text-center">
-          <p className="text-lg mb-4">
+        <Card className="border border-gray-100 text-center py-8">
+          <p className="text-gray-600 mb-4">
             {user?.role === UserRole.ORGANIZER
               ? "There are no reservations yet."
               : "You haven't made any reservations yet."}
           </p>
-          <Link href="/events" className="text-blue-600 hover:underline">
+          <Link
+            href="/events"
+            className="text-gray-600 hover:text-gray-800 underline underline-offset-4"
+          >
             Browse available events
           </Link>
         </Card>

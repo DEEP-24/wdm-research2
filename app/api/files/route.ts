@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     }
 
     // Create file record in database
-    const sharedFile = await db.sharedFile.create({
+    const sharedFile = await db.files.create({
       data: {
         customName: customName || fileUrl.split("/").pop() || "Shared File",
         userId: user.id,
@@ -41,7 +41,7 @@ export async function GET() {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const files = await db.sharedFile.findMany({
+    const files = await db.files.findMany({
       include: {
         uploadedBy: true,
       },
