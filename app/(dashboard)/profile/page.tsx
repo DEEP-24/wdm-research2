@@ -19,15 +19,15 @@ export default function ProfilePage() {
     email: "",
     researchInterests: "",
     expertise: "",
-    linkedInURL: "",
-    twitterURL: "",
-    githubURL: "",
+    linkedInUrl: "",
+    twitterUrl: "",
+    githubUrl: "",
     papers: "",
     dob: "",
-    imageURL: "",
+    imageUrl: "",
     phone: "",
     street: "",
-    aptNo: "",
+    apt: "",
     city: "",
     state: "",
     zipcode: "",
@@ -76,8 +76,8 @@ export default function ProfilePage() {
         toast.success("Profile Updated", {
           description: "Your profile has been successfully updated.",
         });
-        setIsEditing(false);
         router.refresh();
+        setIsEditing(false);
       } else {
         toast.error("Failed to update profile");
       }
@@ -98,240 +98,332 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold text-blue-700 mb-6">User Profile</h1>
-      <Card className="bg-white shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-xl font-semibold text-blue-700">
+    <div className="container mx-auto py-8 px-4 max-w-5xl">
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+          User Profile
+        </h1>
+        {!isEditing && (
+          <Button
+            onClick={() => setIsEditing(true)}
+            className="bg-blue-600 hover:bg-blue-700 transition-colors"
+          >
+            Edit Profile
+          </Button>
+        )}
+      </div>
+
+      <Card className="bg-white shadow-xl rounded-xl border-0">
+        <CardHeader className="border-b bg-gray-50/50 rounded-t-xl">
+          <CardTitle className="text-2xl font-semibold text-gray-800">
             {isEditing ? "Edit Profile" : "Profile Information"}
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <Label htmlFor="imageURL">Profile Image URL</Label>
-                <Input
-                  id="imageURL"
-                  name="imageURL"
-                  value={profile.imageURL}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                />
+        <CardContent className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Profile Image Section */}
+            <div className="space-y-6">
+              <div className="border-b pb-4">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Profile Image</h3>
+                <div className="w-full">
+                  <Label htmlFor="imageURL" className="text-gray-700">
+                    Profile Image URL
+                  </Label>
+                  <Input
+                    id="imageURL"
+                    name="imageUrl"
+                    value={profile.imageUrl}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className="mt-1"
+                  />
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="firstName">First Name</Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  value={profile.firstName}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
+              {/* Personal Information Section */}
+              <div className="border-b pb-4">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Personal Information</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="firstName" className="text-gray-700">
+                      First Name
+                    </Label>
+                    <Input
+                      id="firstName"
+                      name="firstName"
+                      value={profile.firstName}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="lastName" className="text-gray-700">
+                      Last Name
+                    </Label>
+                    <Input
+                      id="lastName"
+                      name="lastName"
+                      value={profile.lastName}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="email" className="text-gray-700">
+                      Email
+                    </Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={profile.email}
+                      onChange={handleChange}
+                      disabled
+                      required
+                      className="mt-1 bg-gray-50"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="phone" className="text-gray-700">
+                      Phone
+                    </Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={profile.phone}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="dob" className="text-gray-700">
+                      Date of Birth
+                    </Label>
+                    <Input
+                      id="dob"
+                      name="dob"
+                      type="date"
+                      value={profile.dob}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="lastName">Last Name</Label>
-                <Input
-                  id="lastName"
-                  name="lastName"
-                  value={profile.lastName}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
+              {/* Address Section */}
+              <div className="border-b pb-4">
+                <h3 className="text-lg font-medium text-gray-900 mb-4">Address</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="md:col-span-2">
+                    <Label htmlFor="street" className="text-gray-700">
+                      Street
+                    </Label>
+                    <Input
+                      id="street"
+                      name="street"
+                      value={profile.street}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="aptNo" className="text-gray-700">
+                      Apt/Suite No
+                    </Label>
+                    <Input
+                      id="aptNo"
+                      name="apt"
+                      value={profile.apt}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="city" className="text-gray-700">
+                      City
+                    </Label>
+                    <Input
+                      id="city"
+                      name="city"
+                      value={profile.city}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="state" className="text-gray-700">
+                      State
+                    </Label>
+                    <Input
+                      id="state"
+                      name="state"
+                      value={profile.state}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="zipcode" className="text-gray-700">
+                      Zipcode
+                    </Label>
+                    <Input
+                      id="zipcode"
+                      name="zipcode"
+                      value={profile.zipcode}
+                      onChange={handleChange}
+                      disabled={!isEditing}
+                      required
+                      className="mt-1"
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={profile.email}
-                  onChange={handleChange}
-                  disabled
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="phone">Phone</Label>
-                <Input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  value={profile.phone}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="dob">Date of Birth</Label>
-                <Input
-                  id="dob"
-                  name="dob"
-                  type="date"
-                  value={profile.dob}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <Label htmlFor="street">Street</Label>
-                <Input
-                  id="street"
-                  name="street"
-                  value={profile.street}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="aptNo">Apt/Suite No</Label>
-                <Input
-                  id="aptNo"
-                  name="aptNo"
-                  value={profile.aptNo}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  name="city"
-                  value={profile.city}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="state">State</Label>
-                <Input
-                  id="state"
-                  name="state"
-                  value={profile.state}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="zipcode">Zipcode</Label>
-                <Input
-                  id="zipcode"
-                  name="zipcode"
-                  value={profile.zipcode}
-                  onChange={handleChange}
-                  disabled={!isEditing}
-                  required
-                />
-              </div>
-
+              {/* Research Information Section - Only for USER role */}
               {profile.role === "USER" && (
-                <>
-                  <div className="md:col-span-2">
-                    <Label htmlFor="researchInterests">Research Interests</Label>
-                    <Textarea
-                      id="researchInterests"
-                      name="researchInterests"
-                      value={profile.researchInterests}
-                      onChange={handleChange}
-                      disabled={!isEditing}
-                      className="min-h-[100px]"
-                    />
-                  </div>
+                <div className="border-b pb-4">
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Research Information</h3>
+                  <div className="space-y-4">
+                    <div>
+                      <Label htmlFor="researchInterests" className="text-gray-700">
+                        Research Interests
+                      </Label>
+                      <Textarea
+                        id="researchInterests"
+                        name="researchInterests"
+                        value={profile.researchInterests}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="mt-1 min-h-[100px]"
+                      />
+                    </div>
 
-                  <div className="md:col-span-2">
-                    <Label htmlFor="expertise">Expertise</Label>
-                    <Textarea
-                      id="expertise"
-                      name="expertise"
-                      value={profile.expertise}
-                      onChange={handleChange}
-                      disabled={!isEditing}
-                      className="min-h-[100px]"
-                    />
+                    <div>
+                      <Label htmlFor="expertise" className="text-gray-700">
+                        Expertise
+                      </Label>
+                      <Textarea
+                        id="expertise"
+                        name="expertise"
+                        value={profile.expertise}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="mt-1 min-h-[100px]"
+                      />
+                    </div>
                   </div>
-                </>
+                </div>
               )}
 
+              {/* Social Links Section - Only for USER role */}
               {profile.role === "USER" && (
-                <>
-                  <div>
-                    <Label htmlFor="linkedInURL">LinkedIn URL</Label>
-                    <Input
-                      id="linkedInURL"
-                      name="linkedInURL"
-                      value={profile.linkedInURL || ""}
-                      onChange={handleChange}
-                      disabled={!isEditing}
-                    />
-                  </div>
+                <div>
+                  <h3 className="text-lg font-medium text-gray-900 mb-4">Social Links</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <Label htmlFor="linkedInURL" className="text-gray-700">
+                        LinkedIn URL
+                      </Label>
+                      <Input
+                        id="linkedInURL"
+                        name="linkedInUrl"
+                        value={profile.linkedInUrl || ""}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <Label htmlFor="twitterURL">Twitter URL</Label>
-                    <Input
-                      id="twitterURL"
-                      name="twitterURL"
-                      value={profile.twitterURL || ""}
-                      onChange={handleChange}
-                      disabled={!isEditing}
-                    />
-                  </div>
+                    <div>
+                      <Label htmlFor="twitterURL" className="text-gray-700">
+                        Twitter URL
+                      </Label>
+                      <Input
+                        id="twitterURL"
+                        name="twitterUrl"
+                        value={profile.twitterUrl || ""}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <Label htmlFor="githubURL">GitHub URL</Label>
-                    <Input
-                      id="githubURL"
-                      name="githubURL"
-                      value={profile.githubURL || ""}
-                      onChange={handleChange}
-                      disabled={!isEditing}
-                    />
-                  </div>
+                    <div>
+                      <Label htmlFor="githubURL" className="text-gray-700">
+                        GitHub URL
+                      </Label>
+                      <Input
+                        id="githubURL"
+                        name="githubUrl"
+                        value={profile.githubUrl || ""}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="mt-1"
+                      />
+                    </div>
 
-                  <div>
-                    <Label htmlFor="papers">Papers</Label>
-                    <Input
-                      id="papers"
-                      name="papers"
-                      value={profile.papers || ""}
-                      onChange={handleChange}
-                      disabled={!isEditing}
-                    />
+                    <div>
+                      <Label htmlFor="papers" className="text-gray-700">
+                        Papers
+                      </Label>
+                      <Input
+                        id="papers"
+                        name="papers"
+                        value={profile.papers || ""}
+                        onChange={handleChange}
+                        disabled={!isEditing}
+                        className="mt-1"
+                      />
+                    </div>
                   </div>
-                </>
+                </div>
               )}
             </div>
 
-            {isEditing ? (
-              <div className="flex justify-end space-x-2">
-                <Button type="submit" disabled={loading}>
-                  {loading ? "Saving..." : "Save Changes"}
-                </Button>
-                <Button type="button" variant="outline" onClick={() => setIsEditing(false)}>
+            {/* Action Buttons */}
+            {isEditing && (
+              <div className="flex justify-end space-x-3 pt-6">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditing(false)}
+                  className="px-6"
+                >
                   Cancel
                 </Button>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 bg-blue-600 hover:bg-blue-700"
+                >
+                  {loading ? "Saving..." : "Save Changes"}
+                </Button>
               </div>
-            ) : (
-              <Button type="button" onClick={() => setIsEditing(true)}>
-                Edit Profile
-              </Button>
             )}
           </form>
         </CardContent>
