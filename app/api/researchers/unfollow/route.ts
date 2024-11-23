@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const { researcherId } = await req.json();
 
     // Check if the follow relationship exists
-    const existingFollow = await db.followers.findUnique({
+    const existingFollow = await db.followersFollowings.findUnique({
       where: {
         followerId_followingId: {
           followerId: currentUser.id,
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     // Delete follow relationship
-    const unfollow = await db.followers.delete({
+    const unfollow = await db.followersFollowings.delete({
       where: {
         followerId_followingId: {
           followerId: currentUser.id,

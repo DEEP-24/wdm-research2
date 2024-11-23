@@ -12,7 +12,7 @@ export async function POST(req: Request) {
 
     const { content, receiverId } = await req.json();
 
-    const message = await db.message.create({
+    const message = await db.chat.create({
       data: {
         content,
         senderId: user.id,
@@ -51,7 +51,7 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: "User ID is required" }, { status: 400 });
     }
 
-    const messages = await db.message.findMany({
+    const messages = await db.chat.findMany({
       where: {
         OR: [
           { senderId: user.id, receiverId: otherUserId },

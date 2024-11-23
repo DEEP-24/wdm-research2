@@ -8,6 +8,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import ChatComponent from "../_components/chat";
+import { Badge } from "@/components/ui/badge";
+import { MessageCircle } from "lucide-react";
 
 interface Message {
   id: string;
@@ -181,43 +183,55 @@ export default function ChatPage() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <p className="text-center">Loading messages...</p>
+        <div className="flex items-center justify-center h-[60vh]">
+          <div className="animate-pulse text-primary">Loading conversations...</div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="overflow-hidden">
+    <div className="container mx-auto px-4 py-6">
+      <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-b from-background to-background/95 backdrop-blur">
         <div className="md:block">
-          <CardHeader className="md:block hidden">
-            <CardTitle className="text-2xl font-bold">Messages</CardTitle>
+          <CardHeader className="md:block hidden border-b bg-muted/30">
+            <div className="flex items-center space-x-2">
+              <MessageCircle className="w-5 h-5 text-primary" />
+              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                Messages
+              </CardTitle>
+            </div>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="grid md:grid-cols-[350px,1fr] h-[calc(100vh-250px)]">
+            <div className="grid md:grid-cols-[380px,1fr] h-[calc(100vh-220px)]">
               {/* Users List */}
               <div
                 className={`${
                   showChatList || !selectedUser ? "block" : "hidden"
-                } md:block border-r`}
+                } md:block border-r bg-background/50`}
               >
-                <ScrollArea className="h-[calc(100vh-250px)]">
+                <ScrollArea className="h-[calc(100vh-220px)]">
                   <div className="p-4 space-y-2">
                     {chatUsers.length === 0 ? (
-                      <p className="text-center text-muted-foreground py-4">No users available</p>
+                      <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
+                        <MessageCircle className="w-12 h-12 mb-3 opacity-20" />
+                        <p>No conversations yet</p>
+                      </div>
                     ) : (
                       chatUsers.map((user) => (
                         // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
                         <div
                           key={user.id}
-                          className={`flex items-center space-x-4 p-3 rounded-lg cursor-pointer transition-colors ${
-                            selectedUser?.id === user.id ? "bg-primary/10" : "hover:bg-muted"
+                          className={`flex items-center space-x-4 p-4 rounded-xl cursor-pointer transition-all duration-200 ${
+                            selectedUser?.id === user.id
+                              ? "bg-primary/10 shadow-md"
+                              : "hover:bg-muted/80 hover:shadow-sm"
                           }`}
                           onClick={() => handleUserSelect(user)}
                           role="button"
                           tabIndex={0}
                         >
-                          <Avatar>
+                          <Avatar className="h-12 w-12 ring-2 ring-background">
                             {user.imageURL ? (
                               <AvatarImage
                                 src={user.imageURL}
@@ -229,22 +243,24 @@ export default function ChatPage() {
                                 alt={`${user.profile.firstName} ${user.profile.lastName}`}
                               />
                             )}
-                            <AvatarFallback>
+                            <AvatarFallback className="bg-primary/10">
                               {user.profile.firstName[0]}
                               {user.profile.lastName[0]}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between">
-                              <p className="font-medium truncate">
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="font-semibold truncate">
                                 {user.profile.firstName} {user.profile.lastName}
                               </p>
                               {user.isFollowing && (
-                                <span className="text-xs text-primary">Following</span>
+                                <Badge variant="secondary" className="text-[10px] h-5">
+                                  Following
+                                </Badge>
                               )}
                             </div>
                             {user.lastMessage ? (
-                              <>
+                              <div className="space-y-1">
                                 <p
                                   className={`text-sm truncate ${
                                     !user.lastMessage.read &&
@@ -255,22 +271,22 @@ export default function ChatPage() {
                                 >
                                   {user.lastMessage.content}
                                 </p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-[10px] text-muted-foreground/80">
                                   {formatDistanceToNow(new Date(user.lastMessage.sentAt), {
                                     addSuffix: true,
                                   })}
                                 </p>
-                              </>
+                              </div>
                             ) : (
-                              <p className="text-xs text-muted-foreground italic">
-                                No messages yet
+                              <p className="text-xs text-muted-foreground/70 italic">
+                                Start a conversation
                               </p>
                             )}
                           </div>
                           {user.lastMessage &&
                             !user.lastMessage.read &&
                             user.lastMessage.receiverId === currentUser?.id && (
-                              <div className="w-2 h-2 bg-primary rounded-full" />
+                              <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
                             )}
                         </div>
                       ))
@@ -283,7 +299,7 @@ export default function ChatPage() {
               <div
                 className={`${
                   !showChatList || selectedUser ? "block" : "hidden"
-                } md:block h-full bg-muted/30`}
+                } md:block h-full bg-dot-pattern`}
               >
                 {selectedUser ? (
                   <div className="h-full">
@@ -310,8 +326,9 @@ export default function ChatPage() {
                     />
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center h-full text-muted-foreground">
-                    Select a user to start messaging
+                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-4">
+                    <MessageCircle className="w-16 h-16 opacity-20" />
+                    <p className="text-lg">Select a conversation to start messaging</p>
                   </div>
                 )}
               </div>

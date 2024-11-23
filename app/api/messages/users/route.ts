@@ -24,7 +24,7 @@ export async function GET() {
         lastName: true,
         expertise: true,
         researchInterests: true,
-        imageURL: true,
+        imageUrl: true,
         receivedMessages: {
           where: {
             senderId: currentUser.id,
@@ -84,7 +84,7 @@ export async function GET() {
       return {
         id: user.id,
         email: user.email,
-        imageURL: user.imageURL,
+        imageUrl: user.imageUrl,
         profile: {
           firstName: user.firstName,
           lastName: user.lastName,

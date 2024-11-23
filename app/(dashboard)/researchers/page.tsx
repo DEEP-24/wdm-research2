@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { Badge } from "@/components/ui/badge";
 
 interface Researcher {
   id: string;
@@ -120,46 +121,62 @@ export default function ResearchersPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <p className="text-center">Loading researchers...</p>
+      <div className="container mx-auto p-6 min-h-screen flex items-center justify-center">
+        <div className="animate-pulse text-lg">Loading researchers...</div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Connect with Researchers</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="container mx-auto p-6 space-y-8">
+      <div className="space-y-4">
+        <h1 className="text-4xl font-bold text-center">Connect with Researchers</h1>
+        <p className="text-center text-muted-foreground max-w-2xl mx-auto">
+          Discover and connect with leading researchers in your field of interest
+        </p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {researchers.map((researcher) => (
-          <Card key={researcher.id} className="overflow-hidden transition-shadow hover:shadow-lg">
-            <div className="relative h-64 overflow-hidden">
+          <Card key={researcher.id} className="group hover:shadow-md transition-all duration-300">
+            <div className="relative h-48 overflow-hidden rounded-t-lg">
               <Image
                 src={researcher.imageURL}
                 alt={`${researcher.firstName} ${researcher.lastName}`}
                 layout="fill"
                 objectFit="cover"
-                objectPosition="center top"
-                className="transition-transform duration-300 hover:scale-105"
+                objectPosition="center"
+                className="group-hover:scale-105 transition-transform duration-500"
               />
+              {researcher.isFollowingYou && (
+                <Badge variant="secondary" className="absolute top-3 right-3">
+                  Follows you
+                </Badge>
+              )}
             </div>
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold">
+
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-xl">
                 {researcher.firstName} {researcher.lastName}
-                {researcher.isFollowingYou && (
-                  <span className="text-sm font-normal text-blue-600 ml-2">Follows you</span>
-                )}
               </CardTitle>
+              <p className="text-sm font-medium text-muted-foreground">{researcher.email}</p>
             </CardHeader>
+
             <CardContent className="space-y-4">
-              <div>
-                <p className="text-gray-600 font-medium">Expertise</p>
-                <p className="text-sm">{researcher.expertise}</p>
+              <div className="space-y-2">
+                <div>
+                  <span className="text-sm font-semibold text-muted-foreground">Expertise</span>
+                  <p className="text-sm">{researcher.expertise}</p>
+                </div>
+                <div>
+                  <span className="text-sm font-semibold text-muted-foreground">
+                    Research Interests
+                  </span>
+                  <p className="text-sm line-clamp-2">{researcher.researchInterests}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-gray-600 font-medium">Research Interests</p>
-                <p className="text-sm">{researcher.researchInterests}</p>
-              </div>
-              <div className="flex gap-2">
+
+              <div className="flex gap-2 pt-2">
                 {researcher.isFollowing ? (
                   <>
                     <Button
@@ -168,7 +185,11 @@ export default function ResearchersPage() {
                       className="flex-1"
                       disabled={followLoading === researcher.id}
                     >
-                      {followLoading === researcher.id ? "..." : "Unfollow"}
+                      {followLoading === researcher.id ? (
+                        <span className="animate-pulse">...</span>
+                      ) : (
+                        "Unfollow"
+                      )}
                     </Button>
                     <Button
                       onClick={() => handleOpenChat(researcher)}
@@ -184,7 +205,11 @@ export default function ResearchersPage() {
                     className="w-full"
                     disabled={followLoading === researcher.id}
                   >
-                    {followLoading === researcher.id ? "..." : "Follow"}
+                    {followLoading === researcher.id ? (
+                      <span className="animate-pulse">...</span>
+                    ) : (
+                      "Follow"
+                    )}
                   </Button>
                 )}
               </div>

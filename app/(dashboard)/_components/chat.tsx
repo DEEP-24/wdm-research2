@@ -174,7 +174,7 @@ export default function ChatComponent({
                 variant="ghost"
                 size="icon"
                 onClick={onBack}
-                className="md:hidden h-8 w-8 mr-2"
+                className="md:hidden h-8 w-8 mr-2 hover:bg-primary/10"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -191,7 +191,7 @@ export default function ChatComponent({
                 </svg>
               </Button>
             )}
-            <Avatar className="h-10 w-10">
+            <Avatar className="h-12 w-12 ring-2 ring-primary/10">
               {recipientProfile.imageURL ? (
                 <AvatarImage src={recipientProfile.imageURL} alt={recipientName} />
               ) : (
@@ -200,29 +200,32 @@ export default function ChatComponent({
                   alt={recipientName}
                 />
               )}
-              <AvatarFallback>
+              <AvatarFallback className="bg-primary/10">
                 {recipientProfile.firstName[0]}
                 {recipientProfile.lastName[0]}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <h2 className="text-lg font-semibold">{recipientName}</h2>
-              <p className="text-sm text-muted-foreground">{recipientEmail}</p>
+              <div className="flex items-center space-x-2">
+                <span className="w-2 h-2 rounded-full bg-green-500" />
+                <p className="text-sm text-muted-foreground">{recipientEmail}</p>
+              </div>
             </div>
           </div>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="h-8 w-8 rounded-full md:block hidden"
+            className="h-8 w-8 rounded-full md:block hidden hover:bg-destructive/10 hover:text-destructive"
           >
             <X className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
-        <div className="space-y-4">
+      <ScrollArea className="flex-1 p-6" ref={scrollRef}>
+        <div className="space-y-6">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -231,15 +234,18 @@ export default function ChatComponent({
               }`}
             >
               <div
-                className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                className={`max-w-[80%] rounded-2xl px-6 py-3 shadow-sm ${
                   message.senderId === currentUserId
                     ? "bg-primary text-primary-foreground"
-                    : "bg-muted"
+                    : "bg-muted/50 backdrop-blur-sm"
                 }`}
               >
-                <p>{message.content}</p>
-                <span className="text-xs opacity-70">
-                  {new Date(message.sentAt).toLocaleTimeString()}
+                <p className="leading-relaxed">{message.content}</p>
+                <span className="text-[10px] opacity-70 mt-1 block">
+                  {new Date(message.sentAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </span>
               </div>
             </div>
@@ -251,16 +257,28 @@ export default function ChatComponent({
         onSubmit={sendMessage}
         className="p-4 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       >
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type a message..."
-            className="flex-1"
+            placeholder="Type your message here..."
+            className="flex-1 rounded-full bg-muted/50 border-0 focus-visible:ring-primary"
             disabled={!isConnected || isLoading}
           />
-          <Button type="submit" disabled={!newMessage.trim() || !isConnected || isLoading}>
-            {isLoading ? "..." : "Send"}
+          <Button
+            type="submit"
+            disabled={!newMessage.trim() || !isConnected || isLoading}
+            className="rounded-full px-6 bg-primary hover:bg-primary/90"
+          >
+            {isLoading ? (
+              <span className="flex items-center space-x-2">
+                <span className="w-2 h-2 bg-white rounded-full animate-bounce" />
+                <span className="w-2 h-2 bg-white rounded-full animate-bounce delay-100" />
+                <span className="w-2 h-2 bg-white rounded-full animate-bounce delay-200" />
+              </span>
+            ) : (
+              "Send"
+            )}
           </Button>
         </div>
       </form>

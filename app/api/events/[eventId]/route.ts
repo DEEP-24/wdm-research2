@@ -12,7 +12,7 @@ export async function PUT(request: Request, { params }: { params: { eventId: str
     const data = await request.json();
 
     // First fetch existing sessions to handle deletions
-    const existingEvent = await db.event.findUnique({
+    const existingEvent = await db.academicEvent.findUnique({
       where: { id: params.eventId },
       include: { sessions: true },
     });
@@ -27,9 +27,9 @@ export async function PUT(request: Request, { params }: { params: { eventId: str
       .map((session: any) => session.id);
 
     // Delete all sessions that are not in the updated list
-    await db.eventSession.deleteMany({
+    await db.academicEvent.deleteMany({
       where: {
-        eventId: params.eventId,
+        id: params.eventId,
         AND: [
           {
             id: {
@@ -45,7 +45,7 @@ export async function PUT(request: Request, { params }: { params: { eventId: str
     const newSessions = data.sessions.filter((session: any) => !session.id);
 
     // Update the event with new data
-    const event = await db.event.update({
+    const event = await db.academicEvent.update({
       where: { id: params.eventId },
       data: {
         title: data.title,
@@ -96,7 +96,7 @@ export async function PUT(request: Request, { params }: { params: { eventId: str
     });
 
     // Perform a final cleanup of any orphaned sessions
-    await db.eventSession.deleteMany({
+    await db.academicEventSession.deleteMany({
       where: {
         eventId: params.eventId,
         id: {
@@ -106,7 +106,7 @@ export async function PUT(request: Request, { params }: { params: { eventId: str
     });
 
     // Fetch the final state of the event
-    const updatedEvent = await db.event.findUnique({
+    const updatedEvent = await db.academicEvent.findUnique({
       where: { id: params.eventId },
       include: {
         sessions: true,
@@ -128,7 +128,7 @@ export async function DELETE(_request: Request, { params }: { params: { eventId:
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    await db.event.delete({
+    await db.academicEvent.delete({
       where: { id: params.eventId },
     });
 
@@ -144,7 +144,7 @@ export async function GET(request: Request, { params }: { params: { eventId: str
   try {
     console.log("Fetching event with ID:", params.eventId);
 
-    const event = await db.event.findUnique({
+    const event = await db.academicEvent.findUnique({
       where: {
         id: params.eventId,
       },
@@ -191,7 +191,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const event = await db.event.create({
+    const event = await db.academicEvent.create({
       data: {
         title,
         description,

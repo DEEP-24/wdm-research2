@@ -26,7 +26,7 @@ export async function GET() {
         email: true,
         expertise: true,
         researchInterests: true,
-        imageURL: true,
+        imageUrl: true,
         followedBy: {
           where: {
             followerId: currentUser.id,
@@ -51,7 +51,7 @@ export async function GET() {
       email: researcher.email,
       expertise: researcher.expertise || "", // Handle null values
       researchInterests: researcher.researchInterests || "", // Handle null values
-      imageURL: researcher.imageURL || "/default-avatar.png", // Provide default image
+      imageURL: researcher.imageUrl || "/default-avatar.png", // Provide default image
       isFollowing: researcher.followedBy.length > 0,
       isFollowingYou: researcher.following.length > 0,
     }));

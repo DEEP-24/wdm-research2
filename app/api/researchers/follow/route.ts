@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const { researcherId } = await req.json();
 
     // Check if already following
-    const existingFollow = await db.followers.findUnique({
+    const existingFollow = await db.followersFollowings.findUnique({
       where: {
         followerId_followingId: {
           followerId: currentUser.id,
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     }
 
     // Create follow relationship
-    const follow = await db.followers.create({
+    const follow = await db.followersFollowings.create({
       data: {
         followerId: currentUser.id,
         followingId: researcherId,
