@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import { ExploreButton } from "./components/explore-button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { DollarSign, BarChart2, TrendingUp } from "lucide-react";
 
 type Investment = {
   id: string;
@@ -66,73 +67,108 @@ export default function InvestmentsPage() {
   const totalInvestment = investments.reduce((sum, investment) => sum + investment.amount, 0);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-6 max-w-6xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">My Investments</h1>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white">
-          <CardHeader>
-            <CardTitle className="text-lg">Total Investment</CardTitle>
+        <Card className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md">
+          <CardHeader className="p-0">
+            <CardTitle className="text-sm font-medium text-gray-500">Total Investment</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">${totalInvestment.toLocaleString()}</p>
+          <CardContent className="p-0 mt-2">
+            <div className="flex items-center justify-between">
+              <p className="text-2xl font-semibold text-gray-900">
+                ${totalInvestment.toLocaleString()}
+              </p>
+              <DollarSign className="w-8 h-8 text-green-500 bg-green-50 p-1.5 rounded-full" />
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-gradient-to-br from-blue-400 to-blue-500 text-white">
-          <CardHeader>
-            <CardTitle className="text-lg">Active Investments</CardTitle>
+        <Card className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md">
+          <CardHeader className="p-0">
+            <CardTitle className="text-sm font-medium text-gray-500">Active Investments</CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold">{investments.length}</p>
+          <CardContent className="p-0 mt-2">
+            <div className="flex items-center justify-between">
+              <p className="text-2xl font-semibold text-gray-900">{investments.length}</p>
+              <BarChart2 className="w-8 h-8 text-blue-500 bg-blue-50 p-1.5 rounded-full" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md">
+          <CardHeader className="p-0">
+            <CardTitle className="text-sm font-medium text-gray-500">Portfolio Growth</CardTitle>
+          </CardHeader>
+          <CardContent className="p-0 mt-2">
+            <div className="flex items-center justify-between">
+              <p className="text-2xl font-semibold text-gray-900">Active</p>
+              <TrendingUp className="w-8 h-8 text-purple-500 bg-purple-50 p-1.5 rounded-full" />
+            </div>
           </CardContent>
         </Card>
       </div>
 
-      {investments.length === 0 ? (
-        <Card className="shadow-lg">
-          <CardContent className="p-6">
-            <p className="text-xl text-center text-gray-600">
-              You haven't made any investments yet.
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-xl text-blue-800">Investment Details</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ScrollArea className="h-[400px]">
-              <div className="w-full overflow-x-auto">
-                <table className="w-full text-left">
+      <Card className="border border-gray-100 shadow-sm">
+        <CardContent className="p-6">
+          {investments.length === 0 ? (
+            <div className="text-center py-12 px-4">
+              <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <DollarSign className="w-8 h-8 text-gray-400" />
+              </div>
+              <p className="text-gray-600 font-medium mb-2">
+                You haven't made any investments yet.
+              </p>
+              <p className="text-sm text-gray-500">Start investing to grow your portfolio!</p>
+            </div>
+          ) : (
+            <ScrollArea className="h-[500px]">
+              <div className="w-full">
+                <table className="w-full">
                   <thead>
-                    <tr className="bg-blue-100">
-                      <th className="p-3 whitespace-nowrap">Project Name</th>
-                      <th className="p-3 whitespace-nowrap">Company</th>
-                      <th className="p-3 whitespace-nowrap">Amount</th>
-                      <th className="p-3 whitespace-nowrap">Date</th>
-                      <th className="p-3 whitespace-nowrap">Risk Level</th>
+                    <tr className="border-b border-gray-100">
+                      <th className="text-left p-3 text-sm font-medium text-gray-500">
+                        Project Name
+                      </th>
+                      <th className="text-left p-3 text-sm font-medium text-gray-500">Company</th>
+                      <th className="text-left p-3 text-sm font-medium text-gray-500">Amount</th>
+                      <th className="text-left p-3 text-sm font-medium text-gray-500">Date</th>
+                      <th className="text-left p-3 text-sm font-medium text-gray-500">
+                        Risk Level
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {investments.map((investment) => (
-                      <tr key={investment.id} className="border-b border-blue-100">
-                        <td className="p-3 whitespace-nowrap">{investment.opportunity.title}</td>
-                        <td className="p-3 whitespace-nowrap">
+                      <tr
+                        key={investment.id}
+                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                      >
+                        <td className="p-3 text-sm text-gray-900">
+                          {investment.opportunity.title}
+                        </td>
+                        <td className="p-3 text-sm text-gray-600">
                           {investment.opportunity.companyName}
                         </td>
-                        <td className="p-3 whitespace-nowrap">
+                        <td className="p-3 text-sm font-medium text-green-600">
                           ${investment.amount.toLocaleString()}
                         </td>
-                        <td className="p-3 whitespace-nowrap">
+                        <td className="p-3 text-sm text-gray-600">
                           {new Date(investment.date).toLocaleDateString()}
                         </td>
-                        <td className="p-3 whitespace-nowrap">
+                        <td className="p-3">
                           <span
                             className={cn(
-                              "font-bold",
-                              investment.opportunity.riskLevel === "Low" && "text-green-600",
-                              investment.opportunity.riskLevel === "Medium" && "text-yellow-600",
-                              investment.opportunity.riskLevel === "High" && "text-red-600",
+                              "text-sm px-2 py-1 rounded-md",
+                              investment.opportunity.riskLevel === "Low" &&
+                                "bg-green-50 text-green-600",
+                              investment.opportunity.riskLevel === "Medium" &&
+                                "bg-yellow-50 text-yellow-600",
+                              investment.opportunity.riskLevel === "High" &&
+                                "bg-red-50 text-red-600",
                             )}
                           >
                             {investment.opportunity.riskLevel}
@@ -144,11 +180,11 @@ export default function InvestmentsPage() {
                 </table>
               </div>
             </ScrollArea>
-          </CardContent>
-        </Card>
-      )}
+          )}
+        </CardContent>
+      </Card>
 
-      <div className="mt-8">
+      <div className="mt-8 flex justify-center">
         <ExploreButton />
       </div>
     </div>
