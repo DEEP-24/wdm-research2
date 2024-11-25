@@ -4,11 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import type { UserRole } from "@prisma/client";
+import { BarChart2, DollarSign, TrendingUp } from "lucide-react";
 import { redirect } from "next/navigation";
-import { ExploreButton } from "./components/explore-button";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { DollarSign, BarChart2, TrendingUp } from "lucide-react";
 
 type Investment = {
   id: string;
@@ -183,10 +182,6 @@ export default function InvestmentsPage() {
           )}
         </CardContent>
       </Card>
-
-      <div className="mt-8 flex justify-center">
-        <ExploreButton />
-      </div>
     </div>
   );
 }

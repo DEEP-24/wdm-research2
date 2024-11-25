@@ -94,41 +94,129 @@ export default function RegisterPage() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="block text-sm mb-2">First Name</label>
+          <label className="block text-sm mb-2">Phone Number</label>
           <Input
-            {...register("firstName")}
-            placeholder="Enter your first name"
+            {...register("phone")}
+            type="tel"
+            placeholder="Enter your phone number"
             className={`w-full p-2 border rounded ${
-              errors.firstName || fieldErrors.firstName ? "border-red-500" : "border-gray-300"
+              errors.phone || fieldErrors.phone ? "border-red-500" : "border-gray-300"
             }`}
           />
-          {errors.firstName && (
-            <p className="text-sm text-red-500 mt-1">{errors.firstName.message}</p>
-          )}
-          {fieldErrors.firstName?.map((error) => (
-            <p key={`firstName-${error}`} className="text-sm text-red-500 mt-1">
+          {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>}
+          {fieldErrors.phone?.map((error) => (
+            <p key={`phone-${error}`} className="text-sm text-red-500 mt-1">
               {error}
             </p>
           ))}
         </div>
 
         <div>
-          <label className="block text-sm mb-2">Last Name</label>
+          <label className="block text-sm mb-2">Street Address</label>
           <Input
-            {...register("lastName")}
-            placeholder="Enter your last name"
+            {...register("street")}
+            placeholder="Enter your street address"
             className={`w-full p-2 border rounded ${
-              errors.lastName || fieldErrors.lastName ? "border-red-500" : "border-gray-300"
+              errors.street || fieldErrors.street ? "border-red-500" : "border-gray-300"
             }`}
           />
-          {errors.lastName && (
-            <p className="text-sm text-red-500 mt-1">{errors.lastName.message}</p>
-          )}
-          {fieldErrors.lastName?.map((error) => (
-            <p key={`lastName-${error}`} className="text-sm text-red-500 mt-1">
+          {errors.street && <p className="text-sm text-red-500 mt-1">{errors.street.message}</p>}
+          {fieldErrors.street?.map((error) => (
+            <p key={`street-${error}`} className="text-sm text-red-500 mt-1">
               {error}
             </p>
           ))}
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">Apartment/Suite (Optional)</label>
+          <Input
+            {...register("aptNo")}
+            placeholder="Apartment or suite number"
+            className={`w-full p-2 border rounded ${
+              errors.aptNo || fieldErrors.aptNo ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.aptNo && <p className="text-sm text-red-500 mt-1">{errors.aptNo.message}</p>}
+          {fieldErrors.aptNo?.map((error) => (
+            <p key={`aptNo-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm mb-2">City</label>
+            <Input
+              {...register("city")}
+              placeholder="Enter your city"
+              className={`w-full p-2 border rounded ${
+                errors.city || fieldErrors.city ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.city && <p className="text-sm text-red-500 mt-1">{errors.city.message}</p>}
+            {fieldErrors.city?.map((error) => (
+              <p key={`city-${error}`} className="text-sm text-red-500 mt-1">
+                {error}
+              </p>
+            ))}
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">State</label>
+            <Input
+              {...register("state")}
+              placeholder="Enter your state"
+              className={`w-full p-2 border rounded ${
+                errors.state || fieldErrors.state ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.state && <p className="text-sm text-red-500 mt-1">{errors.state.message}</p>}
+            {fieldErrors.state?.map((error) => (
+              <p key={`state-${error}`} className="text-sm text-red-500 mt-1">
+                {error}
+              </p>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm mb-2">Zip Code</label>
+            <Input
+              {...register("zipcode")}
+              placeholder="Enter zip code"
+              className={`w-full p-2 border rounded ${
+                errors.zipcode || fieldErrors.zipcode ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.zipcode && (
+              <p className="text-sm text-red-500 mt-1">{errors.zipcode.message}</p>
+            )}
+            {fieldErrors.zipcode?.map((error) => (
+              <p key={`zipcode-${error}`} className="text-sm text-red-500 mt-1">
+                {error}
+              </p>
+            ))}
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Date of Birth</label>
+            <Input
+              {...register("dob")}
+              type="date"
+              className={`w-full p-2 border rounded ${
+                errors.dob || fieldErrors.dob ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {errors.dob && <p className="text-sm text-red-500 mt-1">{errors.dob.message}</p>}
+            {fieldErrors.dob?.map((error) => (
+              <p key={`dob-${error}`} className="text-sm text-red-500 mt-1">
+                {error}
+              </p>
+            ))}
+          </div>
         </div>
 
         <div>
