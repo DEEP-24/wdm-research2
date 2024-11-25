@@ -9,7 +9,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
@@ -389,63 +389,63 @@ const EditEventButton = ({
       >
         <DialogContent className="sm:max-w-[700px] bg-white max-h-[80vh] overflow-y-auto">
           <DialogHeader className="bg-white pb-4 border-b">
-            <DialogTitle className="text-2xl font-bold text-blue-700">Edit Event</DialogTitle>
+            <DialogTitle className="text-2xl font-bold text-[#6B9B76]">Edit Event</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(handleEditSubmit)} className="space-y-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="title" className="text-blue-600">
+                  <Label htmlFor="title" className="text-[#6B9B76]">
                     Event Title
                   </Label>
                   <Input
                     id="title"
                     {...register("title")}
-                    className="border-blue-200 focus:border-blue-400"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="description" className="text-blue-600">
+                  <Label htmlFor="description" className="text-[#6B9B76]">
                     Description
                   </Label>
                   <Input
                     id="description"
                     {...register("description")}
-                    className="border-blue-200 focus:border-blue-400"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="startDate" className="text-blue-600">
+                  <Label htmlFor="startDate" className="text-[#6B9B76]">
                     Start Date
                   </Label>
                   <Input
                     id="startDate"
                     type="date"
                     {...register("startDate")}
-                    className="border-blue-200 focus:border-blue-400"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="endDate" className="text-blue-600">
+                  <Label htmlFor="endDate" className="text-[#6B9B76]">
                     End Date
                   </Label>
                   <Input
                     id="endDate"
                     type="date"
                     {...register("endDate")}
-                    className="border-blue-200 focus:border-blue-400"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                   />
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="location" className="text-blue-600">
+                  <Label htmlFor="location" className="text-[#6B9B76]">
                     Location
                   </Label>
                   <Input
                     id="location"
                     {...register("location")}
-                    className="border-blue-200 focus:border-blue-400"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                     disabled={watch("isVirtual")}
                     placeholder={watch("isVirtual") ? "Virtual Event" : "Enter location"}
                   />
@@ -463,50 +463,50 @@ const EditEventButton = ({
                         });
                       }
                     }}
-                    className="border-blue-400 text-blue-600"
+                    className="border-[#6B9B76] text-[#6B9B76]"
                   />
-                  <Label htmlFor="isVirtual" className="text-blue-600">
+                  <Label htmlFor="isVirtual" className="text-[#6B9B76]">
                     Virtual Event
                   </Label>
                 </div>
                 <div>
-                  <Label htmlFor="maxAttendees" className="text-blue-600">
+                  <Label htmlFor="maxAttendees" className="text-[#6B9B76]">
                     Max Attendees
                   </Label>
                   <Input
                     id="maxAttendees"
                     type="number"
                     {...register("maxAttendees", { valueAsNumber: true })}
-                    className="border-blue-200 focus:border-blue-400"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                   />
                 </div>
                 <div>
-                  <Label htmlFor="registrationDeadline" className="text-blue-600">
+                  <Label htmlFor="registrationDeadline" className="text-[#6B9B76]">
                     Registration Deadline
                   </Label>
                   <Input
                     id="registrationDeadline"
                     type="date"
                     {...register("registrationDeadline")}
-                    className="border-blue-200 focus:border-blue-400"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="border-t border-blue-200 pt-4 mt-4">
-              <h3 className="text-lg font-semibold mb-2 text-blue-700">Event Sessions</h3>
+            <div className="border-t border-[#6B9B76] pt-4 mt-4">
+              <h3 className="text-lg font-semibold mb-2 text-[#6B9B76]">Event Sessions</h3>
               <Accordion type="single" collapsible className="w-full">
                 {fields.map((field, index) => (
                   <AccordionItem
                     value={`session-${index}`}
                     key={field.id}
-                    className="border-blue-200"
+                    className="border-[#6B9B76]"
                   >
-                    <AccordionTrigger className="text-blue-600 hover:text-blue-800">
+                    <AccordionTrigger className="text-[#6B9B76] hover:text-[#5a8463]">
                       Session {index + 1}
                     </AccordionTrigger>
-                    <AccordionContent className="bg-blue-50 p-4 rounded-lg">
+                    <AccordionContent className="bg-[#6B9B76]/5 p-4 rounded-lg">
                       {sessionTimeErrors[index] && (
                         <Alert variant="destructive" className="mb-4">
                           <AlertCircle className="h-4 w-4 mr-2" />
@@ -520,13 +520,13 @@ const EditEventButton = ({
                       )}
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <Label htmlFor={`sessions.${index}.title`} className="text-blue-600">
+                          <Label htmlFor={`sessions.${index}.title`} className="text-[#6B9B76]">
                             Session Title
                           </Label>
                           <Input
                             id={`sessions.${index}.title`}
                             {...register(`sessions.${index}.title`)}
-                            className="border-blue-200 focus:border-blue-400"
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                             disabled={savedSessions[index] && !editingSessions[index]}
                           />
                           {errors.sessions?.[index]?.title && (
@@ -538,14 +538,14 @@ const EditEventButton = ({
                         <div>
                           <Label
                             htmlFor={`sessions.${index}.description`}
-                            className="text-blue-600"
+                            className="text-[#6B9B76]"
                           >
                             Session Description
                           </Label>
                           <Input
                             id={`sessions.${index}.description`}
                             {...register(`sessions.${index}.description`)}
-                            className="border-blue-200 focus:border-blue-400"
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                             disabled={savedSessions[index] && !editingSessions[index]}
                           />
                           {errors.sessions?.[index]?.description && (
@@ -557,7 +557,7 @@ const EditEventButton = ({
                       </div>
                       <div className="grid grid-cols-2 gap-4 mt-2">
                         <div>
-                          <Label htmlFor={`sessions.${index}.startTime`} className="text-blue-600">
+                          <Label htmlFor={`sessions.${index}.startTime`} className="text-[#6B9B76]">
                             Start Time
                           </Label>
                           <Input
@@ -576,12 +576,12 @@ const EditEventButton = ({
                                 ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
                                 : undefined
                             }
-                            className="border-blue-200 focus:border-blue-400"
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                             disabled={savedSessions[index] && !editingSessions[index]}
                           />
                         </div>
                         <div>
-                          <Label htmlFor={`sessions.${index}.endTime`} className="text-blue-600">
+                          <Label htmlFor={`sessions.${index}.endTime`} className="text-[#6B9B76]">
                             End Time
                           </Label>
                           <Input
@@ -600,20 +600,20 @@ const EditEventButton = ({
                                 ? `${new Date(watch("endDate")).toISOString().split("T")[0]}T23:59`
                                 : undefined
                             }
-                            className="border-blue-200 focus:border-blue-400"
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                             disabled={savedSessions[index] && !editingSessions[index]}
                           />
                         </div>
                       </div>
                       <div className="grid grid-cols-2 gap-4 mt-2">
                         <div>
-                          <Label htmlFor={`sessions.${index}.location`} className="text-blue-600">
+                          <Label htmlFor={`sessions.${index}.location`} className="text-[#6B9B76]">
                             Session Location
                           </Label>
                           <Input
                             id={`sessions.${index}.location`}
                             {...register(`sessions.${index}.location`)}
-                            className="border-blue-200 focus:border-blue-400"
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                             disabled={
                               (watch("isVirtual") || savedSessions[index]) &&
                               !editingSessions[index]
@@ -631,7 +631,7 @@ const EditEventButton = ({
                         <div>
                           <Label
                             htmlFor={`sessions.${index}.maxAttendees`}
-                            className="text-blue-600"
+                            className="text-[#6B9B76]"
                           >
                             Max Attendees
                           </Label>
@@ -641,7 +641,7 @@ const EditEventButton = ({
                               valueAsNumber: true,
                             })}
                             type="number"
-                            className="border-blue-200 focus:border-blue-400"
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
                             disabled={savedSessions[index] && !editingSessions[index]}
                           />
                           {errors.sessions?.[index]?.maxAttendees && (
@@ -669,7 +669,7 @@ const EditEventButton = ({
                               variant="outline"
                               size="sm"
                               onClick={() => handleEditSession(index)}
-                              className="border-blue-500 text-blue-500 hover:bg-blue-50"
+                              className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10"
                             >
                               <Pencil className="w-4 h-4 mr-2" /> Edit Session
                             </Button>
@@ -691,7 +691,7 @@ const EditEventButton = ({
                             !!sessionTimeErrors[index]
                           }
                           className={cn(
-                            "border-blue-600 text-blue-600 hover:bg-blue-50",
+                            "border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10",
                             savedSessions[index] &&
                               !editingSessions[index] &&
                               "bg-green-50 border-green-500 text-green-500",
@@ -718,13 +718,13 @@ const EditEventButton = ({
                     maxAttendees: 0,
                   })
                 }
-                className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+                className="w-full mt-4 bg-[#6B9B76] hover:bg-[#5a8463] text-white"
               >
                 <PlusIcon className="w-4 h-4 mr-2" /> Add Another Session
               </Button>
             </div>
 
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+            <Button type="submit" className="w-full bg-[#6B9B76] hover:bg-[#5a8463] text-white">
               Update Event
             </Button>
           </form>
@@ -1239,647 +1239,704 @@ export default function EventsPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-4rem)] p-4">
-      <div className="h-full flex flex-col lg:flex-row gap-8">
-        {user?.role === UserRole.ORGANIZER && (
-          <div className="absolute top-4 right-4 z-10">
-            <Dialog open={isCreateEventOpen} onOpenChange={setIsCreateEventOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  className="bg-black text-white hover:bg-gray-800 shadow-sm transition-colors"
-                  size="lg"
-                >
-                  <PlusIcon className="w-5 h-5 mr-2" />
-                  Create Event
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[700px] bg-white max-h-[80vh] overflow-y-auto">
-                <DialogHeader className="bg-white pb-4 border-b">
-                  <DialogTitle className="text-2xl font-bold text-blue-700">
-                    Create New Event
-                  </DialogTitle>
-                </DialogHeader>
-                <form
-                  onSubmit={handleSubmit((data) => {
-                    onSubmit(data);
-                  })}
-                  className="space-y-6"
-                >
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="title" className="text-blue-600">
-                          Event Title
-                        </Label>
-                        <Input
-                          id="title"
-                          {...register("title")}
-                          className="border-blue-200 focus:border-blue-400"
-                        />
-                        {errors.title && (
-                          <span className="text-red-500 text-sm">{errors.title.message}</span>
-                        )}
-                      </div>
-                      <div>
-                        <Label htmlFor="description" className="text-blue-600">
-                          Description
-                        </Label>
-                        <Input
-                          id="description"
-                          {...register("description")}
-                          className="border-blue-200 focus:border-blue-400"
-                        />
-                        {errors.description && (
-                          <span className="text-red-500 text-sm">{errors.description.message}</span>
-                        )}
-                      </div>
-                      <div>
-                        <Label htmlFor="startDate" className="text-blue-600">
-                          Start Date
-                        </Label>
-                        <Input
-                          id="startDate"
-                          type="date"
-                          {...register("startDate")}
-                          min={new Date().toISOString().split("T")[0]}
-                          className={cn(
-                            "border-blue-200 focus:border-blue-400",
-                            errors.startDate && "border-red-500",
-                          )}
-                        />
-                        {errors.startDate && (
-                          <span className="text-red-500 text-sm">{errors.startDate.message}</span>
-                        )}
-                      </div>
-                      <div>
-                        <Label htmlFor="endDate" className="text-blue-600">
-                          End Date
-                        </Label>
-                        <Input
-                          id="endDate"
-                          type="date"
-                          {...register("endDate")}
-                          min={
-                            watch("startDate")?.toString() || new Date().toISOString().split("T")[0]
-                          }
-                          className={cn(
-                            "border-blue-200 focus:border-blue-400",
-                            errors.endDate && "border-red-500",
-                          )}
-                        />
-                        {errors.endDate && (
-                          <span className="text-red-500 text-sm">{errors.endDate.message}</span>
-                        )}
-                      </div>
-                    </div>
-                    <div className="space-y-4">
-                      <div>
-                        <Label htmlFor="location" className="text-blue-600">
-                          Location
-                        </Label>
-                        <Input
-                          id="location"
-                          {...register("location")}
-                          className="border-blue-200 focus:border-blue-400"
-                          disabled={watch("isVirtual")}
-                          placeholder={watch("isVirtual") ? "Virtual Event" : "Enter location"}
-                        />
-                        {errors.location && (
-                          <span className="text-red-500 text-sm">{errors.location.message}</span>
-                        )}
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Checkbox
-                          id="isVirtual"
-                          {...register("isVirtual")}
-                          className="border-blue-400 text-blue-600"
-                          onCheckedChange={(checked) => {
-                            setValue("isVirtual", checked as boolean);
-                            if (checked) {
-                              setValue("location", "");
-                              // Clear location for all sessions
-                              fields.forEach((_, index) => {
-                                setValue(`sessions.${index}.location`, "");
-                              });
-                            }
-                          }}
-                        />
-                        <Label htmlFor="isVirtual" className="text-blue-600">
-                          Virtual Event
-                        </Label>
-                      </div>
-                      <div>
-                        <Label htmlFor="maxAttendees" className="text-blue-600">
-                          Max Attendees
-                        </Label>
-                        <Input
-                          id="maxAttendees"
-                          type="number"
-                          {...register("maxAttendees", { valueAsNumber: true })}
-                          className="border-blue-200 focus:border-blue-400"
-                        />
-                        {errors.maxAttendees && (
-                          <span className="text-red-500 text-sm">
-                            {errors.maxAttendees.message}
-                          </span>
-                        )}
-                      </div>
-                      <div>
-                        <Label htmlFor="registrationDeadline" className="text-blue-600">
-                          Registration Deadline
-                        </Label>
-                        <Input
-                          id="registrationDeadline"
-                          type="date"
-                          {...register("registrationDeadline")}
-                          max={watch("startDate")?.toString()}
-                          className={cn(
-                            "border-blue-200 focus:border-blue-400",
-                            errors.registrationDeadline && "border-red-500",
-                          )}
-                        />
-                        {errors.registrationDeadline && (
-                          <span className="text-red-500 text-sm">
-                            {errors.registrationDeadline.message}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+    <>
+      // Add this style block right after your imports
+      <style jsx global>{`
+  .rbc-calendar {
+    color: #374151;
+  }
 
-                  <div className="border-t border-blue-200 pt-4 mt-4">
-                    <h3 className="text-lg font-semibold mb-2 text-blue-700">Event Sessions</h3>
-                    <Accordion type="single" collapsible className="w-full">
-                      {fields.map((field, index) => (
-                        <AccordionItem
-                          value={`session-${index}`}
-                          key={field.id}
-                          className="border-blue-200"
-                        >
-                          <AccordionTrigger className="text-blue-600 hover:text-blue-800">
-                            Session {index + 1}
-                          </AccordionTrigger>
-                          <AccordionContent className="bg-blue-50 p-4 rounded-lg">
-                            {sessionTimeErrors[index] && (
-                              <Alert variant="destructive" className="mb-4">
-                                <AlertCircle className="h-4 w-4 mr-2" />
-                                <AlertTitle>
-                                  {sessionTimeErrors[index]?.type === "conflict"
-                                    ? "Session Conflict"
-                                    : "Time Range Error"}
-                                </AlertTitle>
-                                <AlertDescription>
-                                  {sessionTimeErrors[index]?.message}
-                                </AlertDescription>
-                              </Alert>
-                            )}
-                            <div className="grid grid-cols-2 gap-4">
-                              <div>
-                                <Label
-                                  htmlFor={`sessions.${index}.title`}
-                                  className="text-blue-600"
-                                >
-                                  Session Title
-                                </Label>
-                                <Input
-                                  id={`sessions.${index}.title`}
-                                  {...register(`sessions.${index}.title`)}
-                                  className="border-blue-200 focus:border-blue-400"
-                                  disabled={savedSessions[index] && !editingSessions[index]}
-                                />
-                                {errors.sessions?.[index]?.title && (
-                                  <span className="text-red-500 text-sm">
-                                    {errors.sessions[index]?.title?.message}
-                                  </span>
-                                )}
-                              </div>
-                              <div>
-                                <Label
-                                  htmlFor={`sessions.${index}.description`}
-                                  className="text-blue-600"
-                                >
-                                  Session Description
-                                </Label>
-                                <Input
-                                  id={`sessions.${index}.description`}
-                                  {...register(`sessions.${index}.description`)}
-                                  className="border-blue-200 focus:border-blue-400"
-                                  disabled={savedSessions[index] && !editingSessions[index]}
-                                />
-                                {errors.sessions?.[index]?.description && (
-                                  <span className="text-red-500 text-sm">
-                                    {errors.sessions[index]?.description?.message}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4 mt-2">
-                              <div>
-                                <Label
-                                  htmlFor={`sessions.${index}.startTime`}
-                                  className="text-blue-600"
-                                >
-                                  Start Time
-                                </Label>
-                                <Input
-                                  type="datetime-local"
-                                  value={formatDateForInput(savedSessionData[index]?.startTime)}
-                                  onChange={(e) => handleStartTimeChange(e, index)}
-                                  min={
-                                    watch("startDate")
-                                      ? `${
-                                          new Date(watch("startDate")).toISOString().split("T")[0]
-                                        }T00:00`
-                                      : undefined
-                                  }
-                                  max={
-                                    watch("endDate")
-                                      ? `${
-                                          new Date(watch("endDate")).toISOString().split("T")[0]
-                                        }T23:59`
-                                      : undefined
-                                  }
-                                  className="border-blue-200 focus:border-blue-400"
-                                  disabled={savedSessions[index] && !editingSessions[index]}
-                                />
-                              </div>
-                              <div>
-                                <Label
-                                  htmlFor={`sessions.${index}.endTime`}
-                                  className="text-blue-600"
-                                >
-                                  End Time
-                                </Label>
-                                <Input
-                                  type="datetime-local"
-                                  value={formatDateForInput(savedSessionData[index]?.endTime)}
-                                  onChange={(e) => handleEndTimeChange(e, index)}
-                                  min={
-                                    watch("startDate")
-                                      ? `${
-                                          new Date(watch("startDate")).toISOString().split("T")[0]
-                                        }T00:00`
-                                      : undefined
-                                  }
-                                  max={
-                                    watch("endDate")
-                                      ? `${
-                                          new Date(watch("endDate")).toISOString().split("T")[0]
-                                        }T23:59`
-                                      : undefined
-                                  }
-                                  className="border-blue-200 focus:border-blue-400"
-                                  disabled={savedSessions[index] && !editingSessions[index]}
-                                />
-                              </div>
-                            </div>
-                            <div className="grid grid-cols-2 gap-4 mt-2">
-                              <div>
-                                <Label
-                                  htmlFor={`sessions.${index}.location`}
-                                  className="text-blue-600"
-                                >
-                                  Session Location
-                                </Label>
-                                <Input
-                                  id={`sessions.${index}.location`}
-                                  {...register(`sessions.${index}.location`)}
-                                  className="border-blue-200 focus:border-blue-400"
-                                  disabled={
-                                    (watch("isVirtual") || savedSessions[index]) &&
-                                    !editingSessions[index]
-                                  }
-                                  placeholder={
-                                    watch("isVirtual")
-                                      ? "Virtual Session"
-                                      : "Enter session location"
-                                  }
-                                />
-                                {errors.sessions?.[index]?.location && (
-                                  <span className="text-red-500 text-sm">
-                                    {errors.sessions[index]?.location?.message}
-                                  </span>
-                                )}
-                              </div>
-                              <div>
-                                <Label
-                                  htmlFor={`sessions.${index}.maxAttendees`}
-                                  className="text-blue-600"
-                                >
-                                  Max Attendees
-                                </Label>
-                                <Input
-                                  id={`sessions.${index}.maxAttendees`}
-                                  {...register(`sessions.${index}.maxAttendees`, {
-                                    valueAsNumber: true,
-                                  })}
-                                  type="number"
-                                  className="border-blue-200 focus:border-blue-400"
-                                  disabled={savedSessions[index] && !editingSessions[index]}
-                                />
-                                {errors.sessions?.[index]?.maxAttendees && (
-                                  <span className="text-red-500 text-sm">
-                                    {errors.sessions[index]?.maxAttendees?.message}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                            <div className="flex justify-between mt-4">
-                              <div className="flex gap-2">
-                                <Button
-                                  type="button"
-                                  variant="destructive"
-                                  size="sm"
-                                  onClick={() => remove(index)}
-                                  disabled={fields.length === 1}
-                                  className="bg-red-500 hover:bg-red-600 text-white"
-                                >
-                                  <TrashIcon className="w-4 h-4 mr-2" /> Remove Session
-                                </Button>
-                                {!editingSessions[index] && savedSessions[index] && (
-                                  <Button
-                                    type="button"
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleEditSession(index)}
-                                    className="border-blue-500 text-blue-500 hover:bg-blue-50"
-                                  >
-                                    <Pencil className="w-4 h-4 mr-2" /> Edit Session
-                                  </Button>
-                                )}
-                              </div>
-                              <Button
-                                type="button"
-                                variant="outline"
-                                size="sm"
-                                onClick={() => handleSaveSession(index)}
-                                disabled={
-                                  (!editingSessions[index] && savedSessions[index]) ||
-                                  !watch(`sessions.${index}.title`) ||
-                                  !watch(`sessions.${index}.description`) ||
-                                  !watch(`sessions.${index}.startTime`) ||
-                                  !watch(`sessions.${index}.endTime`) ||
-                                  !watch(`sessions.${index}.maxAttendees`) ||
-                                  Number(watch(`sessions.${index}.maxAttendees`)) <= 0 ||
-                                  !!sessionTimeErrors[index]
-                                }
-                                className={cn(
-                                  "border-blue-600 text-blue-600 hover:bg-blue-50",
-                                  savedSessions[index] &&
-                                    !editingSessions[index] &&
-                                    "bg-green-50 border-green-500 text-green-500",
-                                )}
-                              >
-                                {savedSessions[index] && !editingSessions[index]
-                                  ? "Session Saved"
-                                  : "Save Session"}
-                              </Button>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      ))}
-                    </Accordion>
-                    <Button
-                      type="button"
-                      onClick={addSession}
-                      className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                      <PlusIcon className="w-4 h-4 mr-2" /> Add Another Session
-                    </Button>
-                  </div>
+  .rbc-event {
+    background-color: #6B9B76 !important;
+    border: none !important;
+  }
+
+  .rbc-event.rbc-selected {
+    background-color: #5a8463 !important;
+  }
+
+  .rbc-toolbar button.rbc-active {
+    background-color: #6B9B76 !important;
+    color: white !important;
+    border-color: #6B9B76 !important;
+  }
+
+  .rbc-toolbar button:hover {
+    background-color: rgba(107, 155, 118, 0.1) !important;
+    border-color: #6B9B76 !important;
+  }
+
+  .rbc-today {
+    background-color: rgba(107, 155, 118, 0.1) !important;
+  }
+
+  .rbc-current-time-indicator {
+    background-color: #6B9B76 !important;
+  }
+
+  .rbc-event-content {
+    color: white !important;
+      }
+    `}</style>
+      <div className="h-[calc(100vh-4rem)] p-4">
+        <div className="h-full flex flex-col lg:flex-row gap-8">
+          {user?.role === UserRole.ORGANIZER && (
+            <div className="absolute top-4 right-4 z-10">
+              <Dialog open={isCreateEventOpen} onOpenChange={setIsCreateEventOpen}>
+                <DialogTrigger asChild>
                   <Button
-                    type="submit"
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                    disabled={
-                      !watch("title") ||
-                      !watch("description") ||
-                      !watch("startDate") ||
-                      !watch("endDate") ||
-                      !watch("registrationDeadline") ||
-                      (!watch("isVirtual") && !watch("location")) ||
-                      !watch("maxAttendees") ||
-                      Object.values(sessionTimeErrors).some((error) => error !== null)
-                    }
+                    className="bg-black text-white hover:bg-gray-800 shadow-sm transition-colors"
+                    size="lg"
                   >
+                    <PlusIcon className="w-5 h-5 mr-2" />
                     Create Event
                   </Button>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-        )}
-
-        <div className="flex-1 min-w-0 h-full lg:max-w-[65%]">
-          <Card className="h-full bg-white rounded-md shadow-sm overflow-hidden border border-gray-100">
-            <CardContent className="p-0 h-full">
-              <Calendar
-                localizer={localizer}
-                events={events.map((event) => ({
-                  ...event,
-                  start: event.startDate
-                    ? new Date(
-                        new Date(event.startDate).getTime() +
-                          new Date().getTimezoneOffset() * 60000,
-                      )
-                    : new Date(),
-                  end: event.endDate
-                    ? new Date(
-                        new Date(event.endDate).getTime() + new Date().getTimezoneOffset() * 60000,
-                      )
-                    : new Date(),
-                }))}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: "100%" }}
-                onSelectEvent={handleSelectEvent}
-                view={view}
-                onView={(newView: View) => handleViewChange(newView as ViewType)}
-                date={date}
-                onNavigate={handleNavigate}
-                views={["month", "week", "day"]}
-                className="p-4"
-              />
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="flex-1 min-w-0 h-full lg:max-w-[35%] overflow-hidden">
-          <div className="h-full overflow-y-auto">
-            {selectedEvent ? (
-              <Card className="bg-white rounded-md shadow-sm border border-gray-100">
-                <div className="bg-gray-50 p-6 border-b border-gray-100">
-                  <CardTitle className="text-2xl font-medium text-gray-900 mb-2">
-                    {selectedEvent.title}
-                  </CardTitle>
-                  <div className="flex flex-wrap gap-2">
-                    <Badge className="bg-gray-200 text-gray-700 hover:bg-gray-300">
-                      {selectedEvent.status}
-                    </Badge>
-                    <Badge className="bg-gray-200 text-gray-700 hover:bg-gray-300">
-                      {selectedEvent.isVirtual ? "Virtual" : "In-person"}
-                    </Badge>
-                  </div>
-                </div>
-
-                <CardContent className="p-6 space-y-6">
-                  <p className="text-gray-600">{selectedEvent.description}</p>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center p-3 bg-gray-50 rounded-md border border-gray-100">
-                      <ClockIcon className="w-5 h-5 text-gray-600 mr-3" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">
-                          {moment.utc(selectedEvent.startDate).format("MMM D, YYYY")} -
-                          {moment.utc(selectedEvent.endDate).format("MMM D, YYYY")}
-                        </p>
-                        <p className="text-xs text-gray-500">Event Duration</p>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[700px] bg-white max-h-[80vh] overflow-y-auto">
+                  <DialogHeader className="bg-white pb-4 border-b">
+                    <DialogTitle className="text-2xl font-bold text-[#6B9B76]">
+                      Create New Event
+                    </DialogTitle>
+                  </DialogHeader>
+                  <form
+                    onSubmit={handleSubmit((data) => {
+                      onSubmit(data);
+                    })}
+                    className="space-y-6"
+                  >
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="title" className="text-[#6B9B76]">
+                            Event Title
+                          </Label>
+                          <Input
+                            id="title"
+                            {...register("title")}
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                          />
+                          {errors.title && (
+                            <span className="text-red-500 text-sm">{errors.title.message}</span>
+                          )}
+                        </div>
+                        <div>
+                          <Label htmlFor="description" className="text-[#6B9B76]">
+                            Description
+                          </Label>
+                          <Input
+                            id="description"
+                            {...register("description")}
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                          />
+                          {errors.description && (
+                            <span className="text-red-500 text-sm">
+                              {errors.description.message}
+                            </span>
+                          )}
+                        </div>
+                        <div>
+                          <Label htmlFor="startDate" className="text-[#6B9B76]">
+                            Start Date
+                          </Label>
+                          <Input
+                            id="startDate"
+                            type="date"
+                            {...register("startDate")}
+                            min={new Date().toISOString().split("T")[0]}
+                            className={cn(
+                              "border-[#6B9B76]/20 focus:border-[#6B9B76]",
+                              errors.startDate && "border-red-500",
+                            )}
+                          />
+                          {errors.startDate && (
+                            <span className="text-red-500 text-sm">{errors.startDate.message}</span>
+                          )}
+                        </div>
+                        <div>
+                          <Label htmlFor="endDate" className="text-[#6B9B76]">
+                            End Date
+                          </Label>
+                          <Input
+                            id="endDate"
+                            type="date"
+                            {...register("endDate")}
+                            min={
+                              watch("startDate")?.toString() ||
+                              new Date().toISOString().split("T")[0]
+                            }
+                            className={cn(
+                              "border-[#6B9B76]/20 focus:border-[#6B9B76]",
+                              errors.endDate && "border-red-500",
+                            )}
+                          />
+                          {errors.endDate && (
+                            <span className="text-red-500 text-sm">{errors.endDate.message}</span>
+                          )}
+                        </div>
+                      </div>
+                      <div className="space-y-4">
+                        <div>
+                          <Label htmlFor="location" className="text-[#6B9B76]">
+                            Location
+                          </Label>
+                          <Input
+                            id="location"
+                            {...register("location")}
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                            disabled={watch("isVirtual")}
+                            placeholder={watch("isVirtual") ? "Virtual Event" : "Enter location"}
+                          />
+                          {errors.location && (
+                            <span className="text-red-500 text-sm">{errors.location.message}</span>
+                          )}
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="isVirtual"
+                            {...register("isVirtual")}
+                            className="border-[#6B9B76] text-[#6B9B76]"
+                            onCheckedChange={(checked) => {
+                              setValue("isVirtual", checked as boolean);
+                              if (checked) {
+                                setValue("location", "");
+                                // Clear location for all sessions
+                                fields.forEach((_, index) => {
+                                  setValue(`sessions.${index}.location`, "");
+                                });
+                              }
+                            }}
+                          />
+                          <Label htmlFor="isVirtual" className="text-[#6B9B76]">
+                            Virtual Event
+                          </Label>
+                        </div>
+                        <div>
+                          <Label htmlFor="maxAttendees" className="text-[#6B9B76]">
+                            Max Attendees
+                          </Label>
+                          <Input
+                            id="maxAttendees"
+                            type="number"
+                            {...register("maxAttendees", { valueAsNumber: true })}
+                            className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                          />
+                          {errors.maxAttendees && (
+                            <span className="text-red-500 text-sm">
+                              {errors.maxAttendees.message}
+                            </span>
+                          )}
+                        </div>
+                        <div>
+                          <Label htmlFor="registrationDeadline" className="text-[#6B9B76]">
+                            Registration Deadline
+                          </Label>
+                          <Input
+                            id="registrationDeadline"
+                            type="date"
+                            {...register("registrationDeadline")}
+                            max={watch("startDate")?.toString()}
+                            className={cn(
+                              "border-[#6B9B76]/20 focus:border-[#6B9B76]",
+                              errors.registrationDeadline && "border-red-500",
+                            )}
+                          />
+                          {errors.registrationDeadline && (
+                            <span className="text-red-500 text-sm">
+                              {errors.registrationDeadline.message}
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center p-3 bg-gray-50 rounded-md border border-gray-100">
-                      <MapPinIcon className="w-5 h-5 text-gray-600 mr-3" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">
-                          {selectedEvent.isVirtual ? "Virtual Event" : selectedEvent.location}
-                        </p>
-                        <p className="text-xs text-gray-500">Location</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center p-3 bg-gray-50 rounded-md border border-gray-100">
-                      <UsersIcon className="w-5 h-5 text-gray-600 mr-3" />
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">
-                          {selectedEvent.maxAttendees} Attendees
-                        </p>
-                        <p className="text-xs text-gray-500">Maximum Capacity</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {user?.role === UserRole.ORGANIZER && (
-                    <div className="flex gap-2 pt-4">
-                      <EditEventButton
-                        event={selectedEvent}
-                        onEventUpdated={(updatedEvent) => {
-                          setEvents((prev) =>
-                            prev.map((event) =>
-                              event.id === updatedEvent.id ? updatedEvent : event,
-                            ),
-                          );
-                          setSelectedEvent(updatedEvent);
-                        }}
-                      />
-                      <Button
-                        onClick={() => handleDeleteEvent(selectedEvent.id)}
-                        variant="destructive"
-                        size="sm"
-                        className="w-full bg-red-50 text-red-900 hover:bg-red-100 border border-red-200"
-                      >
-                        <TrashIcon className="w-4 h-4 mr-2" /> Delete Event
-                      </Button>
-                    </div>
-                  )}
-
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="sessions" className="border-gray-100">
-                      <AccordionTrigger className="text-lg font-medium text-gray-900">
-                        Event Sessions
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="space-y-4">
-                          {selectedEvent.sessions && selectedEvent.sessions.length > 0 ? (
-                            selectedEvent.sessions.map((session) => (
-                              <div
-                                key={session.id}
-                                className="p-4 bg-gray-50 rounded-md border border-gray-100"
-                              >
-                                <div className="flex justify-between items-start">
-                                  <div className="space-y-2">
-                                    <h4 className="font-medium text-gray-900">{session.title}</h4>
-                                    <p className="text-sm text-gray-600">{session.description}</p>
-
-                                    <div className="flex items-center text-sm text-gray-600">
-                                      <ClockIcon className="w-4 h-4 mr-2" />
-                                      {session.startTime ? (
-                                        <>
-                                          {moment(session.startTime).format("MMM D, YYYY • h:mm A")}
-                                          {" - "}
-                                          {session.endTime
-                                            ? moment(session.endTime).format("h:mm A")
-                                            : ""}
-                                        </>
-                                      ) : (
-                                        ""
-                                      )}
-                                    </div>
-
-                                    <div className="flex items-center text-sm text-gray-600">
-                                      <MapPinIcon className="w-4 h-4 mr-2" />
-                                      {selectedEvent.isVirtual
-                                        ? "Virtual Session"
-                                        : session.location}
-                                    </div>
-
-                                    <div className="flex items-center text-sm text-gray-600">
-                                      <UsersIcon className="w-4 h-4 mr-2" />
-                                      {session.maxAttendees} Max Attendees
-                                    </div>
-
-                                    {isSessionRegistered(selectedEvent.id, session.id) ? (
-                                      <Badge className="bg-gray-100 text-gray-800">
-                                        Already Reserved
-                                      </Badge>
-                                    ) : (
-                                      <Button
-                                        onClick={() => handleRegister(selectedEvent.id, session.id)}
-                                        className="mt-2 bg-black text-white hover:bg-gray-800"
-                                      >
-                                        Register for Session
-                                      </Button>
-                                    )}
-                                  </div>
-
-                                  {user?.role === UserRole.ORGANIZER && (
-                                    <Button
-                                      onClick={() =>
-                                        handleDeleteSession(selectedEvent.id, session.id)
-                                      }
-                                      variant="destructive"
-                                      size="sm"
-                                      className="bg-red-50 text-red-900 hover:bg-red-100 border border-red-200"
-                                    >
-                                      <TrashIcon className="w-4 h-4" />
-                                    </Button>
+                    <div className="border-t border-[#6B9B76] pt-4 mt-4">
+                      <h3 className="text-lg font-semibold mb-2 text-[#6B9B76]">Event Sessions</h3>
+                      <Accordion type="single" collapsible className="w-full">
+                        {fields.map((field, index) => (
+                          <AccordionItem
+                            value={`session-${index}`}
+                            key={field.id}
+                            className="border-[#6B9B76]"
+                          >
+                            <AccordionTrigger className="text-[#6B9B76] hover:text-[#5a8463]">
+                              Session {index + 1}
+                            </AccordionTrigger>
+                            <AccordionContent className="bg-[#6B9B76]/5 p-4 rounded-lg">
+                              {sessionTimeErrors[index] && (
+                                <Alert variant="destructive" className="mb-4">
+                                  <AlertCircle className="h-4 w-4 mr-2" />
+                                  <AlertTitle>
+                                    {sessionTimeErrors[index]?.type === "conflict"
+                                      ? "Session Conflict"
+                                      : "Time Range Error"}
+                                  </AlertTitle>
+                                  <AlertDescription>
+                                    {sessionTimeErrors[index]?.message}
+                                  </AlertDescription>
+                                </Alert>
+                              )}
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <Label
+                                    htmlFor={`sessions.${index}.title`}
+                                    className="text-[#6B9B76]"
+                                  >
+                                    Session Title
+                                  </Label>
+                                  <Input
+                                    id={`sessions.${index}.title`}
+                                    {...register(`sessions.${index}.title`)}
+                                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                                    disabled={savedSessions[index] && !editingSessions[index]}
+                                  />
+                                  {errors.sessions?.[index]?.title && (
+                                    <span className="text-red-500 text-sm">
+                                      {errors.sessions[index]?.title?.message}
+                                    </span>
+                                  )}
+                                </div>
+                                <div>
+                                  <Label
+                                    htmlFor={`sessions.${index}.description`}
+                                    className="text-[#6B9B76]"
+                                  >
+                                    Session Description
+                                  </Label>
+                                  <Input
+                                    id={`sessions.${index}.description`}
+                                    {...register(`sessions.${index}.description`)}
+                                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                                    disabled={savedSessions[index] && !editingSessions[index]}
+                                  />
+                                  {errors.sessions?.[index]?.description && (
+                                    <span className="text-red-500 text-sm">
+                                      {errors.sessions[index]?.description?.message}
+                                    </span>
                                   )}
                                 </div>
                               </div>
-                            ))
-                          ) : (
-                            <p className="text-gray-500 italic">
-                              No sessions available for this event.
-                            </p>
-                          )}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="bg-white border border-gray-100 rounded-md p-8 h-full flex items-center justify-center">
-                <div className="text-center space-y-4">
-                  <div className="bg-gray-50 rounded-full p-4 w-16 h-16 mx-auto border border-gray-100">
-                    <CalendarIcon className="w-8 h-8 text-gray-600" />
+                              <div className="grid grid-cols-2 gap-4 mt-2">
+                                <div>
+                                  <Label
+                                    htmlFor={`sessions.${index}.startTime`}
+                                    className="text-[#6B9B76]"
+                                  >
+                                    Start Time
+                                  </Label>
+                                  <Input
+                                    type="datetime-local"
+                                    value={formatDateForInput(savedSessionData[index]?.startTime)}
+                                    onChange={(e) => handleStartTimeChange(e, index)}
+                                    min={
+                                      watch("startDate")
+                                        ? `${
+                                            new Date(watch("startDate")).toISOString().split("T")[0]
+                                          }T00:00`
+                                        : undefined
+                                    }
+                                    max={
+                                      watch("endDate")
+                                        ? `${
+                                            new Date(watch("endDate")).toISOString().split("T")[0]
+                                          }T23:59`
+                                        : undefined
+                                    }
+                                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                                    disabled={savedSessions[index] && !editingSessions[index]}
+                                  />
+                                </div>
+                                <div>
+                                  <Label
+                                    htmlFor={`sessions.${index}.endTime`}
+                                    className="text-[#6B9B76]"
+                                  >
+                                    End Time
+                                  </Label>
+                                  <Input
+                                    type="datetime-local"
+                                    value={formatDateForInput(savedSessionData[index]?.endTime)}
+                                    onChange={(e) => handleEndTimeChange(e, index)}
+                                    min={
+                                      watch("startDate")
+                                        ? `${
+                                            new Date(watch("startDate")).toISOString().split("T")[0]
+                                          }T00:00`
+                                        : undefined
+                                    }
+                                    max={
+                                      watch("endDate")
+                                        ? `${
+                                            new Date(watch("endDate")).toISOString().split("T")[0]
+                                          }T23:59`
+                                        : undefined
+                                    }
+                                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                                    disabled={savedSessions[index] && !editingSessions[index]}
+                                  />
+                                </div>
+                              </div>
+                              <div className="grid grid-cols-2 gap-4 mt-2">
+                                <div>
+                                  <Label
+                                    htmlFor={`sessions.${index}.location`}
+                                    className="text-[#6B9B76]"
+                                  >
+                                    Session Location
+                                  </Label>
+                                  <Input
+                                    id={`sessions.${index}.location`}
+                                    {...register(`sessions.${index}.location`)}
+                                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                                    disabled={
+                                      (watch("isVirtual") || savedSessions[index]) &&
+                                      !editingSessions[index]
+                                    }
+                                    placeholder={
+                                      watch("isVirtual")
+                                        ? "Virtual Session"
+                                        : "Enter session location"
+                                    }
+                                  />
+                                  {errors.sessions?.[index]?.location && (
+                                    <span className="text-red-500 text-sm">
+                                      {errors.sessions[index]?.location?.message}
+                                    </span>
+                                  )}
+                                </div>
+                                <div>
+                                  <Label
+                                    htmlFor={`sessions.${index}.maxAttendees`}
+                                    className="text-[#6B9B76]"
+                                  >
+                                    Max Attendees
+                                  </Label>
+                                  <Input
+                                    id={`sessions.${index}.maxAttendees`}
+                                    {...register(`sessions.${index}.maxAttendees`, {
+                                      valueAsNumber: true,
+                                    })}
+                                    type="number"
+                                    className="border-[#6B9B76]/20 focus:border-[#6B9B76]"
+                                    disabled={savedSessions[index] && !editingSessions[index]}
+                                  />
+                                  {errors.sessions?.[index]?.maxAttendees && (
+                                    <span className="text-red-500 text-sm">
+                                      {errors.sessions[index]?.maxAttendees?.message}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex justify-between mt-4">
+                                <div className="flex gap-2">
+                                  <Button
+                                    type="button"
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => remove(index)}
+                                    disabled={fields.length === 1}
+                                    className="bg-red-500 hover:bg-red-600 text-white"
+                                  >
+                                    <TrashIcon className="w-4 h-4 mr-2" /> Remove Session
+                                  </Button>
+                                  {!editingSessions[index] && savedSessions[index] && (
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => handleEditSession(index)}
+                                      className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10"
+                                    >
+                                      <Pencil className="w-4 h-4 mr-2" /> Edit Session
+                                    </Button>
+                                  )}
+                                </div>
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleSaveSession(index)}
+                                  disabled={
+                                    (!editingSessions[index] && savedSessions[index]) ||
+                                    !watch(`sessions.${index}.title`) ||
+                                    !watch(`sessions.${index}.description`) ||
+                                    !watch(`sessions.${index}.startTime`) ||
+                                    !watch(`sessions.${index}.endTime`) ||
+                                    !watch(`sessions.${index}.maxAttendees`) ||
+                                    Number(watch(`sessions.${index}.maxAttendees`)) <= 0 ||
+                                    !!sessionTimeErrors[index]
+                                  }
+                                  className={cn(
+                                    "border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10",
+                                    savedSessions[index] &&
+                                      !editingSessions[index] &&
+                                      "bg-green-50 border-green-500 text-green-500",
+                                  )}
+                                >
+                                  {savedSessions[index] && !editingSessions[index]
+                                    ? "Session Saved"
+                                    : "Save Session"}
+                                </Button>
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
+                      <Button
+                        type="button"
+                        onClick={addSession}
+                        className="w-full mt-4 bg-[#6B9B76] hover:bg-[#5a8463] text-white"
+                      >
+                        <PlusIcon className="w-4 h-4 mr-2" /> Add Another Session
+                      </Button>
+                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full bg-[#6B9B76] hover:bg-[#5a8463] text-white"
+                      disabled={
+                        !watch("title") ||
+                        !watch("description") ||
+                        !watch("startDate") ||
+                        !watch("endDate") ||
+                        !watch("registrationDeadline") ||
+                        (!watch("isVirtual") && !watch("location")) ||
+                        !watch("maxAttendees") ||
+                        Object.values(sessionTimeErrors).some((error) => error !== null)
+                      }
+                    >
+                      Create Event
+                    </Button>
+                  </form>
+                </DialogContent>
+              </Dialog>
+            </div>
+          )}
+
+          <div className="flex-1 min-w-0 h-full lg:max-w-[65%]">
+            <Card className="h-full bg-white rounded-md shadow-sm overflow-hidden border border-gray-100">
+              <CardContent className="p-0 h-full">
+                <Calendar
+                  localizer={localizer}
+                  events={events.map((event) => ({
+                    ...event,
+                    start: event.startDate
+                      ? new Date(
+                          new Date(event.startDate).getTime() +
+                            new Date().getTimezoneOffset() * 60000,
+                        )
+                      : new Date(),
+                    end: event.endDate
+                      ? new Date(
+                          new Date(event.endDate).getTime() +
+                            new Date().getTimezoneOffset() * 60000,
+                        )
+                      : new Date(),
+                  }))}
+                  startAccessor="start"
+                  endAccessor="end"
+                  style={{ height: "100%" }}
+                  onSelectEvent={handleSelectEvent}
+                  view={view}
+                  onView={(newView: View) => handleViewChange(newView as ViewType)}
+                  date={date}
+                  onNavigate={handleNavigate}
+                  views={["month", "week", "day"]}
+                  className="p-4 rbc-calendar"
+                />
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="flex-1 min-w-0 h-full lg:max-w-[35%] overflow-hidden">
+            <div className="h-full overflow-y-auto">
+              {selectedEvent ? (
+                <Card className="bg-white rounded-md shadow-sm border border-[#6B9B76]/20">
+                  <div className="bg-[#6B9B76]/5 p-6 border-b border-[#6B9B76]/20">
+                    <CardTitle className="text-2xl font-medium text-gray-900 mb-2">
+                      {selectedEvent.title}
+                    </CardTitle>
+                    <div className="flex flex-wrap gap-2">
+                      <Badge
+                        className={cn(
+                          "text-xs px-2 py-1 rounded-full",
+                          selectedEvent.status === "Active"
+                            ? "bg-[#6B9B76]/10 text-[#6B9B76]"
+                            : "bg-yellow-100 text-yellow-700",
+                        )}
+                      >
+                        {selectedEvent.status}
+                      </Badge>
+                      <Badge className="bg-[#6B9B76]/10 text-[#6B9B76]">
+                        {selectedEvent.isVirtual ? "Virtual" : "In-person"}
+                      </Badge>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-medium text-gray-900">No Event Selected</h3>
-                  <p className="text-gray-500">Select an event from the calendar to view details</p>
-                </div>
-              </Card>
-            )}
+
+                  <CardContent className="p-6 space-y-6">
+                    <p className="text-gray-600">{selectedEvent.description}</p>
+
+                    <div className="space-y-4">
+                      <div className="flex items-center p-3 bg-[#6B9B76]/5 rounded-md border border-[#6B9B76]/20">
+                        <ClockIcon className="w-5 h-5 text-[#6B9B76] mr-3" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {moment.utc(selectedEvent.startDate).format("MMM D, YYYY")} -
+                            {moment.utc(selectedEvent.endDate).format("MMM D, YYYY")}
+                          </p>
+                          <p className="text-xs text-gray-500">Event Duration</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center p-3 bg-[#6B9B76]/5 rounded-md border border-[#6B9B76]/20">
+                        <MapPinIcon className="w-5 h-5 text-[#6B9B76] mr-3" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedEvent.isVirtual ? "Virtual Event" : selectedEvent.location}
+                          </p>
+                          <p className="text-xs text-gray-500">Location</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center p-3 bg-[#6B9B76]/5 rounded-md border border-[#6B9B76]/20">
+                        <UsersIcon className="w-5 h-5 text-[#6B9B76] mr-3" />
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">
+                            {selectedEvent.maxAttendees} Attendees
+                          </p>
+                          <p className="text-xs text-gray-500">Maximum Capacity</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {user?.role === UserRole.ORGANIZER && (
+                      <div className="flex gap-2 pt-4">
+                        <EditEventButton
+                          event={selectedEvent}
+                          onEventUpdated={(updatedEvent) => {
+                            setEvents((prev) =>
+                              prev.map((event) =>
+                                event.id === updatedEvent.id ? updatedEvent : event,
+                              ),
+                            );
+                            setSelectedEvent(updatedEvent);
+                          }}
+                        />
+                        <Button
+                          onClick={() => handleDeleteEvent(selectedEvent.id)}
+                          variant="destructive"
+                          size="sm"
+                          className="w-full bg-red-50 text-red-900 hover:bg-red-100 border border-red-200"
+                        >
+                          <TrashIcon className="w-4 h-4 mr-2" /> Delete Event
+                        </Button>
+                      </div>
+                    )}
+
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="sessions" className="border-[#6B9B76]/20">
+                        <AccordionTrigger className="text-lg font-medium text-[#6B9B76] hover:text-[#5a8463]">
+                          Event Sessions
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          <div className="space-y-4">
+                            {selectedEvent.sessions && selectedEvent.sessions.length > 0 ? (
+                              selectedEvent.sessions.map((session) => (
+                                <div
+                                  key={session.id}
+                                  className="p-4 bg-[#6B9B76]/5 rounded-md border border-[#6B9B76]/20"
+                                >
+                                  <div className="flex justify-between items-start">
+                                    <div className="space-y-2">
+                                      <h4 className="font-medium text-gray-900">{session.title}</h4>
+                                      <p className="text-sm text-gray-600">{session.description}</p>
+
+                                      <div className="flex items-center text-sm text-gray-600">
+                                        <ClockIcon className="w-4 h-4 mr-2" />
+                                        {session.startTime ? (
+                                          <>
+                                            {moment(session.startTime).format(
+                                              "MMM D, YYYY • h:mm A",
+                                            )}
+                                            {" - "}
+                                            {session.endTime
+                                              ? moment(session.endTime).format("h:mm A")
+                                              : ""}
+                                          </>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </div>
+
+                                      <div className="flex items-center text-sm text-gray-600">
+                                        <MapPinIcon className="w-4 h-4 mr-2" />
+                                        {selectedEvent.isVirtual
+                                          ? "Virtual Session"
+                                          : session.location}
+                                      </div>
+
+                                      <div className="flex items-center text-sm text-gray-600">
+                                        <UsersIcon className="w-4 h-4 mr-2" />
+                                        {session.maxAttendees} Max Attendees
+                                      </div>
+
+                                      {isSessionRegistered(selectedEvent.id, session.id) ? (
+                                        <Badge className="bg-gray-100 text-gray-800">
+                                          Already Reserved
+                                        </Badge>
+                                      ) : (
+                                        <Button
+                                          onClick={() =>
+                                            handleRegister(selectedEvent.id, session.id)
+                                          }
+                                          className="mt-2 bg-[#6B9B76] hover:bg-[#5a8463] text-white"
+                                        >
+                                          Register for Session
+                                        </Button>
+                                      )}
+                                    </div>
+
+                                    {user?.role === UserRole.ORGANIZER && (
+                                      <Button
+                                        onClick={() =>
+                                          handleDeleteSession(selectedEvent.id, session.id)
+                                        }
+                                        variant="destructive"
+                                        size="sm"
+                                        className="bg-red-50 text-red-900 hover:bg-red-100 border border-red-200"
+                                      >
+                                        <TrashIcon className="w-4 h-4" />
+                                      </Button>
+                                    )}
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <p className="text-gray-500 italic">
+                                No sessions available for this event.
+                              </p>
+                            )}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </CardContent>
+                </Card>
+              ) : (
+                <Card className="bg-white border border-[#6B9B76]/20 rounded-md p-8 h-full flex items-center justify-center">
+                  <div className="text-center space-y-4">
+                    <div className="bg-[#6B9B76]/5 rounded-full p-4 w-16 h-16 mx-auto border border-[#6B9B76]/20">
+                      <CalendarIcon className="w-8 h-8 text-[#6B9B76]" />
+                    </div>
+                    <h3 className="text-xl font-medium text-gray-900">No Event Selected</h3>
+                    <p className="text-gray-500">
+                      Select an event from the calendar to view details
+                    </p>
+                  </div>
+                </Card>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -4,16 +4,20 @@ import { PrismaClient, UserRole } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  await prisma.chat.deleteMany();
   await prisma.investment.deleteMany();
   await prisma.investmentOpportunity.deleteMany();
   await prisma.fundingOpportunity.deleteMany();
-  await prisma.projectProposal.deleteMany();
+  await prisma.grantApplication.deleteMany();
   await prisma.projectProposalReview.deleteMany();
+  await prisma.projectProposal.deleteMany();
   await prisma.academicEventRegistration.deleteMany();
-  await prisma.files.deleteMany();
+  await prisma.academicEventSession.deleteMany();
   await prisma.academicEvent.deleteMany();
-  await prisma.forum.deleteMany();
   await prisma.post.deleteMany();
+  await prisma.forum.deleteMany();
+  await prisma.files.deleteMany();
+  await prisma.followersFollowings.deleteMany();
   await prisma.user.deleteMany();
 
   const admin = await prisma.user.create({

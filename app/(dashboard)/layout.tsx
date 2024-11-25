@@ -198,26 +198,26 @@ export default function DashboardLayout({
 
   return (
     <div className="flex flex-col h-screen bg-gray-50">
-      {/* Top Navigation */}
-      <header className="bg-gradient-to-r from-blue-600 to-blue-700 sticky top-0 z-40">
-        <div className="flex items-center justify-between px-6 h-20 max-w-[1400px] mx-auto">
-          {/* Logo */}
-          <div className="flex items-center min-w-[200px]">
-            <h1 className="text-2xl font-bold bg-white/10 px-4 py-2 rounded-md">
-              <span className="text-white">R</span>
-              <span className="text-white/90">Sphere</span>
+      {/* Top Navigation - Updated padding */}
+      <header className="bg-[#6B9B76] sticky top-0 z-40">
+        <div className="flex items-center justify-between px-3 h-20 max-w-[1400px] mx-auto">
+          {/* Logo - Added responsive text size */}
+          <div className="flex items-center">
+            <h1 className="text-lg md:text-2xl font-bold px-2 py-2 rounded-md whitespace-nowrap">
+              <span className="text-white">Research</span>
+              <span className="text-white ml-2">Collaboration</span>
             </h1>
           </div>
 
-          {/* Main Navigation - Desktop */}
-          <nav className="hidden lg:flex items-center justify-center space-x-2 flex-1">
+          {/* Main Navigation - Desktop - Updated hover states */}
+          <nav className="hidden lg:flex items-center justify-center space-x-1 flex-1">
             {sidebarItems.slice(0, 6).map((item) => (
               <Link key={item.href} href={item.href}>
                 <Button
                   variant="ghost"
                   size="sm"
                   className={cn(
-                    "text-blue-50 hover:text-white hover:bg-white/10 h-11 px-4",
+                    "text-white/90 hover:text-white hover:bg-white/10 h-11 px-4",
                     pathname === item.href && "bg-white/20 text-white",
                   )}
                 >
@@ -299,18 +299,23 @@ export default function DashboardLayout({
         </div>
       </header>
 
-      {/* Mobile Navigation Drawer */}
+      {/* Mobile Navigation Drawer - Updated background color */}
       {sidebarOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           {/* biome-ignore lint/a11y/useKeyWithClickEvents: <explanation> */}
           <div className="fixed inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
-          <nav className="fixed top-0 left-0 bottom-0 w-64 bg-white p-4">
+          <nav className="fixed top-0 left-0 bottom-0 w-64 bg-[#6B9B76] p-4">
             <div className="flex items-center justify-between mb-4">
-              <h1 className="text-xl font-bold">
-                <span className="text-blue-600">R</span>
-                <span className="text-blue-950">Sphere</span>
+              <h1 className="text-lg font-bold">
+                <span className="text-white">Research</span>
+                <span className="text-white ml-2">Collaboration</span>
               </h1>
-              <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setSidebarOpen(false)}
+                className="text-white hover:bg-white/10"
+              >
                 <XIcon className="h-6 w-6" />
               </Button>
             </div>
@@ -320,9 +325,10 @@ export default function DashboardLayout({
                   <Link key={item.href} href={item.href} passHref>
                     <Button
                       variant="ghost"
-                      className={`w-full justify-start ${
-                        pathname === item.href ? "bg-blue-50 text-blue-700" : ""
-                      }`}
+                      className={cn(
+                        "w-full justify-start text-white hover:bg-white/10",
+                        pathname === item.href ? "bg-white/20" : "",
+                      )}
                       onClick={handleSidebarItemClick}
                     >
                       <item.icon className="mr-2 h-4 w-4" />
@@ -342,6 +348,11 @@ export default function DashboardLayout({
           <div className="pb-16 md:pb-0">{children}</div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="bg-[#6B9B76]/20 p-4 text-center text-sm text-gray-600">
+        © 2024 Research Collaboration Website. All Rights Reserved.
+      </footer>
     </div>
   );
 }

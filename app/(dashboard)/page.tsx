@@ -194,8 +194,8 @@ function renderAdminUserDashboard(latestNews: Event[]) {
           <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center space-x-4">
-                <div className="p-2 rounded-lg bg-blue-50">
-                  <feature.icon className="h-6 w-6 text-blue-600" />
+                <div className="p-2 rounded-lg bg-[#6B9B76]/10">
+                  <feature.icon className="h-6 w-6 text-[#6B9B76]" />
                 </div>
                 <h3 className="font-semibold">{feature.title}</h3>
               </div>
@@ -204,7 +204,7 @@ function renderAdminUserDashboard(latestNews: Event[]) {
               <p className="text-sm text-gray-500 mb-4">{feature.description}</p>
               <Link
                 href={feature.href}
-                className="text-sm text-blue-600 hover:text-blue-700 inline-flex items-center"
+                className="text-sm text-[#6B9B76] hover:text-[#5a8463] inline-flex items-center"
               >
                 Explore
                 <ArrowRightIcon className="ml-1 h-4 w-4" />
@@ -264,8 +264,8 @@ function renderAdminUserDashboard(latestNews: Event[]) {
               <AreaChart data={activityData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#6B9B76" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="#6B9B76" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
@@ -274,7 +274,7 @@ function renderAdminUserDashboard(latestNews: Event[]) {
                 <Area
                   type="monotone"
                   dataKey="value"
-                  stroke="#3b82f6"
+                  stroke="#6B9B76"
                   fillOpacity={1}
                   fill="url(#colorValue)"
                 />
@@ -305,7 +305,7 @@ function renderAdminUserDashboard(latestNews: Event[]) {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="text-blue-600 hover:text-blue-700 whitespace-nowrap"
+                    className="text-[#6B9B76] hover:text-[#5a8463] whitespace-nowrap"
                   >
                     View Project <ArrowRightIcon className="ml-2 h-4 w-4" />
                   </Button>
@@ -330,9 +330,9 @@ function QuickLinkButton({ href, icon: Icon, label }: QuickLinkButtonProps) {
     <Link href={href}>
       <Button
         variant="outline"
-        className="w-full h-auto py-4 px-4 flex flex-col items-center gap-2 hover:bg-gray-50"
+        className="w-full h-auto py-4 px-4 flex flex-col items-center gap-2 hover:bg-[#6B9B76]/5"
       >
-        <Icon className="h-5 w-5 text-gray-500" />
+        <Icon className="h-5 w-5 text-[#6B9B76]" />
         <span className="text-sm font-medium">{label}</span>
       </Button>
     </Link>
@@ -362,8 +362,8 @@ function renderInvestorDashboard() {
           <Card key={index} className="border-none shadow-md hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-center space-x-4">
-                <div className="p-2 rounded-lg bg-blue-50">
-                  <feature.icon className="h-6 w-6 text-blue-600" />
+                <div className="p-2 rounded-lg bg-[#6B9B76]/10">
+                  <feature.icon className="h-6 w-6 text-[#6B9B76]" />
                 </div>
                 <h3 className="font-semibold">{feature.title}</h3>
               </div>
@@ -372,7 +372,7 @@ function renderInvestorDashboard() {
               <p className="text-sm text-gray-500 mb-4">{feature.description}</p>
               <Link
                 href={feature.href}
-                className="text-sm text-blue-600 hover:text-blue-700 inline-flex items-center"
+                className="text-sm text-[#6B9B76] hover:text-[#5a8463] inline-flex items-center"
               >
                 View Details
                 <ArrowRightIcon className="ml-1 h-4 w-4" />
@@ -408,7 +408,7 @@ function renderInvestorDashboard() {
                     className={cn(
                       "text-xs px-2 py-1 rounded-full",
                       investment.status === "Active"
-                        ? "bg-green-100 text-green-700"
+                        ? "bg-[#6B9B76]/10 text-[#6B9B76]"
                         : "bg-yellow-100 text-yellow-700",
                     )}
                   >
@@ -446,8 +446,8 @@ function renderInvestorDashboard() {
               <AreaChart data={activityData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#6B9B76" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="#6B9B76" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
@@ -456,7 +456,7 @@ function renderInvestorDashboard() {
                 <Area
                   type="monotone"
                   dataKey="value"
-                  stroke="#3b82f6"
+                  stroke="#6B9B76"
                   fillOpacity={1}
                   fill="url(#colorValue)"
                 />
@@ -504,12 +504,12 @@ function renderOrganizerDashboard(upcomingEvents: Event[], reservations: any[]) 
           <Card key={index} className="border-none shadow-md">
             <CardHeader>
               <div className="flex items-center space-x-4">
-                <div className="p-2 rounded-lg bg-blue-50">
-                  <stat.icon className="h-6 w-6 text-blue-600" />
+                <div className="p-2 rounded-lg bg-[#6B9B76]/10">
+                  <stat.icon className="h-6 w-6 text-[#6B9B76]" />
                 </div>
                 <div>
                   <h3 className="font-semibold">{stat.title}</h3>
-                  <p className="text-2xl font-bold text-blue-600">{stat.value}</p>
+                  <p className="text-2xl font-bold text-[#6B9B76]">{stat.value}</p>
                 </div>
               </div>
             </CardHeader>
@@ -575,8 +575,8 @@ function renderOrganizerDashboard(upcomingEvents: Event[], reservations: any[]) 
               <AreaChart data={activityData}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
-                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    <stop offset="5%" stopColor="#6B9B76" stopOpacity={0.1} />
+                    <stop offset="95%" stopColor="#6B9B76" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <XAxis dataKey="name" stroke="#94a3b8" fontSize={12} />
@@ -585,7 +585,7 @@ function renderOrganizerDashboard(upcomingEvents: Event[], reservations: any[]) 
                 <Area
                   type="monotone"
                   dataKey="value"
-                  stroke="#3b82f6"
+                  stroke="#6B9B76"
                   fillOpacity={1}
                   fill="url(#colorValue)"
                 />
