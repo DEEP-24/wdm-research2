@@ -1,40 +1,23 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { UserRole } from "@prisma/client";
-import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
+import { UserRole } from "@prisma/client";
 import { type RegisterFormData, registerSchema } from "@/lib/schema";
+import Image from "next/image";
+
+type FieldErrors = {
+  [key: string]: string[];
+};
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [_fieldErrors, setFieldErrors] = useState<{ [key: string]: string[] }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string[] }>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [selectedRole, setSelectedRole] = useState<"user" | "organizer" | "investor">("user");
 
   const {
@@ -61,6 +44,8 @@ export default function RegisterPage() {
 
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
+    setFieldErrors({});
+
     try {
       const response = await fetch("/api/auth/register", {
         method: "POST",
@@ -74,16 +59,15 @@ export default function RegisterPage() {
 
       if (!response.ok) {
         if (responseData.fieldErrors) {
-          setFieldErrors(responseData.fieldErrors);
+          setFieldErrors(responseData.fieldErrors as FieldErrors);
           return;
         }
         throw new Error(responseData.error || "Registration failed");
       }
 
       toast.success("Registration successful! Please login.");
-      router.push(responseData.redirectTo || "/login");
+      router.push("/login");
     } catch (error) {
-      console.error("Registration error:", error);
       toast.error(error instanceof Error ? error.message : "Registration failed");
     } finally {
       setIsLoading(false);
@@ -91,295 +75,208 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="w-full">
-      <Card className="border border-zinc-200">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-semibold text-zinc-900">Create account</CardTitle>
-          <CardDescription className="text-zinc-500">
-            Join our research collaboration platform
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Basic Information Section */}
-              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstName" className="text-sm font-medium text-zinc-700">
-                    First Name
-                  </Label>
-                  <Input
-                    {...register("firstName")}
-                    className={cn(
-                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                      errors.firstName && "border-red-500",
-                    )}
-                  />
-                  {errors.firstName && (
-                    <p className="text-sm text-red-500">{errors.firstName.message}</p>
-                  )}
-                </div>
+    <div className="w-full max-w-md mx-auto mt-8 px-4">
+      <div className="mb-8">
+        <Image
+          src="https://www.loginradius.com/blog/static/25f482319c5c4fcb1749a8c424a007b0/d3746/login-authentication.jpg"
+          alt="Register"
+          width={400}
+          height={250}
+          className="rounded-lg mx-auto"
+        />
+      </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="lastName" className="text-sm font-medium text-zinc-700">
-                    Last Name
-                  </Label>
-                  <Input
-                    {...register("lastName")}
-                    className={cn(
-                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                      errors.lastName && "border-red-500",
-                    )}
-                  />
-                  {errors.lastName && (
-                    <p className="text-sm text-red-500">{errors.lastName.message}</p>
-                  )}
-                </div>
+      <h1 className="text-2xl font-semibold mb-2">Create Account</h1>
+      <p className="text-gray-600 mb-6">
+        Please fill in your information to create a new account. If you already have an account, you
+        can log in instead.
+      </p>
 
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium text-zinc-700">
-                    Email
-                  </Label>
-                  <Input
-                    type="email"
-                    {...register("email")}
-                    className={cn(
-                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                      errors.email && "border-red-500",
-                    )}
-                  />
-                  {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
-                </div>
-              </div>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label className="block text-sm mb-2">First Name</label>
+          <Input
+            {...register("firstName")}
+            placeholder="Enter your first name"
+            className={`w-full p-2 border rounded ${
+              errors.firstName || fieldErrors.firstName ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.firstName && (
+            <p className="text-sm text-red-500 mt-1">{errors.firstName.message}</p>
+          )}
+          {fieldErrors.firstName?.map((error) => (
+            <p key={`firstName-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
 
-              {/* Account Information Section */}
-              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="role" className="text-sm font-medium text-zinc-700">
-                    Role
-                  </Label>
-                  <Select onValueChange={handleRoleChange} defaultValue="user">
-                    <SelectTrigger className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all">
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.values(UserRole)
-                        .filter((role) => role !== "ADMIN")
-                        .map((role) => (
-                          <SelectItem
-                            key={role}
-                            value={role.toLowerCase() as "user" | "organizer" | "investor"}
-                          >
-                            {role.charAt(0) + role.slice(1).toLowerCase()}
-                          </SelectItem>
-                        ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+        <div>
+          <label className="block text-sm mb-2">Last Name</label>
+          <Input
+            {...register("lastName")}
+            placeholder="Enter your last name"
+            className={`w-full p-2 border rounded ${
+              errors.lastName || fieldErrors.lastName ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.lastName && (
+            <p className="text-sm text-red-500 mt-1">{errors.lastName.message}</p>
+          )}
+          {fieldErrors.lastName?.map((error) => (
+            <p key={`lastName-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium text-zinc-700">
-                    Password
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      {...register("password")}
-                      className={cn(
-                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all pr-10",
-                        errors.password && "border-red-500",
-                      )}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
-                    >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                    </button>
-                  </div>
-                  {errors.password && (
-                    <p className="text-sm text-red-500">{errors.password.message}</p>
-                  )}
-                </div>
+        <div>
+          <label className="block text-sm mb-2">Email</label>
+          <Input
+            {...register("email")}
+            type="email"
+            placeholder="Enter your email"
+            className={`w-full p-2 border rounded ${
+              errors.email || fieldErrors.email ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+          {fieldErrors.email?.map((error) => (
+            <p key={`email-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-sm font-medium text-zinc-700">
-                    Confirm Password
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      type={showConfirmPassword ? "text" : "password"}
-                      {...register("confirmPassword")}
-                      className={cn(
-                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all pr-10",
-                        errors.confirmPassword && "border-red-500",
-                      )}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
-                    </button>
-                  </div>
-                  {errors.confirmPassword && (
-                    <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
-                  )}
-                </div>
-              </div>
+        <div>
+          <label className="block text-sm mb-2">Role</label>
+          <select
+            value={selectedRole}
+            onChange={(e) => handleRoleChange(e.target.value as "user" | "organizer" | "investor")}
+            className="w-full p-2 border rounded border-gray-300"
+          >
+            {Object.values(UserRole)
+              .filter((role) => role !== "ADMIN")
+              .map((role) => (
+                <option key={role} value={role.toLowerCase()}>
+                  {role.charAt(0) + role.slice(1).toLowerCase()}
+                </option>
+              ))}
+          </select>
+        </div>
 
-              {/* Contact Information Section */}
-              <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm font-medium text-zinc-700">
-                    Phone
-                  </Label>
-                  <Input
-                    {...register("phone")}
-                    className={cn(
-                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                      errors.phone && "border-red-500",
-                    )}
-                  />
-                  {errors.phone && <p className="text-sm text-red-500">{errors.phone.message}</p>}
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="dob" className="text-sm font-medium text-zinc-700">
-                    Date of Birth
-                  </Label>
-                  <Input
-                    type="date"
-                    {...register("dob")}
-                    max={new Date().toISOString().split("T")[0]}
-                    className={cn(
-                      "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                      errors.dob && "border-red-500",
-                    )}
-                  />
-                  {errors.dob && <p className="text-sm text-red-500">{errors.dob.message}</p>}
-                </div>
-              </div>
-
-              {/* Address Section */}
-              <div className="lg:col-span-3 space-y-4">
-                <Label className="text-sm font-medium text-zinc-700">Address</Label>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="md:col-span-2">
-                    <Input
-                      {...register("street")}
-                      placeholder="Street address"
-                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      {...register("aptNo")}
-                      placeholder="Apt/Suite (optional)"
-                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      {...register("city")}
-                      placeholder="City"
-                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      {...register("state")}
-                      placeholder="State"
-                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <Input
-                      {...register("zipcode")}
-                      placeholder="ZIP code"
-                      className="h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Research Fields (Only for USER role) */}
-              {selectedRole === "user" && (
-                <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="expertise" className="text-sm font-medium text-zinc-700">
-                      Expertise
-                    </Label>
-                    <Input
-                      {...register("expertise")}
-                      placeholder="Your field of expertise"
-                      className={cn(
-                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                        errors.expertise && "border-red-500",
-                      )}
-                    />
-                    {errors.expertise && (
-                      <p className="text-sm text-red-500">{errors.expertise.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="researchInterests"
-                      className="text-sm font-medium text-zinc-700"
-                    >
-                      Research Interests
-                    </Label>
-                    <Input
-                      {...register("researchInterests")}
-                      placeholder="e.g., AI, Climate Science, Neurobiology"
-                      className={cn(
-                        "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                        errors.researchInterests && "border-red-500",
-                      )}
-                    />
-                    {errors.researchInterests && (
-                      <p className="text-sm text-red-500">{errors.researchInterests.message}</p>
-                    )}
-                  </div>
-                </div>
+        {selectedRole === "user" && (
+          <>
+            <div>
+              <label className="block text-sm mb-2">Expertise</label>
+              <Input
+                {...register("expertise")}
+                placeholder="Your field of expertise"
+                className={`w-full p-2 border rounded ${
+                  errors.expertise || fieldErrors.expertise ? "border-red-500" : "border-gray-300"
+                }`}
+              />
+              {errors.expertise && (
+                <p className="text-sm text-red-500 mt-1">{errors.expertise.message}</p>
               )}
+              {fieldErrors.expertise?.map((error) => (
+                <p key={`expertise-${error}`} className="text-sm text-red-500 mt-1">
+                  {error}
+                </p>
+              ))}
             </div>
 
-            <Button
-              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white transition-colors h-10"
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-100 rounded-full animate-spin" />
-                  <span>Creating account...</span>
-                </div>
-              ) : (
-                "Create account"
+            <div>
+              <label className="block text-sm mb-2">Research Interests</label>
+              <Input
+                {...register("researchInterests")}
+                placeholder="e.g., AI, Climate Science"
+                className={`w-full p-2 border rounded ${
+                  errors.researchInterests || fieldErrors.researchInterests
+                    ? "border-red-500"
+                    : "border-gray-300"
+                }`}
+              />
+              {errors.researchInterests && (
+                <p className="text-sm text-red-500 mt-1">{errors.researchInterests.message}</p>
               )}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="border-t border-zinc-200 mt-2">
-          <div className="text-sm text-center w-full text-zinc-600 mt-2">
+              {fieldErrors.researchInterests?.map((error) => (
+                <p key={`researchInterests-${error}`} className="text-sm text-red-500 mt-1">
+                  {error}
+                </p>
+              ))}
+            </div>
+          </>
+        )}
+
+        <div>
+          <label className="block text-sm mb-2">Password</label>
+          <Input
+            {...register("password")}
+            type="password"
+            placeholder="Enter your password"
+            className={`w-full p-2 border rounded ${
+              errors.password || fieldErrors.password ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.password && (
+            <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+          )}
+          {fieldErrors.password?.map((error) => (
+            <p key={`password-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">Confirm Password</label>
+          <Input
+            {...register("confirmPassword")}
+            type="password"
+            placeholder="Confirm your password"
+            className={`w-full p-2 border rounded ${
+              errors.confirmPassword || fieldErrors.confirmPassword
+                ? "border-red-500"
+                : "border-gray-300"
+            }`}
+          />
+          {errors.confirmPassword && (
+            <p className="text-sm text-red-500 mt-1">{errors.confirmPassword.message}</p>
+          )}
+          {fieldErrors.confirmPassword?.map((error) => (
+            <p key={`confirmPassword-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span>Creating account...</span>
+            </div>
+          ) : (
+            "Create Account"
+          )}
+        </button>
+
+        <div className="text-center space-y-2 pt-4">
+          <p className="text-sm text-gray-600">
             Already have an account?{" "}
-            <Link
-              href="/login"
-              className="font-medium text-zinc-900 hover:text-zinc-700 transition-colors"
-            >
-              Sign in
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
+            <a href="/login" className="text-green-600 hover:underline">
+              Log in
+            </a>
+            .
+          </p>
+        </div>
+      </form>
     </div>
   );
 }

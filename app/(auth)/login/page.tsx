@@ -1,25 +1,13 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 import { type LoginFormData, loginSchema } from "@/lib/schema";
+import Image from "next/image";
 
 type FieldErrors = {
   [key: string]: string[];
@@ -28,7 +16,6 @@ type FieldErrors = {
 export default function LoginPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string[] }>({});
   const [mounted, setMounted] = useState(false);
 
@@ -40,7 +27,6 @@ export default function LoginPage() {
     const checkAuth = async () => {
       try {
         const response = await fetch("/api/auth/user", {});
-
         if (response.ok) {
           router.push("/");
           return;
@@ -49,7 +35,6 @@ export default function LoginPage() {
         console.error("Auth check failed:", error);
       }
     };
-
     checkAuth();
   }, [router]);
 
@@ -99,93 +84,87 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="w-full">
-      <Card className="border border-zinc-200">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-semibold text-zinc-900">Sign in</CardTitle>
-          <CardDescription className="text-zinc-500">
-            Welcome back to your research workspace
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-zinc-700">
-                Email
-              </Label>
-              <Input
-                {...register("email")}
-                type="email"
-                className={cn(
-                  "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all",
-                  (errors.email || fieldErrors.email) && "border-red-500",
-                )}
-              />
-              {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
-              {fieldErrors.email?.map((error) => (
-                <p key={`email-${error}`} className="text-sm text-red-500">
-                  {error}
-                </p>
-              ))}
-            </div>
+    <div className="w-full max-w-md mx-auto mt-8 px-4">
+      <div className="mb-8">
+        <Image
+          src="https://www.loginradius.com/blog/static/25f482319c5c4fcb1749a8c424a007b0/d3746/login-authentication.jpg"
+          alt="Login"
+          width={400}
+          height={250}
+          className="rounded-lg mx-auto"
+        />
+      </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-zinc-700">
-                Password
-              </Label>
-              <div className="relative">
-                <Input
-                  {...register("password")}
-                  type={showPassword ? "text" : "password"}
-                  className={cn(
-                    "h-10 bg-white border-zinc-200 focus:border-zinc-900 focus:ring-zinc-900/10 transition-all pr-10",
-                    (errors.password || fieldErrors.password) && "border-red-500",
-                  )}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 transition-colors"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-              {errors.password && <p className="text-sm text-red-500">{errors.password.message}</p>}
-              {fieldErrors.password?.map((error) => (
-                <p key={`password-${error}`} className="text-sm text-red-500">
-                  {error}
-                </p>
-              ))}
-            </div>
+      <h1 className="text-2xl font-semibold mb-2">Login</h1>
+      <p className="text-gray-600 mb-6">
+        Please enter your email and password to log in to your account. If you don't have an
+        account, you can sign up below.
+      </p>
 
-            <Button
-              className="w-full bg-zinc-900 hover:bg-zinc-800 text-white transition-colors"
-              type="submit"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <div className="flex items-center justify-center gap-2">
-                  <div className="w-4 h-4 border-2 border-zinc-400 border-t-zinc-100 rounded-full animate-spin" />
-                  <span>Signing in...</span>
-                </div>
-              ) : (
-                "Sign in"
-              )}
-            </Button>
-          </form>
-        </CardContent>
-        <CardFooter className="border-t border-zinc-200 mt-2">
-          <div className="text-sm text-center w-full text-zinc-600 mt-4">
-            Don't have an account?{" "}
-            <Link
-              href="/register"
-              className="font-medium text-zinc-900 hover:text-zinc-700 transition-colors"
-            >
-              Create account
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div>
+          <label className="block text-sm mb-2">Email</label>
+          <Input
+            {...register("email")}
+            type="email"
+            placeholder="Enter your email"
+            className={`w-full p-2 border rounded ${
+              errors.email || fieldErrors.email ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+          {fieldErrors.email?.map((error) => (
+            <p key={`email-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
+
+        <div>
+          <label className="block text-sm mb-2">Password</label>
+          <Input
+            {...register("password")}
+            type="password"
+            placeholder="Enter your password"
+            className={`w-full p-2 border rounded ${
+              errors.password || fieldErrors.password ? "border-red-500" : "border-gray-300"
+            }`}
+          />
+          {errors.password && (
+            <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+          )}
+          {fieldErrors.password?.map((error) => (
+            <p key={`password-${error}`} className="text-sm text-red-500 mt-1">
+              {error}
+            </p>
+          ))}
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition-colors"
+        >
+          {isLoading ? (
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span>Logging in...</span>
+            </div>
+          ) : (
+            "Login"
+          )}
+        </button>
+
+        <div className="text-center space-y-2 pt-4">
+          <p className="text-sm text-gray-600">
+            If you don't have an account, please{" "}
+            <a href="/register" className="text-green-600 hover:underline">
+              sign up
+            </a>
+            .
+          </p>
+        </div>
+      </form>
     </div>
   );
 }
