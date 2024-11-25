@@ -14,6 +14,7 @@ async function main() {
   await prisma.academicEventRegistration.deleteMany();
   await prisma.academicEventSession.deleteMany();
   await prisma.academicEvent.deleteMany();
+  await prisma.postMessage.deleteMany();
   await prisma.post.deleteMany();
   await prisma.forum.deleteMany();
   await prisma.files.deleteMany();

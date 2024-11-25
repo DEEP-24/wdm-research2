@@ -4,14 +4,17 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const token = cookies().get("token");
+    const cookieStore = cookies();
+    const token = cookieStore.get("token");
 
-    if (!token) {
+    if (!token?.value) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const user = await db.user.findUnique({
-      where: { id: token.value },
+    const user = await db.user.findFirst({
+      where: {
+        id: token.value,
+      },
       select: {
         id: true,
         email: true,
@@ -23,6 +26,7 @@ export async function GET() {
     });
 
     if (!user) {
+      cookieStore.delete("token");
       return NextResponse.json({ error: "User not found" }, { status: 401 });
     }
 

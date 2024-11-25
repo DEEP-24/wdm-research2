@@ -65,6 +65,8 @@ model User {
   sentMessages     Chat[] @relation("SentMessages")
   receivedMessages Chat[] @relation("ReceivedMessages")
 
+  postMessages PostMessage[]
+
   @@map("users")
 }
 
@@ -245,10 +247,28 @@ model Post {
   author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId String
 
+  messages PostMessage[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("posts")
+}
+
+model PostMessage {
+  id      String @id @default(uuid()) @map("id")
+  content String @db.Text
+
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId String
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("post_messages")
 }
 
 model GrantApplication {

@@ -26,6 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Edit, MessageSquare, MoreVertical, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: string;
@@ -69,6 +70,7 @@ const ForumsPage = () => {
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [forumToEdit, setForumToEdit] = useState<Forum | null>(null);
   const [forumToDelete, setForumToDelete] = useState<Forum | null>(null);
+  const router = useRouter();
 
   const isAdmin = currentUser?.role === "ADMIN";
 
@@ -566,15 +568,28 @@ const ForumsPage = () => {
                       key={post.id}
                       className="group p-5 rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] bg-white transition-all duration-200"
                     >
-                      <h4 className="font-medium text-[#6B9B76] mb-2">{post.title}</h4>
-                      <p className="text-sm text-gray-600 mb-3">{post.content}</p>
-                      <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600">
-                        <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
-                          Posted by {post.author.firstName} {post.author.lastName}
-                        </span>
-                        <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
-                          {new Date(post.createdAt).toLocaleString()}
-                        </span>
+                      <div className="space-y-3">
+                        <h4 className="font-medium text-[#6B9B76]">{post.title}</h4>
+                        <p className="text-sm text-gray-600">{post.content}</p>
+                        <div className="flex flex-wrap items-center justify-between gap-4">
+                          <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600">
+                            <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
+                              Posted by {post.author.firstName} {post.author.lastName}
+                            </span>
+                            <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
+                              {new Date(post.createdAt).toLocaleString()}
+                            </span>
+                          </div>
+                          <Button
+                            onClick={() => router.push(`/forums/${post.id}`)}
+                            variant="outline"
+                            size="sm"
+                            className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10"
+                          >
+                            <MessageSquare className="w-4 h-4 mr-2" />
+                            Join Discussion
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   ))}

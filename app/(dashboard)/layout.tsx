@@ -111,17 +111,19 @@ export default function DashboardLayout({
 
       try {
         const response = await fetch("/api/auth/user");
+        const userData = await response.json();
 
-        if (!response.ok) {
-          setIsLoading(false);
+        if (!response.ok || !userData || userData.error) {
+          setCurrentUser(null);
           router.push("/login");
           return;
         }
 
-        const userData = await response.json();
         setCurrentUser(userData);
       } catch (_error) {
-        toast.error("Failed to fetch user data");
+        setCurrentUser(null);
+        router.push("/login");
+        toast.error("Authentication failed");
       } finally {
         setIsLoading(false);
       }
@@ -129,6 +131,12 @@ export default function DashboardLayout({
 
     checkAuth();
   }, [mounted, router, pathname]);
+
+  useEffect(() => {
+    if (!isLoading && !currentUser && !["/login", "/register"].includes(pathname)) {
+      router.push("/login");
+    }
+  }, [currentUser, isLoading, pathname, router]);
 
   if (typeof window === "undefined") {
     return null;
@@ -147,10 +155,6 @@ export default function DashboardLayout({
   }
 
   if (!currentUser && !["/login", "/register"].includes(pathname)) {
-    return null;
-  }
-
-  if (currentUser && ["/login", "/register"].includes(pathname)) {
     return null;
   }
 
