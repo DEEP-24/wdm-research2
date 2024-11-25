@@ -258,9 +258,9 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">
+        <h1 className="text-2xl sm:text-3xl font-medium text-[#6B9B76]">
           {currentUser.role === UserRole.USER ? "My Projects" : "All Projects"}
         </h1>
         <Dialog
@@ -279,14 +279,14 @@ export default function ProjectsPage() {
             <Button
               onClick={() => setIsDialogOpen(true)}
               variant="outline"
-              className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
+              className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10 w-full sm:w-auto"
             >
               <SendIcon className="w-4 h-4 mr-2" /> Submit New Proposal
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px] bg-white p-0">
-            <div className="p-6 border-b border-gray-100">
-              <DialogTitle className="text-xl font-medium text-gray-800">
+            <div className="p-6 border-b border-[#6B9B76]/10">
+              <DialogTitle className="text-xl font-medium text-[#6B9B76]">
                 {isEditMode ? "Edit Proposal" : "Submit New Proposal"}
               </DialogTitle>
             </div>
@@ -302,7 +302,7 @@ export default function ProjectsPage() {
                     value={newProposal.title}
                     onChange={handleInputChange}
                     required
-                    className="mt-1.5 border-gray-200"
+                    className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     placeholder="Enter project title"
                   />
                 </div>
@@ -317,7 +317,7 @@ export default function ProjectsPage() {
                     value={newProposal.description || ""}
                     onChange={handleInputChange}
                     required
-                    className="mt-1.5 min-h-[100px] border-gray-200"
+                    className="mt-1.5 min-h-[100px] border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     placeholder="Describe your project"
                   />
                 </div>
@@ -337,7 +337,7 @@ export default function ProjectsPage() {
                               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                               index
                             }`}
-                            className="space-y-2 p-3 bg-gray-50 rounded-lg border border-gray-100"
+                            className="space-y-2 p-3 bg-[#6B9B76]/5 rounded-lg border border-[#6B9B76]/10"
                           >
                             <div className="flex items-center justify-between gap-2">
                               <Input
@@ -355,7 +355,7 @@ export default function ProjectsPage() {
                                     attachments: JSON.stringify(currentAttachments),
                                   }));
                                 }}
-                                className="border-gray-200 text-sm"
+                                className="border-[#6B9B76]/20 text-sm focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                                 placeholder="Document name"
                               />
                               <Button
@@ -394,7 +394,7 @@ export default function ProjectsPage() {
                                   attachments: JSON.stringify(currentAttachments),
                                 }));
                               }}
-                              className="border-gray-200 text-sm"
+                              className="border-[#6B9B76]/20 text-sm focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                               placeholder="URL"
                             />
                           </div>
@@ -416,7 +416,7 @@ export default function ProjectsPage() {
                         onChange={(e) =>
                           setAttachmentInput((prev) => ({ ...prev, name: e.target.value }))
                         }
-                        className="border-gray-200"
+                        className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                       <Input
                         placeholder="URL"
@@ -424,7 +424,7 @@ export default function ProjectsPage() {
                         onChange={(e) =>
                           setAttachmentInput((prev) => ({ ...prev, url: e.target.value }))
                         }
-                        className="border-gray-200"
+                        className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                     </div>
                     <Button
@@ -433,7 +433,7 @@ export default function ProjectsPage() {
                       size="sm"
                       onClick={handleAddAttachment}
                       disabled={!attachmentInput.name || !attachmentInput.url}
-                      className="w-full border-gray-200 hover:bg-gray-50"
+                      className="w-full border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10"
                     >
                       <PaperclipIcon className="w-4 h-4 mr-2" />
                       Add Attachment
@@ -441,6 +441,7 @@ export default function ProjectsPage() {
                   </div>
                 </div>
 
+                {/* Added Attachments List */}
                 {!isEditMode &&
                   newProposal.attachments &&
                   getAttachments(newProposal.attachments).length > 0 && (
@@ -453,7 +454,7 @@ export default function ProjectsPage() {
                               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                               index
                             }`}
-                            className="flex items-center justify-between p-2 bg-gray-50 rounded-md border border-gray-100"
+                            className="flex items-center justify-between p-2 bg-[#6B9B76]/5 rounded-md border border-[#6B9B76]/10"
                           >
                             <span className="text-sm text-gray-600 truncate flex-1">
                               {file.name}
@@ -486,7 +487,7 @@ export default function ProjectsPage() {
               </div>
 
               <div className="mt-6">
-                <Button type="submit" className="w-full bg-gray-900 hover:bg-gray-800 text-white">
+                <Button type="submit" className="w-full bg-[#6B9B76] hover:bg-[#5a8463] text-white">
                   {isEditMode ? "Update Proposal" : "Submit Proposal"}
                 </Button>
               </div>
@@ -495,27 +496,27 @@ export default function ProjectsPage() {
         </Dialog>
       </div>
 
-      <Card className="border border-gray-100 shadow-sm">
+      <Card className="border border-[#6B9B76]/20 shadow-sm bg-[#6B9B76]/5">
         <CardContent className="p-6">
           {proposals.length === 0 ? (
             <div className="text-center py-12 px-4">
-              <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <PaperclipIcon className="w-8 h-8 text-gray-400" />
+              <div className="bg-[#6B9B76]/10 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <PaperclipIcon className="w-8 h-8 text-[#6B9B76]" />
               </div>
-              <p className="text-gray-600 font-medium mb-2">No project proposals found</p>
-              <p className="text-sm text-gray-500">Submit a new proposal to get started!</p>
+              <p className="text-[#6B9B76] font-medium mb-2">No project proposals found</p>
+              <p className="text-sm text-gray-600">Submit a new proposal to get started!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6">
               {proposals.map((proposal) => (
                 <div
                   key={proposal.id}
-                  className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md"
+                  className="group p-5 rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] bg-white transition-all duration-200 hover:shadow-md"
                 >
                   <div className="flex flex-col sm:flex-row justify-between gap-4">
                     <div className="space-y-2 flex-1">
                       <div className="flex items-start justify-between gap-3">
-                        <h3 className="font-medium text-gray-900 group-hover:text-gray-700">
+                        <h3 className="font-medium text-[#6B9B76] group-hover:text-[#5a8463]">
                           {proposal.title}
                         </h3>
                         <Badge
@@ -537,21 +538,21 @@ export default function ProjectsPage() {
                           {proposal.status.replace("_", " ")}
                         </Badge>
                       </div>
-                      <p className="text-sm text-gray-500 line-clamp-2">{proposal.description}</p>
+                      <p className="text-sm text-gray-600 line-clamp-2">{proposal.description}</p>
 
-                      <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-500">
+                      <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-600">
                         {currentUser?.role !== "USER" && (
-                          <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                          <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
                             By {proposal.user.firstName} {proposal.user.lastName}
                           </span>
                         )}
-                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
-                          <CalendarIcon className="w-3.5 h-3.5" />
+                        <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
+                          <CalendarIcon className="w-3.5 h-3.5 text-[#6B9B76]" />
                           {new Date(proposal.submittedAt).toLocaleDateString()}
                         </span>
                         {proposal.attachments && (
-                          <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
-                            <PaperclipIcon className="w-3.5 h-3.5" />
+                          <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
+                            <PaperclipIcon className="w-3.5 h-3.5 text-[#6B9B76]" />
                             {getAttachments(proposal.attachments).length} files
                           </span>
                         )}
@@ -562,7 +563,7 @@ export default function ProjectsPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
+                        className="w-full text-[#6B9B76] hover:text-[#5a8463] hover:bg-[#6B9B76]/10 transition-colors"
                         onClick={() => setViewProposal(proposal)}
                       >
                         <EyeIcon className="w-4 h-4 sm:mr-2" />
@@ -574,7 +575,7 @@ export default function ProjectsPage() {
                           defaultValue={proposal.status}
                           onValueChange={(value) => handleStatusChange(proposal.id, value)}
                         >
-                          <SelectTrigger className="h-8 w-full border-gray-200 bg-white">
+                          <SelectTrigger className="h-8 w-full border-[#6B9B76]/20 bg-white focus:ring-[#6B9B76]">
                             <SelectValue placeholder="Status" />
                           </SelectTrigger>
                           <SelectContent>
@@ -591,7 +592,7 @@ export default function ProjectsPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
+                              className="w-full text-[#6B9B76] hover:text-[#5a8463] hover:bg-[#6B9B76]/10 transition-colors"
                               onClick={() => handleEdit(proposal)}
                             >
                               <Pencil className="w-4 h-4 sm:mr-2" />
@@ -600,7 +601,7 @@ export default function ProjectsPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="w-full text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                              className="w-full text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors"
                               onClick={() => setProposalToDelete(proposal)}
                             >
                               <Trash2 className="w-4 h-4 sm:mr-2" />
@@ -620,9 +621,9 @@ export default function ProjectsPage() {
 
       {viewProposal && (
         <Dialog open={!!viewProposal} onOpenChange={() => setViewProposal(null)}>
-          <DialogContent className="sm:max-w-[600px] bg-white p-0">
-            <div className="p-6 border-b border-gray-100">
-              <DialogTitle className="text-xl font-medium text-gray-800">
+          <DialogContent className="sm:max-w-[600px] bg-[#6B9B76]/5 p-0">
+            <div className="p-6 border-b border-[#6B9B76]/10 bg-white">
+              <DialogTitle className="text-xl font-medium text-[#6B9B76]">
                 {viewProposal.title}
               </DialogTitle>
               <Badge
@@ -639,20 +640,20 @@ export default function ProjectsPage() {
               </Badge>
             </div>
             <div className="p-6 space-y-6">
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Description</h4>
+              <div className="bg-white p-4 rounded-lg border border-[#6B9B76]/20">
+                <h4 className="text-sm font-medium text-[#6B9B76] mb-2">Description</h4>
                 <p className="text-gray-600 text-sm leading-relaxed">{viewProposal.description}</p>
               </div>
 
               <div className="grid grid-cols-2 gap-6">
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Submitted by</h4>
+                <div className="bg-white p-4 rounded-lg border border-[#6B9B76]/20">
+                  <h4 className="text-sm font-medium text-[#6B9B76] mb-2">Submitted by</h4>
                   <p className="text-gray-600 text-sm">
                     {viewProposal.user.firstName} {viewProposal.user.lastName}
                   </p>
                 </div>
-                <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">Submitted on</h4>
+                <div className="bg-white p-4 rounded-lg border border-[#6B9B76]/20">
+                  <h4 className="text-sm font-medium text-[#6B9B76] mb-2">Submitted on</h4>
                   <p className="text-gray-600 text-sm">
                     {new Date(viewProposal.submittedAt).toLocaleDateString()}
                   </p>
@@ -661,7 +662,7 @@ export default function ProjectsPage() {
 
               {viewProposal.attachments && getAttachments(viewProposal.attachments).length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Attachments</h4>
+                  <h4 className="text-sm font-medium text-[#6B9B76] mb-3">Attachments</h4>
                   <div className="grid gap-2">
                     {getAttachments(viewProposal.attachments).map((attachment, index) => (
                       <a
@@ -669,13 +670,13 @@ export default function ProjectsPage() {
                         href={attachment.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center p-3 text-sm text-gray-600 hover:text-gray-900 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all group"
+                        className="flex items-center p-3 text-sm text-gray-600 hover:text-[#6B9B76] bg-white rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] hover:shadow-sm transition-all group"
                       >
-                        <PaperclipIcon className="w-4 h-4 mr-3 text-gray-400 group-hover:text-gray-600" />
+                        <PaperclipIcon className="w-4 h-4 mr-3 text-[#6B9B76] opacity-70 group-hover:opacity-100" />
                         <span className="flex-1">
                           {attachment.name || `Attachment ${index + 1}`}
                         </span>
-                        <span className="text-xs text-gray-400 group-hover:text-gray-500">
+                        <span className="text-xs text-[#6B9B76] opacity-70 group-hover:opacity-100">
                           View →
                         </span>
                       </a>
@@ -686,21 +687,21 @@ export default function ProjectsPage() {
 
               {getProposalReviews(viewProposal.id).length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 mb-3">Reviews</h4>
+                  <h4 className="text-sm font-medium text-[#6B9B76] mb-3">Reviews</h4>
                   <div className="space-y-3">
                     {getProposalReviews(viewProposal.id).map((review) => (
                       <div
                         key={review.id}
-                        className="p-4 bg-gray-50 rounded-lg border border-gray-100"
+                        className="p-4 bg-white rounded-lg border border-[#6B9B76]/20"
                       >
                         <p className="text-sm text-gray-600 mb-3 leading-relaxed">
                           {review.feedback}
                         </p>
                         <div className="flex items-center justify-between text-xs">
-                          <span className="text-gray-500 bg-white px-2 py-1 rounded-md border border-gray-100">
+                          <span className="text-gray-600 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
                             By {review.reviewer.firstName} {review.reviewer.lastName}
                           </span>
-                          <time dateTime={review.reviewedAt} className="text-gray-400">
+                          <time dateTime={review.reviewedAt} className="text-gray-500">
                             {new Date(review.reviewedAt).toLocaleString()}
                           </time>
                         </div>
@@ -716,9 +717,9 @@ export default function ProjectsPage() {
 
       {proposalToDelete && (
         <AlertDialog open={!!proposalToDelete} onOpenChange={() => setProposalToDelete(null)}>
-          <AlertDialogContent className="bg-white sm:max-w-[400px]">
+          <AlertDialogContent className="bg-[#6B9B76]/5 sm:max-w-[400px]">
             <AlertDialogHeader>
-              <AlertDialogTitle className="text-xl font-medium text-gray-800">
+              <AlertDialogTitle className="text-xl font-medium text-[#6B9B76]">
                 Delete Proposal
               </AlertDialogTitle>
               <AlertDialogDescription className="text-gray-600">
@@ -727,7 +728,7 @@ export default function ProjectsPage() {
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter className="gap-2">
-              <AlertDialogCancel className="border-gray-200 hover:bg-gray-50 transition-colors">
+              <AlertDialogCancel className="border-[#6B9B76]/20 hover:bg-[#6B9B76]/10 transition-colors">
                 Cancel
               </AlertDialogCancel>
               <AlertDialogAction

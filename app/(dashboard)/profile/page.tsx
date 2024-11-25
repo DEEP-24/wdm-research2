@@ -98,35 +98,34 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto py-8 px-4 max-w-5xl">
+    <div className="container mx-auto py-8 px-4 max-w-7xl">
       <div className="flex items-center justify-between mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-          User Profile
-        </h1>
+        <h1 className="text-2xl sm:text-3xl font-medium text-[#6B9B76]">User Profile</h1>
         {!isEditing && (
           <Button
             onClick={() => setIsEditing(true)}
-            className="bg-blue-600 hover:bg-blue-700 transition-colors"
+            variant="outline"
+            className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10"
           >
             Edit Profile
           </Button>
         )}
       </div>
 
-      <Card className="bg-white shadow-xl rounded-xl border-0">
-        <CardHeader className="border-b bg-gray-50/50 rounded-t-xl">
-          <CardTitle className="text-2xl font-semibold text-gray-800">
+      <Card className="border border-[#6B9B76]/20 shadow-sm bg-[#6B9B76]/5">
+        <CardHeader className="border-b border-[#6B9B76]/10 bg-white">
+          <CardTitle className="text-xl font-medium text-[#6B9B76]">
             {isEditing ? "Edit Profile" : "Profile Information"}
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6">
+        <CardContent className="p-6 bg-white">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Profile Image Section */}
             <div className="space-y-6">
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Profile Image</h3>
+              <div className="border-b border-[#6B9B76]/10 pb-4">
+                <h3 className="text-lg font-medium text-[#6B9B76] mb-4">Profile Image</h3>
                 <div className="w-full">
-                  <Label htmlFor="imageURL" className="text-gray-700">
+                  <Label htmlFor="imageURL" className="text-sm font-medium text-[#6B9B76]">
                     Profile Image URL
                   </Label>
                   <Input
@@ -135,17 +134,17 @@ export default function ProfilePage() {
                     value={profile.imageUrl}
                     onChange={handleChange}
                     disabled={!isEditing}
-                    className="mt-1"
+                    className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                   />
                 </div>
               </div>
 
               {/* Personal Information Section */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Personal Information</h3>
+              <div className="border-b border-[#6B9B76]/10 pb-4">
+                <h3 className="text-lg font-medium text-[#6B9B76] mb-4">Personal Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="firstName" className="text-gray-700">
+                    <Label htmlFor="firstName" className="text-sm font-medium text-[#6B9B76]">
                       First Name
                     </Label>
                     <Input
@@ -155,12 +154,12 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="lastName" className="text-gray-700">
+                    <Label htmlFor="lastName" className="text-sm font-medium text-[#6B9B76]">
                       Last Name
                     </Label>
                     <Input
@@ -170,12 +169,12 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="email" className="text-gray-700">
+                    <Label htmlFor="email" className="text-sm font-medium text-[#6B9B76]">
                       Email
                     </Label>
                     <Input
@@ -186,12 +185,12 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled
                       required
-                      className="mt-1 bg-gray-50"
+                      className="mt-1.5 bg-[#6B9B76]/5 border-[#6B9B76]/20"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="phone" className="text-gray-700">
+                    <Label htmlFor="phone" className="text-sm font-medium text-[#6B9B76]">
                       Phone
                     </Label>
                     <Input
@@ -202,12 +201,12 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="dob" className="text-gray-700">
+                    <Label htmlFor="dob" className="text-sm font-medium text-[#6B9B76]">
                       Date of Birth
                     </Label>
                     <Input
@@ -218,18 +217,18 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Address Section */}
-              <div className="border-b pb-4">
-                <h3 className="text-lg font-medium text-gray-900 mb-4">Address</h3>
+              <div className="border-b border-[#6B9B76]/10 pb-4">
+                <h3 className="text-lg font-medium text-[#6B9B76] mb-4">Address</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="md:col-span-2">
-                    <Label htmlFor="street" className="text-gray-700">
+                    <Label htmlFor="street" className="text-sm font-medium text-[#6B9B76]">
                       Street
                     </Label>
                     <Input
@@ -239,12 +238,12 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="aptNo" className="text-gray-700">
+                    <Label htmlFor="aptNo" className="text-sm font-medium text-[#6B9B76]">
                       Apt/Suite No
                     </Label>
                     <Input
@@ -253,12 +252,12 @@ export default function ProfilePage() {
                       value={profile.apt}
                       onChange={handleChange}
                       disabled={!isEditing}
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="city" className="text-gray-700">
+                    <Label htmlFor="city" className="text-sm font-medium text-[#6B9B76]">
                       City
                     </Label>
                     <Input
@@ -268,12 +267,12 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="state" className="text-gray-700">
+                    <Label htmlFor="state" className="text-sm font-medium text-[#6B9B76]">
                       State
                     </Label>
                     <Input
@@ -283,12 +282,12 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="zipcode" className="text-gray-700">
+                    <Label htmlFor="zipcode" className="text-sm font-medium text-[#6B9B76]">
                       Zipcode
                     </Label>
                     <Input
@@ -298,7 +297,7 @@ export default function ProfilePage() {
                       onChange={handleChange}
                       disabled={!isEditing}
                       required
-                      className="mt-1"
+                      className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                     />
                   </div>
                 </div>
@@ -306,11 +305,14 @@ export default function ProfilePage() {
 
               {/* Research Information Section - Only for USER role */}
               {profile.role === "USER" && (
-                <div className="border-b pb-4">
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Research Information</h3>
+                <div className="border-b border-[#6B9B76]/10 pb-4">
+                  <h3 className="text-lg font-medium text-[#6B9B76] mb-4">Research Information</h3>
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="researchInterests" className="text-gray-700">
+                      <Label
+                        htmlFor="researchInterests"
+                        className="text-sm font-medium text-[#6B9B76]"
+                      >
                         Research Interests
                       </Label>
                       <Textarea
@@ -319,12 +321,12 @@ export default function ProfilePage() {
                         value={profile.researchInterests}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="mt-1 min-h-[100px]"
+                        className="mt-1.5 min-h-[100px] border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="expertise" className="text-gray-700">
+                      <Label htmlFor="expertise" className="text-sm font-medium text-[#6B9B76]">
                         Expertise
                       </Label>
                       <Textarea
@@ -333,7 +335,7 @@ export default function ProfilePage() {
                         value={profile.expertise}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="mt-1 min-h-[100px]"
+                        className="mt-1.5 min-h-[100px] border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                     </div>
                   </div>
@@ -343,10 +345,10 @@ export default function ProfilePage() {
               {/* Social Links Section - Only for USER role */}
               {profile.role === "USER" && (
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-4">Social Links</h3>
+                  <h3 className="text-lg font-medium text-[#6B9B76] mb-4">Social Links</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <Label htmlFor="linkedInURL" className="text-gray-700">
+                      <Label htmlFor="linkedInURL" className="text-sm font-medium text-[#6B9B76]">
                         LinkedIn URL
                       </Label>
                       <Input
@@ -355,12 +357,12 @@ export default function ProfilePage() {
                         value={profile.linkedInUrl || ""}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="mt-1"
+                        className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="twitterURL" className="text-gray-700">
+                      <Label htmlFor="twitterURL" className="text-sm font-medium text-[#6B9B76]">
                         Twitter URL
                       </Label>
                       <Input
@@ -369,12 +371,12 @@ export default function ProfilePage() {
                         value={profile.twitterUrl || ""}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="mt-1"
+                        className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="githubURL" className="text-gray-700">
+                      <Label htmlFor="githubURL" className="text-sm font-medium text-[#6B9B76]">
                         GitHub URL
                       </Label>
                       <Input
@@ -383,12 +385,12 @@ export default function ProfilePage() {
                         value={profile.githubUrl || ""}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="mt-1"
+                        className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="papers" className="text-gray-700">
+                      <Label htmlFor="papers" className="text-sm font-medium text-[#6B9B76]">
                         Papers
                       </Label>
                       <Input
@@ -397,7 +399,7 @@ export default function ProfilePage() {
                         value={profile.papers || ""}
                         onChange={handleChange}
                         disabled={!isEditing}
-                        className="mt-1"
+                        className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       />
                     </div>
                   </div>
@@ -407,19 +409,19 @@ export default function ProfilePage() {
 
             {/* Action Buttons */}
             {isEditing && (
-              <div className="flex justify-end space-x-3 pt-6">
+              <div className="flex justify-end space-x-3 pt-6 border-t border-[#6B9B76]/10">
                 <Button
                   type="button"
                   variant="outline"
                   onClick={() => setIsEditing(false)}
-                  className="px-6"
+                  className="border-[#6B9B76]/20 text-[#6B9B76] hover:bg-[#6B9B76]/10"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={loading}
-                  className="px-6 bg-blue-600 hover:bg-blue-700"
+                  className="bg-[#6B9B76] hover:bg-[#5a8463] text-white"
                 >
                   {loading ? "Saving..." : "Save Changes"}
                 </Button>

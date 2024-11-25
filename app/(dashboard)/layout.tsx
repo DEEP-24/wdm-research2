@@ -39,51 +39,47 @@ import { toast } from "sonner";
 
 const roleBasedSidebarItems = {
   user: [
-    { icon: HomeIcon, label: "Home", href: "/" },
-    { icon: CalendarIcon, label: "Events", href: "/events" },
-    { icon: CalendarCheck2Icon, label: "Reservations", href: "/reservations" },
-    { icon: FolderKanbanIcon, label: "Projects", href: "/projects" },
-    { icon: ScanEyeIcon, label: "Review Projects", href: "/review" },
-    { icon: ArrowUpDownIcon, label: "File Sharing", href: "/file-sharing" },
-    { icon: MessageCircleIcon, label: "Forums", href: "/forums" },
-    { icon: BadgeDollarSignIcon, label: "Funding Opportunities", href: "/funding-opportunities" },
-    { icon: FileTextIcon, label: "Grant Applications", href: "/grant-applications" },
-    { icon: HelpCircle, label: "Support", href: "/support" },
-    { icon: Users2Icon, label: "Researchers", href: "/researchers" },
-    { icon: MessageSquareIcon, label: "Chat", href: "/chat" },
+    { label: "Home", href: "/" },
+    { label: "Events", href: "/events" },
+    { label: "Reservations", href: "/reservations" },
+    { label: "Projects", href: "/projects" },
+    { label: "Review Projects", href: "/review" },
+    { label: "File Sharing", href: "/file-sharing" },
+    { label: "Forums", href: "/forums" },
+    { label: "Funding Opportunities", href: "/funding-opportunities" },
+    { label: "Grant Applications", href: "/grant-applications" },
+    { label: "Support", href: "/support" },
+    { label: "Researchers", href: "/researchers" },
+    { label: "Chat", href: "/chat" },
   ],
   admin: [
-    { icon: HomeIcon, label: "Home", href: "/" },
-    { icon: CalendarIcon, label: "Events", href: "/events" },
-    { icon: CalendarCheck2Icon, label: "Reservations", href: "/reservations" },
-    { icon: FolderKanbanIcon, label: "Projects", href: "/projects" },
-    { icon: ScanEyeIcon, label: "Review Projects", href: "/review" },
-    { icon: ArrowUpDownIcon, label: "File Sharing", href: "/file-sharing" },
-    { icon: MessageCircleIcon, label: "Forums", href: "/forums" },
-    { icon: BadgeDollarSignIcon, label: "Funding Opportunities", href: "/funding-opportunities" },
-    { icon: FileTextIcon, label: "Grant Applications", href: "/grant-applications" },
-    { icon: HelpCircle, label: "Support", href: "/support" },
-    { icon: Users2Icon, label: "Researchers", href: "/researchers" },
-    { icon: DollarSignIcon, label: "Investment Opportunities", href: "/investment-opportunities" },
-    { icon: MessageSquareIcon, label: "Chat", href: "/chat" },
+    { label: "Home", href: "/" },
+    { label: "Events", href: "/events" },
+    { label: "Reservations", href: "/reservations" },
+    { label: "Projects", href: "/projects" },
+    { label: "Review Projects", href: "/review" },
+    { label: "File Sharing", href: "/file-sharing" },
+    { label: "Forums", href: "/forums" },
+    { label: "Funding Opportunities", href: "/funding-opportunities" },
+    { label: "Grant Applications", href: "/grant-applications" },
+    { label: "Support", href: "/support" },
+    { label: "Researchers", href: "/researchers" },
+    { label: "Investment Opportunities", href: "/investment-opportunities" },
+    { label: "Chat", href: "/chat" },
   ],
   investor: [
-    { icon: HomeIcon, label: "Home", href: "/" },
-    {
-      icon: BriefcaseBusinessIcon,
-      label: "Investment Opportunities",
-      href: "/investment-opportunities",
-    },
-    { icon: BriefcaseBusinessIcon, label: "My Investments", href: "/investments" },
-    { icon: HelpCircle, label: "Support", href: "/support" },
-    { icon: MessageSquareIcon, label: "Chat", href: "/chat" },
+    { label: "Home", href: "/" },
+    { label: "Investment Opportunities", href: "/investment-opportunities" },
+    { label: "My Investments", href: "/investments" },
+    { label: "Support", href: "/support" },
+    { label: "Chat", href: "/chat" },
   ],
   organizer: [
-    { icon: HomeIcon, label: "Home", href: "/" },
-    { icon: CalendarIcon, label: "Events", href: "/events" },
-    { icon: CalendarCheck2Icon, label: "Reservations", href: "/reservations" },
-    { icon: HelpCircle, label: "Support", href: "/support" },
-    { icon: MessageSquareIcon, label: "Chat", href: "/chat" },
+    { label: "Home", href: "/" },
+    { label: "Events", href: "/events" },
+    { label: "Reservations", href: "/reservations" },
+    { label: "Support", href: "/support" },
+    { label: "Chat", href: "/chat" },
   ],
 };
 
@@ -215,13 +211,12 @@ export default function DashboardLayout({
               <Link key={item.href} href={item.href}>
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="lg"
                   className={cn(
-                    "text-white/90 hover:text-white hover:bg-white/10 h-11 px-4",
+                    "text-white/90 hover:text-white hover:bg-white/10 h-12 px-6 text-base font-medium",
                     pathname === item.href && "bg-white/20 text-white",
                   )}
                 >
-                  <item.icon className="mr-2 h-5 w-5" />
                   {item.label}
                 </Button>
               </Link>
@@ -232,8 +227,8 @@ export default function DashboardLayout({
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
-                    size="sm"
-                    className="text-blue-50 hover:text-white hover:bg-white/10 h-11 px-4"
+                    size="lg"
+                    className="text-blue-50 hover:text-white hover:bg-white/10 h-12 px-6 text-base font-medium"
                   >
                     More
                     <ChevronDownIcon className="ml-2 h-5 w-5" />
@@ -242,8 +237,7 @@ export default function DashboardLayout({
                 <DropdownMenuContent className="w-56">
                   {sidebarItems.slice(6).map((item) => (
                     <DropdownMenuItem key={item.href} asChild>
-                      <Link href={item.href} className="flex items-center w-full">
-                        <item.icon className="mr-2 h-4 w-4" />
+                      <Link href={item.href} className="flex items-center w-full py-2 text-base">
                         {item.label}
                       </Link>
                     </DropdownMenuItem>
@@ -326,12 +320,11 @@ export default function DashboardLayout({
                     <Button
                       variant="ghost"
                       className={cn(
-                        "w-full justify-start text-white hover:bg-white/10",
+                        "w-full justify-start text-white hover:bg-white/10 h-12 text-base font-medium",
                         pathname === item.href ? "bg-white/20" : "",
                       )}
                       onClick={handleSidebarItemClick}
                     >
-                      <item.icon className="mr-2 h-4 w-4" />
                       {item.label}
                     </Button>
                   </Link>

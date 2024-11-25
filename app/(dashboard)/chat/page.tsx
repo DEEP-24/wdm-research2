@@ -182,159 +182,160 @@ export default function ChatPage() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-center h-[60vh]">
-          <div className="animate-pulse text-primary">Loading conversations...</div>
+      <div className="container mx-auto p-4">
+        <div className="flex items-center justify-center h-[80vh]">
+          <div className="flex items-center gap-2 text-primary">
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100" />
+            <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-200" />
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-b from-background to-background/95 backdrop-blur">
-        <div className="md:block">
-          <CardHeader className="md:block hidden border-b bg-muted/30">
-            <div className="flex items-center space-x-2">
-              <MessageCircle className="w-5 h-5 text-primary" />
-              <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                Messages
-              </CardTitle>
-            </div>
-          </CardHeader>
-          <CardContent className="p-0">
-            <div className="grid md:grid-cols-[380px,1fr] h-[calc(100vh-220px)]">
-              {/* Users List */}
-              <div
-                className={`${
-                  showChatList || !selectedUser ? "block" : "hidden"
-                } md:block border-r bg-background/50`}
-              >
-                <ScrollArea className="h-[calc(100vh-220px)]">
-                  <div className="p-4 space-y-2">
-                    {chatUsers.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
-                        <MessageCircle className="w-12 h-12 mb-3 opacity-20" />
-                        <p>No conversations yet</p>
-                      </div>
-                    ) : (
-                      chatUsers.map((user) => (
-                        // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-                        <div
-                          key={user.id}
-                          className={`flex items-center space-x-4 p-4 rounded-xl cursor-pointer transition-all duration-200 ${
-                            selectedUser?.id === user.id
-                              ? "bg-primary/10 shadow-md"
-                              : "hover:bg-muted/80 hover:shadow-sm"
-                          }`}
-                          onClick={() => handleUserSelect(user)}
-                          role="button"
-                          tabIndex={0}
-                        >
-                          <Avatar className="h-12 w-12 ring-2 ring-background">
-                            {user.imageURL ? (
-                              <AvatarImage
-                                src={user.imageURL}
-                                alt={`${user.profile.firstName} ${user.profile.lastName}`}
-                              />
-                            ) : (
-                              <AvatarImage
-                                src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.profile.firstName} ${user.profile.lastName}`}
-                                alt={`${user.profile.firstName} ${user.profile.lastName}`}
-                              />
-                            )}
-                            <AvatarFallback className="bg-primary/10">
-                              {user.profile.firstName[0]}
-                              {user.profile.lastName[0]}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-1">
-                              <p className="font-semibold truncate">
-                                {user.profile.firstName} {user.profile.lastName}
-                              </p>
-                              {user.isFollowing && (
-                                <Badge variant="secondary" className="text-[10px] h-5">
-                                  Following
-                                </Badge>
-                              )}
-                            </div>
-                            {user.lastMessage ? (
-                              <div className="space-y-1">
-                                <p
-                                  className={`text-sm truncate ${
-                                    !user.lastMessage.read &&
-                                    user.lastMessage.receiverId === currentUser?.id
-                                      ? "text-primary font-medium"
-                                      : "text-muted-foreground"
-                                  }`}
-                                >
-                                  {user.lastMessage.content}
-                                </p>
-                                <p className="text-[10px] text-muted-foreground/80">
-                                  {formatDistanceToNow(new Date(user.lastMessage.sentAt), {
-                                    addSuffix: true,
-                                  })}
-                                </p>
-                              </div>
-                            ) : (
-                              <p className="text-xs text-muted-foreground/70 italic">
-                                Start a conversation
-                              </p>
+    <div className="container mx-auto p-4">
+      <Card className="overflow-hidden border-none shadow-xl bg-green-50/95 dark:bg-green-950/30">
+        <CardHeader className="md:block hidden border-b border-green-100 dark:border-green-900/30 bg-white dark:bg-green-950/50">
+          <div className="flex items-center gap-3">
+            <MessageCircle className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <CardTitle className="text-2xl font-bold text-green-600 dark:text-green-400">
+              Messages
+            </CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <div className="grid md:grid-cols-[350px,1fr] h-[calc(100vh-180px)]">
+            {/* Users List */}
+            <div
+              className={`${
+                showChatList || !selectedUser ? "block" : "hidden"
+              } md:block border-r border-green-100 dark:border-green-900/30 bg-white dark:bg-green-950/50`}
+            >
+              <ScrollArea className="h-[calc(100vh-180px)]">
+                <div className="p-3 space-y-1">
+                  {chatUsers.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-10 text-muted-foreground">
+                      <MessageCircle className="w-12 h-12 mb-3 opacity-20" />
+                      <p className="text-sm">No conversations yet</p>
+                    </div>
+                  ) : (
+                    chatUsers.map((user) => (
+                      // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+                      <div
+                        key={user.id}
+                        className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all hover:scale-[0.99] ${
+                          selectedUser?.id === user.id
+                            ? "bg-green-100 dark:bg-green-900/50 shadow-sm"
+                            : "hover:bg-green-50 dark:hover:bg-green-900/30"
+                        }`}
+                        onClick={() => handleUserSelect(user)}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        <Avatar className="h-10 w-10 border-2 border-green-100 dark:border-green-900 shadow-sm">
+                          {user.imageURL ? (
+                            <AvatarImage src={user.imageURL} alt={`${user.profile.firstName}`} />
+                          ) : (
+                            <AvatarImage
+                              src={`https://api.dicebear.com/6.x/initials/svg?seed=${user.profile.firstName}`}
+                              alt={user.profile.firstName}
+                            />
+                          )}
+                          <AvatarFallback className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300">
+                            {user.profile.firstName[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="font-medium truncate text-sm">
+                              {user.profile.firstName} {user.profile.lastName}
+                            </p>
+                            {user.isFollowing && (
+                              <Badge
+                                variant="secondary"
+                                className="text-[10px] h-4 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300"
+                              >
+                                Following
+                              </Badge>
                             )}
                           </div>
-                          {user.lastMessage &&
-                            !user.lastMessage.read &&
-                            user.lastMessage.receiverId === currentUser?.id && (
-                              <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
-                            )}
+                          {user.lastMessage ? (
+                            <div className="space-y-0.5">
+                              <p
+                                className={`text-xs truncate ${
+                                  !user.lastMessage.read &&
+                                  user.lastMessage.receiverId === currentUser?.id
+                                    ? "text-green-700 dark:text-green-400 font-medium"
+                                    : "text-muted-foreground"
+                                }`}
+                              >
+                                {user.lastMessage.content}
+                              </p>
+                              <p className="text-[10px] text-muted-foreground/70">
+                                {formatDistanceToNow(new Date(user.lastMessage.sentAt), {
+                                  addSuffix: true,
+                                })}
+                              </p>
+                            </div>
+                          ) : (
+                            <p className="text-xs text-muted-foreground/70 italic">
+                              Start a conversation
+                            </p>
+                          )}
                         </div>
-                      ))
-                    )}
-                  </div>
-                </ScrollArea>
-              </div>
-
-              {/* Chat Area */}
-              <div
-                className={`${
-                  !showChatList || selectedUser ? "block" : "hidden"
-                } md:block h-full bg-dot-pattern`}
-              >
-                {selectedUser ? (
-                  <div className="h-full">
-                    <ChatComponent
-                      key={selectedUser.id}
-                      recipientId={selectedUser.id}
-                      recipientName={`${selectedUser.profile.firstName} ${selectedUser.profile.lastName}`}
-                      recipientEmail={selectedUser.email}
-                      recipientProfile={{
-                        firstName: selectedUser.profile.firstName,
-                        lastName: selectedUser.profile.lastName,
-                        expertise: selectedUser.profile.expertise,
-                        researchInterests: selectedUser.profile.researchInterests,
-                        imageURL: selectedUser.imageURL,
-                      }}
-                      currentUserId={currentUser?.id}
-                      isOpen={true}
-                      onClose={() => {
-                        setSelectedUser(null);
-                        setShowChatList(true);
-                      }}
-                      onBack={() => setShowChatList(true)}
-                      isMobileView={true}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-4">
-                    <MessageCircle className="w-16 h-16 opacity-20" />
-                    <p className="text-lg">Select a conversation to start messaging</p>
-                  </div>
-                )}
-              </div>
+                        {user.lastMessage &&
+                          !user.lastMessage.read &&
+                          user.lastMessage.receiverId === currentUser?.id && (
+                            <div className="w-2.5 h-2.5 bg-green-500 dark:bg-green-400 rounded-full shadow-sm" />
+                          )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </ScrollArea>
             </div>
-          </CardContent>
-        </div>
+
+            {/* Chat Area */}
+            <div
+              className={`${
+                !showChatList || selectedUser ? "block" : "hidden"
+              } md:block h-full bg-green-50/50 dark:bg-green-950/20 relative overflow-hidden`}
+            >
+              {selectedUser ? (
+                <div className="h-full">
+                  <ChatComponent
+                    key={selectedUser.id}
+                    recipientId={selectedUser.id}
+                    recipientName={`${selectedUser.profile.firstName} ${selectedUser.profile.lastName}`}
+                    recipientEmail={selectedUser.email}
+                    recipientProfile={{
+                      firstName: selectedUser.profile.firstName,
+                      lastName: selectedUser.profile.lastName,
+                      expertise: selectedUser.profile.expertise,
+                      researchInterests: selectedUser.profile.researchInterests,
+                      imageURL: selectedUser.imageURL,
+                    }}
+                    currentUserId={currentUser?.id}
+                    isOpen={true}
+                    onClose={() => {
+                      setSelectedUser(null);
+                      setShowChatList(true);
+                    }}
+                    onBack={() => setShowChatList(true)}
+                    isMobileView={true}
+                  />
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full text-muted-foreground gap-4">
+                  <MessageCircle className="w-16 h-16 text-green-600/20 dark:text-green-400/20" />
+                  <p className="text-lg">Select a conversation to start messaging</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
       </Card>
     </div>
   );

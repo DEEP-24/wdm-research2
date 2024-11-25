@@ -137,61 +137,61 @@ const FileSharingPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">Shared Files</h1>
+        <h1 className="text-2xl sm:text-3xl font-medium text-[#6B9B76]">Shared Files</h1>
         <Button
           onClick={() => setIsModalOpen(true)}
           variant="outline"
-          className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
+          className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10 w-full sm:w-auto"
         >
           <UploadIcon className="w-4 h-4 mr-2" />
           Share File
         </Button>
       </div>
 
-      <Card className="border border-gray-100 shadow-sm">
+      <Card className="border border-[#6B9B76]/20 shadow-sm bg-[#6B9B76]/5">
         <CardContent className="p-6">
           {files.length === 0 ? (
             <div className="text-center py-12 px-4">
-              <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <FileIcon className="w-8 h-8 text-gray-400" />
+              <div className="bg-[#6B9B76]/10 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <FileIcon className="w-8 h-8 text-[#6B9B76]" />
               </div>
-              <p className="text-gray-600 font-medium mb-2">No files shared yet</p>
-              <p className="text-sm text-gray-500">Start sharing files with your team!</p>
+              <p className="text-[#6B9B76] font-medium mb-2">No files shared yet</p>
+              <p className="text-sm text-gray-600">Start sharing files with your team!</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6">
               {files.map((file) => (
                 <div
                   key={file.id}
-                  className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md"
+                  className="group p-5 rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] bg-white transition-all duration-200 hover:shadow-md"
                 >
                   <div className="flex flex-col sm:flex-row justify-between gap-4">
                     <div className="space-y-2 flex-1">
                       <div className="flex items-start gap-3">
-                        <FileIcon className="w-5 h-5 text-gray-400 mt-1" />
+                        <FileIcon className="w-5 h-5 text-[#6B9B76] mt-1" />
                         <div>
-                          <h3 className="font-medium text-gray-900 group-hover:text-gray-700">
+                          <h3 className="font-medium text-[#6B9B76] group-hover:text-[#5a8463]">
                             {file.customName}
                           </h3>
                           <a
                             href={file.fileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-gray-500 hover:text-gray-700 hover:underline break-all"
+                            className="text-sm text-gray-600 hover:text-[#6B9B76] hover:underline break-all"
                           >
                             {file.fileUrl}
                           </a>
                         </div>
                       </div>
 
-                      <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-500">
-                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
+                      <div className="flex flex-wrap items-center gap-4 pt-2 text-xs text-gray-600">
+                        <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
                           Shared by {file.uploadedBy.firstName} {file.uploadedBy.lastName}
                         </span>
-                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md">
-                          <CalendarIcon className="w-3.5 h-3.5" />
+                        <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md border border-[#6B9B76]/10">
+                          <CalendarIcon className="w-3.5 h-3.5 text-[#6B9B76]" />
                           {new Date(file.uploadDate).toLocaleDateString()}
                         </span>
                       </div>
@@ -203,7 +203,7 @@ const FileSharingPage: React.FC = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleEdit(file)}
-                          className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors"
+                          className="w-full text-[#6B9B76] hover:text-[#5a8463] hover:bg-[#6B9B76]/10 transition-colors"
                         >
                           <PencilIcon className="w-4 h-4 sm:mr-2" />
                           <span className="hidden sm:inline">Edit</span>
@@ -212,7 +212,7 @@ const FileSharingPage: React.FC = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleDeleteFile(file.id)}
-                          className="w-full text-gray-600 hover:text-red-600 hover:bg-red-50 transition-colors"
+                          className="w-full text-red-500 hover:text-red-600 hover:bg-red-50 transition-colors"
                         >
                           <Trash2Icon className="w-4 h-4 sm:mr-2" />
                           <span className="hidden sm:inline">Delete</span>
@@ -227,32 +227,32 @@ const FileSharingPage: React.FC = () => {
         </CardContent>
       </Card>
 
-      {/* Modal remains the same but with updated styling */}
+      {/* Modal */}
       {isModalOpen && (
         <Dialog open={isModalOpen} onOpenChange={closeModal}>
-          <DialogContent className="sm:max-w-[425px] bg-white p-0">
-            <div className="p-6 border-b border-gray-100">
-              <DialogTitle className="text-xl font-medium text-gray-800">
+          <DialogContent className="sm:max-w-[425px] bg-[#6B9B76]/5 p-0">
+            <div className="p-6 border-b border-[#6B9B76]/10 bg-white">
+              <DialogTitle className="text-xl font-medium text-[#6B9B76]">
                 {isEditMode ? "Edit File" : "Share File"}
               </DialogTitle>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <form onSubmit={handleSubmit} className="p-6 space-y-6 bg-white">
               <div>
-                <Label htmlFor="customName" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="customName" className="text-sm font-medium text-[#6B9B76]">
                   Custom Name
                 </Label>
                 <Input
                   id="customName"
                   value={formData.customName}
                   onChange={(e) => setFormData({ ...formData, customName: e.target.value })}
-                  className="mt-1.5 border-gray-200"
+                  className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                   placeholder="Enter custom name"
                 />
               </div>
 
               <div>
-                <Label htmlFor="fileUrl" className="text-sm font-medium text-gray-700">
+                <Label htmlFor="fileUrl" className="text-sm font-medium text-[#6B9B76]">
                   File URL
                 </Label>
                 <Input
@@ -260,7 +260,7 @@ const FileSharingPage: React.FC = () => {
                   type="url"
                   value={formData.fileUrl}
                   onChange={(e) => setFormData({ ...formData, fileUrl: e.target.value })}
-                  className="mt-1.5 border-gray-200"
+                  className="mt-1.5 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                   placeholder="Enter file URL"
                   required
                 />
@@ -271,11 +271,11 @@ const FileSharingPage: React.FC = () => {
                   type="button"
                   variant="outline"
                   onClick={closeModal}
-                  className="border-gray-200 hover:bg-gray-50"
+                  className="border-[#6B9B76]/20 text-[#6B9B76] hover:bg-[#6B9B76]/10"
                 >
                   Cancel
                 </Button>
-                <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white">
+                <Button type="submit" className="bg-[#6B9B76] hover:bg-[#5a8463] text-white">
                   {isEditMode ? "Save Changes" : "Share File"}
                 </Button>
               </div>

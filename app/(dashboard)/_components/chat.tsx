@@ -166,20 +166,20 @@ export default function ChatComponent({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="p-3 border-b border-green-100 dark:border-green-900/30 bg-white dark:bg-green-950/50">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-3">
             {isMobileView && (
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={onBack}
-                className="md:hidden h-8 w-8 mr-2 hover:bg-primary/10"
+                className="md:hidden h-8 w-8 hover:bg-green-50 dark:hover:bg-green-900/30"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -191,7 +191,7 @@ export default function ChatComponent({
                 </svg>
               </Button>
             )}
-            <Avatar className="h-12 w-12 ring-2 ring-primary/10">
+            <Avatar className="h-10 w-10 border-2 border-green-100 dark:border-green-900">
               {recipientProfile.imageURL ? (
                 <AvatarImage src={recipientProfile.imageURL} alt={recipientName} />
               ) : (
@@ -200,16 +200,15 @@ export default function ChatComponent({
                   alt={recipientName}
                 />
               )}
-              <AvatarFallback className="bg-primary/10">
+              <AvatarFallback className="bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300">
                 {recipientProfile.firstName[0]}
-                {recipientProfile.lastName[0]}
               </AvatarFallback>
             </Avatar>
-            <div className="flex-1">
-              <h2 className="text-lg font-semibold">{recipientName}</h2>
-              <div className="flex items-center space-x-2">
-                <span className="w-2 h-2 rounded-full bg-green-500" />
-                <p className="text-sm text-muted-foreground">{recipientEmail}</p>
+            <div>
+              <h2 className="text-base font-semibold leading-none mb-1">{recipientName}</h2>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <p className="text-xs text-muted-foreground">{recipientEmail}</p>
               </div>
             </div>
           </div>
@@ -217,15 +216,15 @@ export default function ChatComponent({
             variant="ghost"
             size="icon"
             onClick={onClose}
-            className="h-8 w-8 rounded-full md:block hidden hover:bg-destructive/10 hover:text-destructive"
+            className="h-8 w-8 rounded-full md:block hidden hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-500"
           >
             <X className="h-4 w-4" />
           </Button>
         </div>
       </div>
 
-      <ScrollArea className="flex-1 p-6" ref={scrollRef}>
-        <div className="space-y-6">
+      <ScrollArea className="flex-1 p-4" ref={scrollRef}>
+        <div className="space-y-4">
           {messages.map((message) => (
             <div
               key={message.id}
@@ -234,14 +233,20 @@ export default function ChatComponent({
               }`}
             >
               <div
-                className={`max-w-[80%] rounded-2xl px-6 py-3 shadow-sm ${
+                className={`max-w-[85%] rounded-2xl px-4 py-2 shadow-sm ${
                   message.senderId === currentUserId
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted/50 backdrop-blur-sm"
+                    ? "bg-green-600 text-white dark:bg-green-500"
+                    : "bg-white dark:bg-green-950/50"
                 }`}
               >
-                <p className="leading-relaxed">{message.content}</p>
-                <span className="text-[10px] opacity-70 mt-1 block">
+                <p className="text-sm leading-relaxed">{message.content}</p>
+                <span
+                  className={`text-[10px] mt-1 block ${
+                    message.senderId === currentUserId
+                      ? "text-green-50/90"
+                      : "text-muted-foreground"
+                  }`}
+                >
                   {new Date(message.sentAt).toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
@@ -255,29 +260,44 @@ export default function ChatComponent({
 
       <form
         onSubmit={sendMessage}
-        className="p-4 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+        className="p-4 border-t border-green-100 dark:border-green-900/30 bg-white dark:bg-green-950/50"
       >
-        <div className="flex gap-3">
+        <div className="flex gap-2 items-center bg-green-50 dark:bg-green-900/30 rounded-xl p-1.5 shadow-sm border border-green-100 dark:border-green-900/30">
           <Input
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message here..."
-            className="flex-1 rounded-full bg-muted/50 border-0 focus-visible:ring-primary"
+            placeholder="Type your message..."
+            className="flex-1 border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 text-sm placeholder:text-muted-foreground/70"
             disabled={!isConnected || isLoading}
           />
           <Button
             type="submit"
             disabled={!newMessage.trim() || !isConnected || isLoading}
-            className="rounded-full px-6 bg-primary hover:bg-primary/90"
+            className="rounded-lg px-5 bg-green-600 hover:bg-green-500 text-white shadow-sm transition-all hover:translate-y-[1px]"
           >
             {isLoading ? (
-              <span className="flex items-center space-x-2">
-                <span className="w-2 h-2 bg-white rounded-full animate-bounce" />
-                <span className="w-2 h-2 bg-white rounded-full animate-bounce delay-100" />
-                <span className="w-2 h-2 bg-white rounded-full animate-bounce delay-200" />
+              <span className="flex items-center gap-1">
+                <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" />
+                <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-100" />
+                <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce delay-200" />
               </span>
             ) : (
-              "Send"
+              <div className="flex items-center gap-2">
+                <span>Send</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="m5 12 14-7-7 14v-7L5 12Z" />
+                </svg>
+              </div>
             )}
           </Button>
         </div>

@@ -5,27 +5,31 @@ import { BookOpen, UserCircle, FileText, Activity } from "lucide-react";
 
 const guides = [
   {
-    title: "Getting Started",
-    description: "Learn the basics of using our grant application platform",
-    href: "/",
+    title: "Research Platform Overview",
+    description:
+      "Basic and advanced search options to help both new and experienced researchers find information fast",
+    href: "https://www.ebsco.com/products/ebscohost-research-platform",
     icon: BookOpen,
   },
   {
-    title: "Completing Your Profile",
-    description: "A step-by-step guide to setting up your user profile",
-    href: "/",
+    title: "Research Tools & Analysis",
+    description:
+      "Learn to use data analysis tools, citation assistance and save your research findings",
+    href: "https://custom-writing.org/blog/best-writing-online-research-tools",
     icon: UserCircle,
   },
   {
-    title: "Applying for a Grant",
-    description: "Detailed instructions on how to apply for funding opportunities",
-    href: "/",
+    title: "Research Documentation",
+    description:
+      "Comprehensive guides for literature review, data collection and research methodology",
+    href: "https://www.insightplatforms.com/",
     icon: FileText,
   },
   {
-    title: "Tracking Your Application",
-    description: "How to monitor the status of your grant applications",
-    href: "/",
+    title: "Research Experience Platform",
+    description:
+      "Stay on top of initiatives, engage with the wider organization, and drive research impact",
+    href: "https://dscout.com/guides-and-resources/research-platform-buyers-guide",
     icon: Activity,
   },
 ];
@@ -34,9 +38,9 @@ const GuidesPage = () => {
   return (
     <div className="container mx-auto p-6 space-y-8">
       <div className="space-y-4">
-        <h1 className="text-4xl font-bold text-center">User Guides</h1>
+        <h1 className="text-4xl font-bold text-center text-[#6B9B76]">Research Platform Guides</h1>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-          Step-by-step tutorials to help you navigate our platform
+          Essential resources and tools to enhance your research experience and workflow
         </p>
       </div>
 
@@ -49,11 +53,11 @@ const GuidesPage = () => {
                 // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
                 index
               }`}
-              className="group hover:shadow-md transition-all duration-300"
+              className="group hover:shadow-md transition-all duration-300 border-[#6B9B76]/20"
             >
               <CardHeader>
                 <div className="flex items-center gap-4">
-                  <Icon className="w-8 h-8 text-primary" />
+                  <Icon className="w-8 h-8 text-[#6B9B76]" />
                   <div>
                     <CardTitle>{guide.title}</CardTitle>
                     <CardDescription>{guide.description}</CardDescription>
@@ -63,9 +67,11 @@ const GuidesPage = () => {
               <CardContent>
                 <Link
                   href={guide.href}
-                  className="inline-flex text-primary hover:text-primary/80 hover:underline"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex text-[#6B9B76] hover:text-[#6B9B76]/80 hover:underline"
                 >
-                  Read Guide →
+                  Access Guide →
                 </Link>
               </CardContent>
             </Card>

@@ -154,15 +154,15 @@ export default function ReservationsPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-4xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">
+        <h1 className="text-2xl sm:text-3xl font-medium text-[#6B9B76]">
           {user?.role === UserRole.ORGANIZER ? "All Reservations" : "My Reservations"}
         </h1>
         <Button
           onClick={handleBackToEvents}
           variant="outline"
-          className="border-gray-200 hover:bg-gray-50"
+          className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10"
         >
           Back to Events
         </Button>
@@ -170,22 +170,25 @@ export default function ReservationsPage() {
 
       {registrations.length > 0 ? (
         <ScrollArea className="h-[calc(100vh-200px)] pr-4">
-          <div className="space-y-4">
+          <div className="space-y-6">
             {registrations.map((registration) => (
-              <Card key={registration.id} className="border border-gray-100">
+              <Card
+                key={registration.id}
+                className="border border-[#6B9B76]/20 shadow-sm hover:shadow-md transition-shadow"
+              >
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start gap-4">
                     <div className="space-y-1">
-                      <CardTitle className="text-lg font-medium text-gray-800">
+                      <CardTitle className="text-lg font-medium text-[#6B9B76]">
                         {registration.event.title}
                       </CardTitle>
-                      <p className="text-sm font-medium text-gray-500">
+                      <p className="text-sm font-medium text-[#6B9B76]/70">
                         {registration.session.title}
                       </p>
                       {user?.role === UserRole.ORGANIZER && (
-                        <p className="text-sm text-gray-500">
+                        <p className="text-sm text-gray-600">
                           Reserved by: {registration.user.name}
-                          <span className="block text-gray-400">{registration.user.email}</span>
+                          <span className="block text-gray-500">{registration.user.email}</span>
                         </p>
                       )}
                     </div>
@@ -203,7 +206,7 @@ export default function ReservationsPage() {
                         <AlertDialogContent className="bg-white">
                           <AlertDialogHeader>
                             <AlertDialogTitle>Cancel Reservation</AlertDialogTitle>
-                            <AlertDialogDescription className="text-gray-500">
+                            <AlertDialogDescription className="text-gray-600">
                               Are you sure you want to cancel this reservation? This action cannot
                               be undone.
                             </AlertDialogDescription>
@@ -214,7 +217,7 @@ export default function ReservationsPage() {
                             </AlertDialogCancel>
                             <AlertDialogAction
                               onClick={() => handleCancelReservation(registration.id)}
-                              className="bg-red-500 hover:bg-red-600"
+                              className="bg-[#6B9B76] hover:bg-[#5a8463]"
                             >
                               Yes, cancel it
                             </AlertDialogAction>
@@ -226,21 +229,21 @@ export default function ReservationsPage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-gray-600 mb-4">{registration.event.description}</p>
-                  <div className="space-y-2 text-sm text-gray-500">
+                  <div className="space-y-2 text-sm text-gray-600">
                     <div className="flex items-center gap-2">
-                      <CalendarIcon className="w-4 h-4 text-gray-400" />
+                      <CalendarIcon className="w-4 h-4 text-[#6B9B76]" />
                       {moment(registration.session.startTime).format("MMM D, YYYY")}
                     </div>
                     <div className="flex items-center gap-2">
-                      <ClockIcon className="w-4 h-4 text-gray-400" />
+                      <ClockIcon className="w-4 h-4 text-[#6B9B76]" />
                       {moment(registration.session.startTime).format("HH:mm")} -{" "}
                       {moment(registration.session.endTime).format("HH:mm")}
                     </div>
                     <div className="flex items-center gap-2">
-                      <MapPinIcon className="w-4 h-4 text-gray-400" />
+                      <MapPinIcon className="w-4 h-4 text-[#6B9B76]" />
                       {registration.session.location}
                     </div>
-                    <div className="pt-2 text-xs text-gray-400">
+                    <div className="pt-2 text-xs text-gray-500">
                       Booked on: {moment(registration.bookingDate).format("MMM D, YYYY HH:mm")}
                     </div>
                   </div>
@@ -250,7 +253,7 @@ export default function ReservationsPage() {
           </div>
         </ScrollArea>
       ) : (
-        <Card className="border border-gray-100 text-center py-8">
+        <Card className="border border-[#6B9B76]/20 text-center py-12">
           <p className="text-gray-600 mb-4">
             {user?.role === UserRole.ORGANIZER
               ? "There are no reservations yet."
@@ -258,7 +261,7 @@ export default function ReservationsPage() {
           </p>
           <Link
             href="/events"
-            className="text-gray-600 hover:text-gray-800 underline underline-offset-4"
+            className="text-[#6B9B76] hover:text-[#5a8463] underline underline-offset-4"
           >
             Browse available events
           </Link>

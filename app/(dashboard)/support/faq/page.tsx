@@ -34,23 +34,20 @@ const FAQPage = () => {
   return (
     <div className="container mx-auto p-6 space-y-8">
       <div className="space-y-4">
-        <h1 className="text-4xl font-bold text-center">Frequently Asked Questions</h1>
+        <h1 className="text-4xl font-bold text-center text-[#6B9B76]">
+          Frequently Asked Questions
+        </h1>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto">
           Find answers to the most common questions about our platform
         </p>
       </div>
 
-      <Card className="max-w-3xl mx-auto">
+      <Card className="max-w-3xl mx-auto border-[#6B9B76]/20">
         <Accordion type="single" collapsible className="w-full">
           {faqData.map((faq, index) => (
-            <AccordionItem
-              key={`faq-${
-                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                index
-              }`}
-              value={`item-${index}`}
-            >
-              <AccordionTrigger className="text-left px-4 hover:no-underline hover:bg-muted/50">
+            <AccordionItem key={`faq-${// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+index}`} value={`item-${index}`}>
+              <AccordionTrigger className="text-left px-4 hover:no-underline hover:bg-[#6B9B76]/10">
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent className="px-4 pb-4">{faq.answer}</AccordionContent>

@@ -67,76 +67,76 @@ export default function InvestmentsPage() {
   const totalInvestment = investments.reduce((sum, investment) => sum + investment.amount, 0);
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-6xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">My Investments</h1>
+        <h1 className="text-2xl sm:text-3xl font-medium text-[#6B9B76]">My Investments</h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <Card className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md">
+        <Card className="group p-5 rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] bg-white transition-all duration-200 hover:shadow-md">
           <CardHeader className="p-0">
-            <CardTitle className="text-sm font-medium text-gray-500">Total Investment</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">Total Investment</CardTitle>
           </CardHeader>
           <CardContent className="p-0 mt-2">
             <div className="flex items-center justify-between">
-              <p className="text-2xl font-semibold text-gray-900">
+              <p className="text-2xl font-semibold text-[#6B9B76]">
                 ${totalInvestment.toLocaleString()}
               </p>
-              <DollarSign className="w-8 h-8 text-green-500 bg-green-50 p-1.5 rounded-full" />
+              <DollarSign className="w-8 h-8 text-[#6B9B76] bg-[#6B9B76]/10 p-1.5 rounded-full" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md">
+        <Card className="group p-5 rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] bg-white transition-all duration-200 hover:shadow-md">
           <CardHeader className="p-0">
-            <CardTitle className="text-sm font-medium text-gray-500">Active Investments</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">Active Investments</CardTitle>
           </CardHeader>
           <CardContent className="p-0 mt-2">
             <div className="flex items-center justify-between">
-              <p className="text-2xl font-semibold text-gray-900">{investments.length}</p>
-              <BarChart2 className="w-8 h-8 text-blue-500 bg-blue-50 p-1.5 rounded-full" />
+              <p className="text-2xl font-semibold text-[#6B9B76]">{investments.length}</p>
+              <BarChart2 className="w-8 h-8 text-[#6B9B76] bg-[#6B9B76]/10 p-1.5 rounded-full" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md">
+        <Card className="group p-5 rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] bg-white transition-all duration-200 hover:shadow-md">
           <CardHeader className="p-0">
-            <CardTitle className="text-sm font-medium text-gray-500">Portfolio Growth</CardTitle>
+            <CardTitle className="text-sm font-medium text-gray-600">Portfolio Growth</CardTitle>
           </CardHeader>
           <CardContent className="p-0 mt-2">
             <div className="flex items-center justify-between">
-              <p className="text-2xl font-semibold text-gray-900">Active</p>
-              <TrendingUp className="w-8 h-8 text-purple-500 bg-purple-50 p-1.5 rounded-full" />
+              <p className="text-2xl font-semibold text-[#6B9B76]">Active</p>
+              <TrendingUp className="w-8 h-8 text-[#6B9B76] bg-[#6B9B76]/10 p-1.5 rounded-full" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <Card className="border border-gray-100 shadow-sm">
+      <Card className="border border-[#6B9B76]/20 shadow-sm bg-[#6B9B76]/5">
         <CardContent className="p-6">
           {investments.length === 0 ? (
             <div className="text-center py-12 px-4">
-              <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <DollarSign className="w-8 h-8 text-gray-400" />
+              <div className="bg-[#6B9B76]/10 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <DollarSign className="w-8 h-8 text-[#6B9B76]" />
               </div>
-              <p className="text-gray-600 font-medium mb-2">
+              <p className="text-[#6B9B76] font-medium mb-2">
                 You haven't made any investments yet.
               </p>
-              <p className="text-sm text-gray-500">Start investing to grow your portfolio!</p>
+              <p className="text-sm text-gray-600">Start investing to grow your portfolio!</p>
             </div>
           ) : (
             <ScrollArea className="h-[500px]">
               <div className="w-full">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-100">
-                      <th className="text-left p-3 text-sm font-medium text-gray-500">
+                    <tr className="border-b border-[#6B9B76]/10">
+                      <th className="text-left p-3 text-sm font-medium text-[#6B9B76]">
                         Project Name
                       </th>
-                      <th className="text-left p-3 text-sm font-medium text-gray-500">Company</th>
-                      <th className="text-left p-3 text-sm font-medium text-gray-500">Amount</th>
-                      <th className="text-left p-3 text-sm font-medium text-gray-500">Date</th>
-                      <th className="text-left p-3 text-sm font-medium text-gray-500">
+                      <th className="text-left p-3 text-sm font-medium text-[#6B9B76]">Company</th>
+                      <th className="text-left p-3 text-sm font-medium text-[#6B9B76]">Amount</th>
+                      <th className="text-left p-3 text-sm font-medium text-[#6B9B76]">Date</th>
+                      <th className="text-left p-3 text-sm font-medium text-[#6B9B76]">
                         Risk Level
                       </th>
                     </tr>
@@ -145,15 +145,15 @@ export default function InvestmentsPage() {
                     {investments.map((investment) => (
                       <tr
                         key={investment.id}
-                        className="border-b border-gray-100 hover:bg-gray-50 transition-colors"
+                        className="border-b border-[#6B9B76]/10 hover:bg-[#6B9B76]/5 transition-colors"
                       >
-                        <td className="p-3 text-sm text-gray-900">
+                        <td className="p-3 text-sm text-[#6B9B76]">
                           {investment.opportunity.title}
                         </td>
                         <td className="p-3 text-sm text-gray-600">
                           {investment.opportunity.companyName}
                         </td>
-                        <td className="p-3 text-sm font-medium text-green-600">
+                        <td className="p-3 text-sm font-medium text-[#6B9B76]">
                           ${investment.amount.toLocaleString()}
                         </td>
                         <td className="p-3 text-sm text-gray-600">
@@ -164,7 +164,7 @@ export default function InvestmentsPage() {
                             className={cn(
                               "text-sm px-2 py-1 rounded-md",
                               investment.opportunity.riskLevel === "Low" &&
-                                "bg-green-50 text-green-600",
+                                "bg-[#6B9B76]/10 text-[#6B9B76]",
                               investment.opportunity.riskLevel === "Medium" &&
                                 "bg-yellow-50 text-yellow-600",
                               investment.opportunity.riskLevel === "High" &&

@@ -15,13 +15,13 @@ const ContactPage = () => {
   return (
     <div className="container mx-auto p-6 space-y-8">
       <div className="space-y-4">
-        <h1 className="text-4xl font-bold text-center">Contact Support</h1>
+        <h1 className="text-4xl font-bold text-center text-[#6B9B76]">Contact Support</h1>
         <p className="text-center text-muted-foreground max-w-2xl mx-auto">
           Get in touch with our support team. We typically respond within 24 hours.
         </p>
       </div>
 
-      <Card className="max-w-2xl mx-auto">
+      <Card className="max-w-2xl mx-auto border-[#6B9B76]/20">
         <form className="space-y-6 p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
@@ -68,7 +68,7 @@ const ContactPage = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full bg-[#6B9B76] hover:bg-[#6B9B76]/90">
             Send Message
           </Button>
         </form>

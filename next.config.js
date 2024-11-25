@@ -6,7 +6,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "images.unsplash.com",
         port: "",
-        pathname: "/account123/**",
+        pathname: "/photo-**",
       },
       {
         protocol: "https",
@@ -19,6 +19,24 @@ const nextConfig = {
         hostname: "s38924.pcdn.co",
         port: "",
         pathname: "/wp-content/**",
+      },
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.googleusercontent.com",
+        port: "",
+        pathname: "/**",
       },
     ],
   },

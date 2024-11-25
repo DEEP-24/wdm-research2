@@ -1,8 +1,18 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -21,19 +31,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CalendarIcon, DollarSign, Plus, Pencil, Trash2, Eye } from "lucide-react";
+import { CalendarIcon, DollarSign, Eye, Pencil, Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
 
 interface User {
   id: string;
@@ -296,52 +296,54 @@ export default function InvestmentOpportunities() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-6xl">
+    <div className="container mx-auto px-4 py-8 max-w-7xl">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <h1 className="text-2xl sm:text-3xl font-medium text-gray-800">Investment Opportunities</h1>
+        <h1 className="text-2xl sm:text-3xl font-medium text-[#6B9B76]">
+          Investment Opportunities
+        </h1>
         {user?.role === "ADMIN" && (
           <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
             <DialogTrigger asChild>
               <Button
                 variant="outline"
-                className="border-gray-200 hover:bg-gray-50 w-full sm:w-auto"
+                className="border-[#6B9B76] text-[#6B9B76] hover:bg-[#6B9B76]/10 w-full sm:w-auto"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Create Opportunity
               </Button>
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[525px] bg-white p-0">
-              <div className="p-6 border-b border-gray-100">
+            <DialogContent className="sm:max-w-[600px] bg-[#6B9B76]/5 p-0">
+              <div className="p-6 border-b border-[#6B9B76]/10 bg-white">
                 <DialogHeader>
-                  <DialogTitle className="text-xl font-medium text-gray-800">
+                  <DialogTitle className="text-xl font-medium text-[#6B9B76]">
                     Create Investment Opportunity
                   </DialogTitle>
                 </DialogHeader>
               </div>
 
-              <form onSubmit={handleCreateOpportunity} className="p-6 space-y-6">
+              <form onSubmit={handleCreateOpportunity} className="p-6 space-y-6 bg-white">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="title" className="text-sm font-medium text-[#6B9B76]">
                       Title
                     </Label>
                     <Input
                       id="title"
                       name="title"
-                      className="border-gray-200"
+                      className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       placeholder="Enter opportunity title"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="companyName" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="companyName" className="text-sm font-medium text-[#6B9B76]">
                       Company Name
                     </Label>
                     <Input
                       id="companyName"
                       name="companyName"
-                      className="border-gray-200"
+                      className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       placeholder="Enter company name"
                       required
                     />
@@ -349,13 +351,13 @@ export default function InvestmentOpportunities() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="description" className="text-sm font-medium text-gray-700">
+                  <Label htmlFor="description" className="text-sm font-medium text-[#6B9B76]">
                     Description
                   </Label>
                   <Textarea
                     id="description"
                     name="description"
-                    className="border-gray-200 min-h-[100px]"
+                    className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76] min-h-[100px]"
                     placeholder="Enter opportunity description"
                     required
                   />
@@ -363,18 +365,18 @@ export default function InvestmentOpportunities() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="targetAmount" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="targetAmount" className="text-sm font-medium text-[#6B9B76]">
                       Target Amount ($)
                     </Label>
                     <div className="relative">
-                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#6B9B76]" />
                       <Input
                         id="targetAmount"
                         name="targetAmount"
                         type="number"
                         min="1"
                         step="0.01"
-                        className="pl-10 border-gray-200"
+                        className="pl-10 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                         placeholder="Enter target amount"
                         required
                       />
@@ -382,17 +384,17 @@ export default function InvestmentOpportunities() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="deadline" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="deadline" className="text-sm font-medium text-[#6B9B76]">
                       Deadline
                     </Label>
                     <div className="relative">
-                      <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                      <CalendarIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#6B9B76] w-4 h-4" />
                       <Input
                         id="deadline"
                         name="deadline"
                         type="date"
                         required
-                        className="pl-10 border-gray-200"
+                        className="pl-10 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                         min={new Date().toISOString().split("T")[0]}
                         defaultValue={new Date().toISOString().split("T")[0]}
                       />
@@ -402,24 +404,24 @@ export default function InvestmentOpportunities() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="sector" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="sector" className="text-sm font-medium text-[#6B9B76]">
                       Sector
                     </Label>
                     <Input
                       id="sector"
                       name="sector"
-                      className="border-gray-200"
+                      className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                       placeholder="e.g., Technology, Healthcare"
                       required
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="riskLevel" className="text-sm font-medium text-gray-700">
+                    <Label htmlFor="riskLevel" className="text-sm font-medium text-[#6B9B76]">
                       Risk Level
                     </Label>
                     <Select name="riskLevel" required defaultValue="">
-                      <SelectTrigger className="border-gray-200">
+                      <SelectTrigger className="border-[#6B9B76]/20">
                         <SelectValue placeholder="Select risk level" />
                       </SelectTrigger>
                       <SelectContent>
@@ -431,16 +433,16 @@ export default function InvestmentOpportunities() {
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-2 pt-4">
+                <div className="flex justify-end gap-2 pt-4 border-t border-[#6B9B76]/10">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={() => setIsCreateDialogOpen(false)}
-                    className="border-gray-200 hover:bg-gray-50"
+                    className="border-[#6B9B76]/20 text-[#6B9B76] hover:bg-[#6B9B76]/10"
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" className="bg-gray-900 hover:bg-gray-800 text-white">
+                  <Button type="submit" className="bg-[#6B9B76] hover:bg-[#5a8463] text-white">
                     Create Opportunity
                   </Button>
                 </div>
@@ -450,19 +452,19 @@ export default function InvestmentOpportunities() {
         )}
       </div>
 
-      <Card className="border border-gray-100 shadow-sm">
+      <Card className="border border-[#6B9B76]/20 shadow-sm bg-[#6B9B76]/5">
         <CardContent className="p-6">
-          <ScrollArea className="h-[calc(100vh-300px)]">
+          <ScrollArea className="h-[calc(100vh-220px)]">
             {opportunities.length === 0 ? (
               <div className="text-center py-12 px-4">
-                <div className="bg-gray-50 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                  <DollarSign className="w-8 h-8 text-gray-400" />
+                <div className="bg-[#6B9B76]/10 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                  <DollarSign className="w-8 h-8 text-[#6B9B76]" />
                 </div>
-                <p className="text-gray-600 font-medium mb-2">
+                <p className="text-[#6B9B76] font-medium mb-2">
                   No investment opportunities available
                 </p>
                 {user?.role === "ADMIN" && (
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-600">
                     Click the "Create Opportunity" button to add a new investment opportunity
                   </p>
                 )}
@@ -472,21 +474,22 @@ export default function InvestmentOpportunities() {
                 {opportunities.map((opportunity) => (
                   <div
                     key={opportunity.id}
-                    className="group p-5 rounded-lg border border-gray-100 hover:border-gray-200 bg-white transition-all duration-200 hover:shadow-md"
+                    className="group p-5 rounded-lg border border-[#6B9B76]/20 hover:border-[#6B9B76] bg-white transition-all duration-200 hover:shadow-md"
                   >
                     <div className="flex flex-col space-y-4">
                       <div className="flex justify-between items-start">
                         <div className="space-y-1">
-                          <h3 className="text-xl font-medium text-gray-900">{opportunity.title}</h3>
+                          <h3 className="text-xl font-medium text-[#6B9B76] group-hover:text-[#5a8463]">
+                            {opportunity.title}
+                          </h3>
                           <p className="text-gray-600">{opportunity.description}</p>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          {opportunity.sector.split(",").map((s, index) => (
+                          {opportunity.sector.split(",").map((s) => (
                             <Badge
-                              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                              key={index}
+                              key={`${opportunity.id}-${s.trim()}`}
                               variant="secondary"
-                              className="bg-gray-50 text-gray-600"
+                              className="bg-[#6B9B76]/10 text-[#6B9B76] hover:bg-[#6B9B76]/20"
                             >
                               {s.trim()}
                             </Badge>
@@ -496,21 +499,21 @@ export default function InvestmentOpportunities() {
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div className="space-y-1">
-                          <p className="text-sm text-gray-500">Target Amount</p>
-                          <p className="font-medium text-gray-900">
+                          <p className="text-sm text-gray-600">Target Amount</p>
+                          <p className="font-medium text-[#6B9B76]">
                             ${opportunity.targetAmount.toLocaleString()}
                           </p>
                         </div>
                         <div className="space-y-1">
-                          <p className="text-sm text-gray-500">Current Amount</p>
-                          <p className="font-medium text-green-600">
+                          <p className="text-sm text-gray-600">Current Amount</p>
+                          <p className="font-medium text-[#6B9B76]">
                             ${opportunity.currentAmount.toLocaleString()}
                           </p>
                         </div>
                         {user?.role === "INVESTOR" && (
                           <div className="space-y-1">
-                            <p className="text-sm text-gray-500">Your Investment</p>
-                            <p className="font-medium text-blue-600">
+                            <p className="text-sm text-gray-600">Your Investment</p>
+                            <p className="font-medium text-[#6B9B76]">
                               ${calculateUserInvestment(opportunity, user.id).toLocaleString()}
                             </p>
                           </div>
@@ -518,20 +521,20 @@ export default function InvestmentOpportunities() {
                       </div>
 
                       <div className="flex flex-wrap items-center gap-4 pt-2">
-                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md text-sm text-gray-500">
+                        <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md text-sm text-gray-600 border border-[#6B9B76]/10">
                           <CalendarIcon className="w-4 h-4" />
                           Deadline: {formatDate(opportunity.deadline)}
                         </span>
-                        <span className="flex items-center gap-1.5 bg-gray-50 px-2 py-1 rounded-md text-sm text-gray-500">
+                        <span className="flex items-center gap-1.5 bg-[#6B9B76]/5 px-2 py-1 rounded-md text-sm text-gray-600 border border-[#6B9B76]/10">
                           {opportunity.companyName}
                         </span>
                         <span
-                          className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-sm ${
+                          className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-sm border ${
                             opportunity.riskLevel === "Low"
-                              ? "bg-green-50 text-green-600"
+                              ? "bg-[#6B9B76]/10 text-[#6B9B76] border-[#6B9B76]/20"
                               : opportunity.riskLevel === "Medium"
-                                ? "bg-yellow-50 text-yellow-600"
-                                : "bg-red-50 text-red-600"
+                                ? "bg-yellow-50 text-yellow-600 border-yellow-200"
+                                : "bg-red-50 text-red-600 border-red-200"
                           }`}
                         >
                           Risk Level: {opportunity.riskLevel}
@@ -541,23 +544,23 @@ export default function InvestmentOpportunities() {
                       {user?.role === "INVESTOR" && (
                         <div className="pt-4">
                           {isGoalCompleted(opportunity) ? (
-                            <div className="w-full p-2 text-center bg-green-50 text-green-600 rounded-md">
+                            <div className="w-full p-2 text-center bg-[#6B9B76]/10 text-[#6B9B76] rounded-md border border-[#6B9B76]/20">
                               Investment Goal Completed
                             </div>
                           ) : (
                             <Dialog open={isInvestDialogOpen} onOpenChange={setIsInvestDialogOpen}>
                               <DialogTrigger asChild>
                                 <Button
-                                  className="w-full bg-gray-900 hover:bg-gray-800 text-white"
+                                  className="w-full bg-[#6B9B76] hover:bg-[#5a8463] text-white"
                                   onClick={() => setSelectedOpportunity(opportunity)}
                                 >
                                   Invest Now
                                 </Button>
                               </DialogTrigger>
-                              <DialogContent className="sm:max-w-[425px] bg-white p-0">
-                                <div className="p-6 border-b border-gray-100">
+                              <DialogContent className="sm:max-w-[425px] bg-[#6B9B76]/5 p-0">
+                                <div className="p-6 border-b border-[#6B9B76]/10 bg-white">
                                   <DialogHeader>
-                                    <DialogTitle className="text-xl font-medium text-gray-800">
+                                    <DialogTitle className="text-xl font-medium text-[#6B9B76]">
                                       Invest in {selectedOpportunity?.title}
                                     </DialogTitle>
                                   </DialogHeader>
@@ -572,18 +575,37 @@ export default function InvestmentOpportunities() {
                                       handleInvest(selectedOpportunity!.id, amount);
                                     }
                                   }}
-                                  className="p-6 space-y-6"
+                                  className="p-6 space-y-6 bg-white"
                                 >
                                   <div className="space-y-4">
+                                    <div className="grid grid-cols-2 gap-4">
+                                      <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-[#6B9B76]">
+                                          Target Amount
+                                        </Label>
+                                        <div className="p-3 bg-[#6B9B76]/5 rounded-lg text-gray-900">
+                                          ${opportunity.targetAmount.toLocaleString()}
+                                        </div>
+                                      </div>
+                                      <div className="space-y-2">
+                                        <Label className="text-sm font-medium text-[#6B9B76]">
+                                          Current Amount
+                                        </Label>
+                                        <div className="p-3 bg-[#6B9B76]/5 rounded-lg text-gray-900">
+                                          ${opportunity.currentAmount.toLocaleString()}
+                                        </div>
+                                      </div>
+                                    </div>
+
                                     <div className="space-y-2">
                                       <Label
                                         htmlFor="amount"
-                                        className="text-sm font-medium text-gray-700"
+                                        className="text-sm font-medium text-[#6B9B76]"
                                       >
                                         Investment Amount ($)
                                       </Label>
                                       <div className="relative">
-                                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#6B9B76]" />
                                         <Input
                                           id="amount"
                                           name="amount"
@@ -591,34 +613,67 @@ export default function InvestmentOpportunities() {
                                           min="1"
                                           max={opportunity.targetAmount - opportunity.currentAmount}
                                           required
-                                          className="pl-10 border-gray-200"
+                                          className="pl-10 border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                                           placeholder="Enter investment amount"
                                         />
                                       </div>
-                                      <p className="text-sm text-gray-500 mt-1">
-                                        Remaining amount needed: $
-                                        {(
-                                          opportunity.targetAmount - opportunity.currentAmount
-                                        ).toLocaleString()}
-                                      </p>
+                                      <div className="flex items-center justify-between text-sm mt-2">
+                                        <span className="text-gray-600">Remaining needed:</span>
+                                        <span className="font-medium text-[#6B9B76]">
+                                          $
+                                          {(
+                                            opportunity.targetAmount - opportunity.currentAmount
+                                          ).toLocaleString()}
+                                        </span>
+                                      </div>
                                     </div>
 
-                                    <div className="flex justify-end gap-2 pt-4">
-                                      <Button
-                                        type="button"
-                                        variant="outline"
-                                        onClick={() => setIsInvestDialogOpen(false)}
-                                        className="border-gray-200 hover:bg-gray-50"
-                                      >
-                                        Cancel
-                                      </Button>
-                                      <Button
-                                        type="submit"
-                                        className="bg-gray-900 hover:bg-gray-800 text-white"
-                                      >
-                                        Confirm Investment
-                                      </Button>
+                                    <div className="space-y-2">
+                                      <Label className="text-sm font-medium text-[#6B9B76]">
+                                        Your Current Investment
+                                      </Label>
+                                      <div className="p-3 bg-[#6B9B76]/5 rounded-lg text-gray-900">
+                                        $
+                                        {calculateUserInvestment(
+                                          opportunity,
+                                          user.id,
+                                        ).toLocaleString()}
+                                      </div>
                                     </div>
+
+                                    <div className="p-4 bg-[#6B9B76]/5 rounded-lg space-y-2">
+                                      <div className="flex items-center gap-2">
+                                        <span className="text-sm font-medium text-[#6B9B76]">
+                                          {opportunity.companyName}
+                                        </span>
+                                        <Badge
+                                          variant="secondary"
+                                          className="bg-[#6B9B76]/10 text-[#6B9B76]"
+                                        >
+                                          {opportunity.riskLevel} Risk
+                                        </Badge>
+                                      </div>
+                                      <div className="text-xs text-gray-600">
+                                        Deadline: {formatDate(opportunity.deadline)}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <div className="flex justify-end gap-2 pt-4 border-t border-[#6B9B76]/10">
+                                    <Button
+                                      type="button"
+                                      variant="outline"
+                                      onClick={() => setIsInvestDialogOpen(false)}
+                                      className="border-[#6B9B76]/20 text-[#6B9B76] hover:bg-[#6B9B76]/10"
+                                    >
+                                      Cancel
+                                    </Button>
+                                    <Button
+                                      type="submit"
+                                      className="bg-[#6B9B76] hover:bg-[#5a8463] text-white"
+                                    >
+                                      Confirm Investment
+                                    </Button>
                                   </div>
                                 </form>
                               </DialogContent>
@@ -633,7 +688,7 @@ export default function InvestmentOpportunities() {
                             variant="ghost"
                             size="sm"
                             onClick={() => viewInvestments(opportunity.id)}
-                            className="text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+                            className="text-[#6B9B76] hover:text-[#5a8463] hover:bg-[#6B9B76]/10"
                           >
                             <Eye className="w-4 h-4 mr-2" />
                             View Investments
@@ -645,7 +700,7 @@ export default function InvestmentOpportunities() {
                               setSelectedOpportunity(opportunity);
                               setIsEditDialogOpen(true);
                             }}
-                            className="text-gray-600 hover:text-gray-800 hover:bg-gray-50"
+                            className="text-[#6B9B76] hover:text-[#5a8463] hover:bg-[#6B9B76]/10"
                           >
                             <Pencil className="w-4 h-4 mr-2" />
                             Edit
@@ -657,7 +712,7 @@ export default function InvestmentOpportunities() {
                               setOpportunityToDelete(opportunity.id);
                               setIsDeleteDialogOpen(true);
                             }}
-                            className="text-gray-600 hover:text-red-600 hover:bg-red-50"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50"
                           >
                             <Trash2 className="w-4 h-4 mr-2" />
                             Delete
@@ -674,30 +729,34 @@ export default function InvestmentOpportunities() {
       </Card>
 
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="max-w-[600px]">
-          <DialogHeader>
-            <DialogTitle>Investments for {selectedOpportunity?.title}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
+        <DialogContent className="sm:max-w-[600px] bg-[#6B9B76]/5 p-0">
+          <div className="p-6 border-b border-[#6B9B76]/10 bg-white">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-medium text-[#6B9B76]">
+                Investments for {selectedOpportunity?.title}
+              </DialogTitle>
+            </DialogHeader>
+          </div>
+          <div className="p-6 bg-white space-y-4">
             {selectedInvestments.length === 0 ? (
-              <p className="text-center text-gray-500">No investments yet</p>
+              <p className="text-center text-gray-600">No investments yet</p>
             ) : (
               <div className="space-y-4">
                 {selectedInvestments.map((investment) => (
-                  <Card key={investment.id}>
+                  <Card key={investment.id} className="border border-[#6B9B76]/20">
                     <CardContent className="pt-6">
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-semibold">
+                          <p className="font-semibold text-[#6B9B76]">
                             {investment.investor.firstName} {investment.investor.lastName}
                           </p>
-                          <p className="text-sm text-gray-500">{investment.investor.email}</p>
+                          <p className="text-sm text-gray-600">{investment.investor.email}</p>
                         </div>
                         <div className="text-right">
-                          <p className="font-semibold text-green-600">
+                          <p className="font-semibold text-[#6B9B76]">
                             ${investment.amount.toLocaleString()}
                           </p>
-                          <p className="text-sm text-gray-500">{formatDate(investment.date)}</p>
+                          <p className="text-sm text-gray-600">{formatDate(investment.date)}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -708,39 +767,62 @@ export default function InvestmentOpportunities() {
           </div>
         </DialogContent>
       </Dialog>
+
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[525px]">
-          <DialogHeader>
-            <DialogTitle>Edit Investment Opportunity</DialogTitle>
-          </DialogHeader>
-          <form onSubmit={handleEdit} className="space-y-4">
+        <DialogContent className="sm:max-w-[600px] bg-[#6B9B76]/5 p-0">
+          <div className="p-6 border-b border-[#6B9B76]/10 bg-white">
+            <DialogHeader>
+              <DialogTitle className="text-xl font-medium text-[#6B9B76]">
+                Edit Investment Opportunity
+              </DialogTitle>
+            </DialogHeader>
+          </div>
+          <form onSubmit={handleEdit} className="p-6 space-y-6 bg-white">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="title">Title</Label>
-                <Input id="title" name="title" defaultValue={selectedOpportunity?.title} required />
+                <Label htmlFor="title" className="text-sm font-medium text-[#6B9B76]">
+                  Title
+                </Label>
+                <Input
+                  id="title"
+                  name="title"
+                  defaultValue={selectedOpportunity?.title}
+                  className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
+                  required
+                />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="companyName">Company Name</Label>
+                <Label htmlFor="companyName" className="text-sm font-medium text-[#6B9B76]">
+                  Company Name
+                </Label>
                 <Input
                   id="companyName"
                   name="companyName"
                   defaultValue={selectedOpportunity?.companyName}
+                  className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                   required
                 />
               </div>
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description" className="text-sm font-medium text-[#6B9B76]">
+                Description
+              </Label>
               <Textarea
                 id="description"
                 name="description"
                 defaultValue={selectedOpportunity?.description}
+                className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                 required
               />
             </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="targetAmount">Target Amount ($)</Label>
+                <Label htmlFor="targetAmount" className="text-sm font-medium text-[#6B9B76]">
+                  Target Amount ($)
+                </Label>
                 <Input
                   id="targetAmount"
                   name="targetAmount"
@@ -748,16 +830,20 @@ export default function InvestmentOpportunities() {
                   min="1"
                   step="0.01"
                   defaultValue={selectedOpportunity?.targetAmount}
+                  className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="deadline">Deadline</Label>
+                <Label htmlFor="deadline" className="text-sm font-medium text-[#6B9B76]">
+                  Deadline
+                </Label>
                 <Input
                   id="deadline"
                   name="deadline"
                   type="date"
                   required
+                  className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                   min={new Date().toISOString().split("T")[0]}
                   defaultValue={
                     selectedOpportunity ? formatDateForInput(selectedOpportunity.deadline) : ""
@@ -765,21 +851,26 @@ export default function InvestmentOpportunities() {
                 />
               </div>
             </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="sector">Sector</Label>
+                <Label htmlFor="sector" className="text-sm font-medium text-[#6B9B76]">
+                  Sector
+                </Label>
                 <Input
                   id="sector"
                   name="sector"
-                  placeholder="e.g., Technology, Healthcare"
                   defaultValue={selectedOpportunity?.sector}
+                  className="border-[#6B9B76]/20 focus:border-[#6B9B76] focus:ring-[#6B9B76]"
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="riskLevel">Risk Level</Label>
+                <Label htmlFor="riskLevel" className="text-sm font-medium text-[#6B9B76]">
+                  Risk Level
+                </Label>
                 <Select name="riskLevel" required defaultValue={selectedOpportunity?.riskLevel}>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-[#6B9B76]/20">
                     <SelectValue placeholder="Select risk level" />
                   </SelectTrigger>
                   <SelectContent>
@@ -790,30 +881,49 @@ export default function InvestmentOpportunities() {
                 </Select>
               </div>
             </div>
-            <Button type="submit" className="w-full">
-              Update Opportunity
-            </Button>
+
+            <div className="flex justify-end gap-2 pt-4 border-t border-[#6B9B76]/10">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsEditDialogOpen(false)}
+                className="border-[#6B9B76]/20 text-[#6B9B76] hover:bg-[#6B9B76]/10"
+              >
+                Cancel
+              </Button>
+              <Button type="submit" className="bg-[#6B9B76] hover:bg-[#5a8463] text-white">
+                Update Opportunity
+              </Button>
+            </div>
           </form>
         </DialogContent>
       </Dialog>
+
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-[#6B9B76]/5 sm:max-w-[400px]">
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-            <AlertDialogDescription>
+            <AlertDialogTitle className="text-xl font-medium text-[#6B9B76]">
+              Are you absolutely sure?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-600">
               This action cannot be undone. This will permanently delete the investment opportunity
               and remove all associated data.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel
+              className="border-[#6B9B76]/20 text-[#6B9B76] hover:bg-[#6B9B76]/10"
+              onClick={() => setOpportunityToDelete(null)}
+            >
+              Cancel
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
                 if (opportunityToDelete) {
                   handleDelete(opportunityToDelete);
                 }
               }}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-red-500 hover:bg-red-600 text-white"
             >
               Delete
             </AlertDialogAction>

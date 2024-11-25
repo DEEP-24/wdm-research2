@@ -1019,7 +1019,7 @@ export default function EventsPage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("/api/user/profile");
+        const response = await fetch("/api/auth/user");
         if (response.ok) {
           const userData = await response.json();
           console.log("Current user role:", userData.role);
@@ -1240,7 +1240,7 @@ export default function EventsPage() {
 
   return (
     <>
-      // Add this style block right after your imports
+      {/* Existing style jsx block remains the same */}
       <style jsx global>{`
   .rbc-calendar {
     color: #374151;
@@ -1278,14 +1278,14 @@ export default function EventsPage() {
     color: white !important;
       }
     `}</style>
-      <div className="h-[calc(100vh-4rem)] p-4">
-        <div className="h-full flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col h-[calc(100vh-4rem)] p-4">
+        <div className="flex justify-end mb-6">
           {user?.role === UserRole.ORGANIZER && (
             <div className="absolute top-4 right-4 z-10">
               <Dialog open={isCreateEventOpen} onOpenChange={setIsCreateEventOpen}>
                 <DialogTrigger asChild>
                   <Button
-                    className="bg-black text-white hover:bg-gray-800 shadow-sm transition-colors"
+                    className="bg-[#6B9B76] text-white hover:bg-[#5a8463] shadow-sm transition-colors"
                     size="lg"
                   >
                     <PlusIcon className="w-5 h-5 mr-2" />
@@ -1710,7 +1710,11 @@ export default function EventsPage() {
               </Dialog>
             </div>
           )}
+        </div>
 
+        {/* Main content area */}
+        <div className="flex flex-col lg:flex-row gap-8 h-full mt-10">
+          {/* Calendar section */}
           <div className="flex-1 min-w-0 h-full lg:max-w-[65%]">
             <Card className="h-full bg-white rounded-md shadow-sm overflow-hidden border border-gray-100">
               <CardContent className="p-0 h-full">
@@ -1746,6 +1750,7 @@ export default function EventsPage() {
             </Card>
           </div>
 
+          {/* Event details section */}
           <div className="flex-1 min-w-0 h-full lg:max-w-[35%] overflow-hidden">
             <div className="h-full overflow-y-auto">
               {selectedEvent ? (
